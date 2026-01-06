@@ -1,0 +1,121 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+import { urlFor } from '../../lib/sanity';
+
+interface Props {
+  locale: Locale;
+  programs: any[];
+}
+
+const { locale, programs } = Astro.props;
+
+// Default programs if none from Sanity
+const defaultPrograms = [
+  {
+    icon: '👶',
+    title: { de: 'Vorschule & Bildung', en: 'Preschool & Education', kh: 'មត្តេយ្យ និងការអប់រំ' },
+    description: { 
+      de: 'Frühförderung ist der erste Schritt in eine bessere Zukunft. Wir betreiben Vorschulen in abgelegenen Dörfern rund um Siem Reap.',
+      en: 'Early childhood education is the first step to a better future. We operate preschools in remote villages around Siem Reap.',
+      kh: 'ការអប់រំកុមារភាពដំបូងគឺជាជំហានដំបូងទៅកាន់អនាគតល្អប្រសើរ។'
+    },
+    features: [
+      { de: 'Altersgerechter Unterricht', en: 'Age-appropriate teaching', kh: 'ការបង្រៀនសមស្របតាមអាយុ' },
+      { de: 'Hygienische Erziehung', en: 'Hygiene education', kh: 'ការអប់រំអនាម័យ' },
+      { de: 'Täglich warme Mahlzeit', en: 'Daily warm meal', kh: 'អាហារក្តៅប្រចាំថ្ងៃ' },
+      { de: 'Integration aller Kinder', en: 'Inclusion of all children', kh: 'ការដាក់បញ្ចូលកុមារទាំងអស់' }
+    ]
+  },
+  {
+    icon: '📚',
+    title: { de: 'Nachmittagsförderung', en: 'Afternoon Support', kh: 'ការគាំទ្រពេលរសៀល' },
+    description: {
+      de: 'Für Schulkinder bieten wir Nachmittagskurse in Khmer, Englisch und Mathematik an – für viele Kinder die einzige Möglichkeit, eine Fremdsprache zu lernen.',
+      en: 'For school children we offer afternoon courses in Khmer, English and Mathematics – for many children the only opportunity to learn a foreign language.',
+      kh: 'សម្រាប់កុមារសាលា យើងផ្តល់វគ្គសិក្សាពេលរសៀលជាភាសាខ្មែរ អង់គ្លេស និងគណិតវិទ្យា។'
+    },
+    features: [
+      { de: 'Kinder 6–17 Jahre', en: 'Children aged 6–17', kh: 'កុមារអាយុ 6-17 ឆ្នាំ' },
+      { de: 'Kambodschanische Lehrer:innen', en: 'Cambodian teachers', kh: 'គ្រូបង្រៀនកម្ពុជា' },
+      { de: 'Individuell und motivierend', en: 'Individual and motivating', kh: 'បុគ្គល និងលើកទឹកចិត្ត' }
+    ]
+  },
+  {
+    icon: '📖',
+    title: { de: 'Bibliothek', en: 'Library', kh: 'បណ្ណាល័យ' },
+    description: {
+      de: 'Die Bibliothek ist mehr als ein Lernort: Sie ist ein Treffpunkt, Leseraum und ein sicherer Ort zum Wachsen.',
+      en: 'The library is more than a learning place: It is a meeting point, reading room and a safe space to grow.',
+      kh: 'បណ្ណាល័យគឺច្រើនជាងកន្លែងរៀន៖ វាជាចំណុចជួបជុំ បន្ទប់អាន និងកន្លែងសុវត្ថិភាពដើម្បីរីកចម្រើន។'
+    },
+    features: [
+      { de: 'Leihbücher für alle Altersgruppen', en: 'Books for all ages', kh: 'សៀវភៅសម្រាប់គ្រប់អាយុ' },
+      { de: 'Kreative Förderung durch Basteln', en: 'Creative activities', kh: 'សកម្មភាពច្នៃប្រឌិត' },
+      { de: 'Themenreihen: Hygiene, Umgang mit Geld', en: 'Themed series: Hygiene, money management', kh: 'ស៊េរីប្រធានបទ' }
+    ]
+  },
+  {
+    icon: '🧡',
+    title: { de: 'Hilfe für die Gemeinschaft', en: 'Community Support', kh: 'ការគាំទ្រសហគមន៍' },
+    description: {
+      de: 'Wir unterstützen die Familien auch in Notsituationen. Hilfe zur Selbsthilfe.',
+      en: 'We also support families in emergency situations. Help for self-help.',
+      kh: 'យើងក៏គាំទ្រគ្រួសារក្នុងស្ថានភាពបន្ទាន់។'
+    },
+    features: [
+      { de: 'Moskitonetze & Fahrräder', en: 'Mosquito nets & bicycles', kh: 'មុងគ្រែបាញ់ និងកង់' },
+      { de: 'Reis- und Hygienepakete', en: 'Rice and hygiene packages', kh: 'កញ្ចប់អង្ករ និងអនាម័យ' },
+      { de: 'Hausbesuche & Beratung', en: 'Home visits & consultation', kh: 'ទស្សនាផ្ទះ និងពិគ្រោះយោបល់' },
+      { de: 'Bildung für Erwachsene', en: 'Adult education', kh: 'ការអប់រំមនុស្សពេញវ័យ' }
+    ]
+  }
+];
+
+const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
+---
+
+<section id="programme" class="section bg-white">
+  <div class="container-custom">
+    <!-- Section header -->
+    <div class="text-center mb-12 md:mb-16">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
+        {locale === 'de' ? 'Unsere Programme' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
+      </h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <!-- Program cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      {displayPrograms.map((program, index) => (
+        <div class="card group" style={`animation-delay: ${index * 0.1}s`}>
+          <!-- Icon & Title -->
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-4xl group-hover:scale-110 transition-transform">{program.icon}</span>
+            <h3 class="text-xl md:text-2xl font-heading font-semibold text-bamboo-800">
+              {t(program.title, locale)}
+            </h3>
+          </div>
+
+          <!-- Description -->
+          <p class="text-earth-600 mb-4 leading-relaxed">
+            {t(program.description, locale)}
+          </p>
+
+          <!-- Features list -->
+          {program.features && (
+            <ul class="space-y-2">
+              {program.features.map((feature: any) => (
+                <li class="flex items-center gap-2 text-sm text-earth-700">
+                  <svg class="w-4 h-4 text-bamboo-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <span>{t(feature, locale)}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

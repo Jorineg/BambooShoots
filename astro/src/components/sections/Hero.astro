@@ -1,0 +1,84 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+import { urlFor } from '../../lib/sanity';
+
+interface Props {
+  locale: Locale;
+  data: any;
+}
+
+const { locale, data } = Astro.props;
+---
+
+<section id="start" class="relative min-h-[80vh] md:min-h-[90vh] flex items-center overflow-hidden">
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0 z-0">
+    {data?.image ? (
+      <img 
+        src={urlFor(data.image).width(1920).quality(85).url()}
+        alt=""
+        class="w-full h-full object-cover"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-bamboo-700 to-bamboo-900"></div>
+    )}
+    <div class="absolute inset-0 bg-gradient-to-r from-bamboo-900/90 via-bamboo-800/80 to-bamboo-700/70"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="container-custom relative z-10 px-4 md:px-8 py-16">
+    <div class="max-w-3xl">
+      <!-- Small badge -->
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-bamboo-100 text-sm mb-6 animate-fade-in">
+        <span class="text-lg">🌱</span>
+        <span>Bamboo Shoots – time to grow</span>
+      </div>
+
+      <!-- Main heading -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 animate-slide-up">
+        {t(data?.title, locale) || (locale === 'de' 
+          ? 'Bildung. Gemeinschaft. Perspektiven.' 
+          : locale === 'en'
+          ? 'Education. Community. Opportunities.'
+          : 'ការអប់រំ។ សហគមន៍។ ឱកាស។')}
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-lg md:text-xl text-bamboo-100 leading-relaxed mb-4 animate-slide-up" style="animation-delay: 0.1s;">
+        {t(data?.subtitle, locale) || (locale === 'de'
+          ? 'Für Kinder in Kambodscha'
+          : locale === 'en'
+          ? 'For children in Cambodia'
+          : 'សម្រាប់កុមារនៅកម្ពុជា')}
+      </p>
+
+      <!-- Description -->
+      <p class="text-earth-100/90 text-base md:text-lg max-w-2xl mb-8 animate-slide-up" style="animation-delay: 0.2s;">
+        {t(data?.description, locale) || (locale === 'de'
+          ? 'Gemeinsam gestalten wir Zukunft – mit Vorschulbildung, Lernförderung & konkreter Hilfe im Alltag.'
+          : locale === 'en'
+          ? 'Together we shape the future – with preschool education, learning support & practical assistance.'
+          : 'រួមគ្នាយើងកំណត់អនាគត – ជាមួយការអប់រំមត្តេយ្យ ការគាំទ្រការរៀន និងជំនួយជាក់ស្តែង។')}
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap gap-4 animate-slide-up" style="animation-delay: 0.3s;">
+        <a href="#spenden" class="btn-donate">
+          {locale === 'de' ? '💚 Jetzt spenden' : locale === 'en' ? '💚 Donate now' : '💚 បរិច្ចាគឥឡូវ'}
+        </a>
+        <a href="#mission" class="btn-secondary bg-white/10 border-white/30 text-white hover:bg-white/20">
+          {locale === 'de' ? 'Mehr erfahren' : locale === 'en' ? 'Learn more' : 'ស្វែងយល់បន្ថែម'}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float hidden md:block">
+    <a href="#mission" class="text-white/70 hover:text-white transition-colors">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,58 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  data: any;
+}
+
+const { locale, data } = Astro.props;
+---
+
+<section id="mission" class="section bg-earth-100">
+  <div class="container-custom">
+    <div class="max-w-4xl mx-auto">
+      <!-- Title -->
+      <div class="text-center mb-12">
+        <span class="text-4xl mb-4 block">💡</span>
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
+          {t(data?.title, locale) || (locale === 'de' ? 'Unsere Mission' : locale === 'en' ? 'Our Mission' : 'បេសកកម្មរបស់យើង')}
+        </h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <!-- Main text -->
+      <div class="bg-white rounded-2xl p-8 md:p-12 shadow-lg mb-8">
+        <p class="text-2xl md:text-3xl font-heading font-semibold text-bamboo-700 text-center mb-6">
+          {locale === 'de' ? 'Bildung verändert Leben.' : locale === 'en' ? 'Education changes lives.' : 'ការអប់រំផ្លាស់ប្តូរជីវិត។'}
+        </p>
+        
+        <p class="text-earth-700 text-lg leading-relaxed text-center max-w-3xl mx-auto">
+          {t(data?.text, locale) || (locale === 'de'
+            ? 'Wir glauben, dass jedes Kind ein Recht auf Bildung und eine faire Chance auf eine gute Zukunft hat – unabhängig vom sozialen und kulturellen Hintergrund. Deshalb fördern wir Kinder und Jugendliche aus einkommensschwachen, kambodschanischen Familien mit kostenlosen Bildungsangeboten.'
+            : locale === 'en'
+            ? 'We believe that every child has the right to education and a fair chance at a good future – regardless of social and cultural background. That is why we support children and young people from low-income Cambodian families with free educational programs.'
+            : 'យើងជឿជាក់ថាកុមារគ្រប់រូបមានសិទ្ធិទទួលបានការអប់រំ និងឱកាសយុត្តិធម៌សម្រាប់អនាគតល្អ។')}
+        </p>
+      </div>
+
+      <!-- Quote -->
+      <div class="relative">
+        <div class="absolute -top-4 left-8 text-6xl text-bamboo-300 font-serif">"</div>
+        <blockquote class="bg-gradient-to-r from-bamboo-600 to-bamboo-700 text-white rounded-2xl p-8 md:p-10 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <p class="text-xl md:text-2xl font-medium italic mb-4 relative z-10">
+            {t(data?.quote, locale) || (locale === 'de'
+              ? 'Kinder sind wie Bambussprossen – sie wachsen mit der richtigen Pflege stark heran.'
+              : locale === 'en'
+              ? 'Children are like bamboo shoots – they grow strong with the right care.'
+              : 'កុមារដូចជាដើមឬស្សី – ពួកគេរីកចម្រើនខ្លាំងជាមួយការថែរក្សាត្រឹមត្រូវ។')}
+          </p>
+          <footer class="text-bamboo-100 text-sm relative z-10">
+            — {t(data?.quoteSource, locale) || (locale === 'de' ? 'Kambodschanisches Sprichwort' : locale === 'en' ? 'Cambodian Proverb' : 'សុភាសិតខ្មែរ')}
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>

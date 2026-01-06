@@ -1,0 +1,49 @@
+---
+import { t, localizedUrl, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  data: any;
+}
+
+const { locale, data } = Astro.props;
+---
+
+<section class="section bg-gradient-to-r from-earth-200 to-earth-100">
+  <div class="container-custom">
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl p-8 md:p-12 shadow-lg">
+      <div class="flex flex-col md:flex-row gap-8 items-center">
+        <!-- Icon/Image -->
+        <div class="flex-shrink-0">
+          <div class="w-24 h-24 bg-bamboo-100 rounded-full flex items-center justify-center">
+            <span class="text-5xl">🇰🇭</span>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-grow text-center md:text-left">
+          <h3 class="text-2xl font-heading font-bold text-bamboo-800 mb-3">
+            {t(data?.title, locale) || (locale === 'de' 
+              ? 'Kambodscha heute: Zwischen Vergangenheit und Aufbruch'
+              : locale === 'en'
+              ? 'Cambodia today: Between past and new beginnings'
+              : 'កម្ពុជាថ្ងៃនេះ៖ រវាងអតីតកាល និងការចាប់ផ្តើមថ្មី')}
+          </h3>
+          <p class="text-earth-600 mb-6 leading-relaxed">
+            {t(data?.text, locale) || (locale === 'de'
+              ? 'Kambodscha hat eine schwere Geschichte hinter sich. Erfahren Sie mehr über das Land, seine Menschen und warum Bildung so wichtig ist.'
+              : locale === 'en'
+              ? 'Cambodia has a difficult history. Learn more about the country, its people and why education is so important.'
+              : 'កម្ពុជាមានប្រវត្តិសាស្រ្តលំបាក។ ស្វែងយល់បន្ថែមអំពីប្រទេស មនុស្ស និងហេតុអ្វីការអប់រំមានសារៈសំខាន់។')}
+          </p>
+          <a 
+            href={localizedUrl('/history', locale)}
+            class="btn-primary inline-flex"
+          >
+            {t(data?.linkText, locale) || (locale === 'de' ? 'Zur Geschichte →' : locale === 'en' ? 'Read our history →' : 'អានប្រវត្តិរបស់យើង →')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

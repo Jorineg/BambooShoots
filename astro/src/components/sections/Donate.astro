@@ -1,0 +1,134 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  tiers: any[];
+  settings: any;
+}
+
+const { locale, tiers, settings } = Astro.props;
+
+// Default donation tiers
+const defaultTiers = [
+  {
+    amount: 35,
+    title: { de: 'Vorschulplatz', en: 'Preschool Place', kh: 'កន្លែងមត្តេយ្យ' },
+    description: { 
+      de: '5x pro Woche für einen Vorschulplatz – inklusive Mahlzeit & Material',
+      en: '5x per week for a preschool place – including meal & materials',
+      kh: '5 ដង/សប្តាហ៍ សម្រាប់កន្លែងមត្តេយ្យ – រួមទាំងអាហារ និងសម្ភារៈ'
+    }
+  },
+  {
+    amount: 15,
+    title: { de: 'Nachmittagsförderung', en: 'Afternoon Support', kh: 'ការគាំទ្រពេលរសៀល' },
+    description: { 
+      de: '3x pro Woche an zwei Standorten + Englisch – inklusive Mahlzeit & Material',
+      en: '3x per week at two locations + English – including meal & materials',
+      kh: '3 ដង/សប្តាហ៍ នៅពីរទីតាំង + អង់គ្លេស – រួមទាំងអាហារ និងសម្ភារៈ'
+    }
+  },
+  {
+    amount: null,
+    title: { de: 'Krisenhilfe & Gemeindearbeit', en: 'Crisis Aid & Community Work', kh: 'ជំនួយវិបត្តិ និងការងារសហគមន៍' },
+    description: { 
+      de: 'Freier Betrag für beispielsweise Fahrräder, Reis- oder Hygienepakete',
+      en: 'Any amount for bicycles, rice or hygiene packages',
+      kh: 'ចំនួនណាមួយសម្រាប់កង់ អង្ករ ឬកញ្ចប់អនាម័យ'
+    }
+  }
+];
+
+const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
+---
+
+<section id="spenden" class="section bg-gradient-to-br from-bamboo-700 via-bamboo-800 to-bamboo-900 text-white relative overflow-hidden">
+  <!-- Background decoration -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+  <div class="container-custom relative z-10">
+    <!-- Section header -->
+    <div class="text-center mb-12">
+      <span class="text-4xl mb-4 block">💸</span>
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">
+        {locale === 'de' ? 'Spenden & Mitmachen' : locale === 'en' ? 'Donate & Get Involved' : 'បរិច្ចាគ និងចូលរួម'}
+      </h2>
+      <p class="text-bamboo-100 text-lg max-w-2xl mx-auto">
+        {locale === 'de' 
+          ? 'Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll.'
+          : locale === 'en'
+          ? 'Your support makes the difference. Donate purposefully – transparently and effectively.'
+          : 'ការគាំទ្ររបស់អ្នកបង្កើតភាពខុសគ្នា។ បរិច្ចាគដោយមានគោលបំណង។'}
+      </p>
+    </div>
+
+    <!-- Donation tiers -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      {displayTiers.map((tier, index) => (
+        <div class={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20 hover:bg-white/15 transition-all ${index === 0 ? 'ring-2 ring-khmer-400' : ''}`}>
+          {index === 0 && (
+            <div class="bg-khmer-500 text-white text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
+              {locale === 'de' ? 'Beliebt' : locale === 'en' ? 'Popular' : 'ពេញនិយម'}
+            </div>
+          )}
+          
+          <div class="text-3xl md:text-4xl font-heading font-bold mb-2">
+            {tier.amount ? `${tier.amount} €` : (locale === 'de' ? 'Freier Betrag' : locale === 'en' ? 'Any Amount' : 'ចំនួនណាមួយ')}
+          </div>
+          
+          <h3 class="text-lg font-semibold mb-3">
+            {t(tier.title, locale)}
+          </h3>
+          
+          <p class="text-bamboo-100 text-sm leading-relaxed">
+            {t(tier.description, locale)}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Donation links -->
+    <div class="flex flex-wrap justify-center gap-4 mb-8">
+      {settings?.donationLinks?.betterplace && (
+        <a 
+          href={settings.donationLinks.betterplace}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary bg-white text-bamboo-700 hover:bg-earth-100 px-8"
+        >
+          {locale === 'de' ? 'Über betterplace.org spenden' : locale === 'en' ? 'Donate via betterplace.org' : 'បរិច្ចាគតាម betterplace.org'}
+        </a>
+      )}
+      {settings?.donationLinks?.paypal && (
+        <a 
+          href={settings.donationLinks.paypal}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-secondary border-white/30 text-white hover:bg-white/10"
+        >
+          {locale === 'de' ? 'Mit PayPal spenden' : locale === 'en' ? 'Donate with PayPal' : 'បរិច្ចាគជាមួយ PayPal'}
+        </a>
+      )}
+    </div>
+
+    <!-- Info text -->
+    <div class="text-center text-bamboo-100 text-sm space-y-2">
+      <p>
+        {locale === 'de' 
+          ? 'Gefördert durch den deutschen Verein „Bamboo Shoots e.V."'
+          : locale === 'en'
+          ? 'Supported by the German association "Bamboo Shoots e.V."'
+          : 'គាំទ្រដោយសមាគមអាល្លឺម៉ង់ "Bamboo Shoots e.V."'}
+      </p>
+      <p class="text-bamboo-200">
+        {locale === 'de' 
+          ? 'Der Förderverein wird ehrenamtlich geführt. Ihre Spenden fließen direkt in die Projektarbeit vor Ort.'
+          : locale === 'en'
+          ? 'The support association is run on a volunteer basis. Your donations go directly to project work on site.'
+          : 'សមាគមគាំទ្រត្រូវបានដំណើរការដោយស្ម័គ្រចិត្ត។ ការបរិច្ចាគរបស់អ្នកទៅដោយផ្ទាល់ទៅកាន់ការងារគម្រោងនៅកន្លែង។'}
+      </p>
+    </div>
+  </div>
+</section>

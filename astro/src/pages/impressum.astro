@@ -1,0 +1,128 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getLocale, localizedUrl } from '../lib/i18n';
+
+const locale = getLocale(Astro.url);
+
+const content = {
+  de: {
+    title: 'Impressum',
+    backLink: 'Zurück zur Startseite'
+  },
+  en: {
+    title: 'Legal Notice',
+    backLink: 'Back to home'
+  },
+  kh: {
+    title: 'ព័ត៌មានច្បាប់',
+    backLink: 'ត្រឡប់ទៅទំព័រដើម'
+  }
+};
+
+const t = content[locale];
+---
+
+<Layout title={t.title}>
+  <section class="section bg-white min-h-[60vh]">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto">
+        <a href={localizedUrl('/', locale)} class="inline-flex items-center gap-2 text-bamboo-600 hover:text-bamboo-700 mb-6 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          {t.backLink}
+        </a>
+
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-8">{t.title}</h1>
+
+        <div class="prose prose-lg prose-bamboo max-w-none">
+          <h2>Angaben gemäß § 5 TMG</h2>
+          
+          <p>
+            <strong>Bamboo Shoots e.V. – Bildung & Entwicklungshilfe</strong><br />
+            Hohenzollernring 18a<br />
+            13585 Berlin<br />
+            Deutschland
+          </p>
+
+          <h3>Vertreten durch</h3>
+          <p>1. Vorsitzende: Annette Schüller</p>
+
+          <h3>Kontakt</h3>
+          <p>
+            E-Mail: <a href="mailto:info@bamboo-shoots.de">info@bamboo-shoots.de</a><br />
+            Website: <a href="https://www.bamboo-shoots.de">www.bamboo-shoots.de</a>
+          </p>
+
+          <h3>Registereintrag</h3>
+          <p>
+            Eingetragen im Vereinsregister des Amtsgerichts Berlin-Charlottenburg<br />
+            Registernummer: VR 29693 B
+          </p>
+
+          <h3>Gemeinnützigkeit</h3>
+          <p>
+            Der Verein ist als gemeinnützig anerkannt durch das<br />
+            Finanzamt für Körperschaften I, Berlin<br />
+            Steuer-Nr.: 27/661/64198
+          </p>
+
+          <h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+          <p>
+            Annette Schüller<br />
+            Hohenzollernring 18a<br />
+            13585 Berlin
+          </p>
+
+          <hr class="my-8" />
+
+          <h2>Partnerorganisation in Kambodscha</h2>
+          <p>
+            <strong>Bamboo Shoots – time to grow (BASTIGO)</strong><br />
+            NGO in Kambodscha
+          </p>
+          <p>
+            Zugelassen vom Royal Government of Cambodia / Ministry of Interior<br />
+            Registernummer: 518 N
+          </p>
+          <p>
+            Die Organisation arbeitet unabhängig, gemeinnützig, ohne Gewinnerzielungsabsicht 
+            und ist nicht eingegliedert in staatliche Strukturen.
+          </p>
+
+          <h3>Kontakt vor Ort</h3>
+          <p>
+            Petra & Sothy Marek<br />
+            E-Mail: <a href="mailto:bastigo@outlook.com">bastigo@outlook.com</a>
+          </p>
+
+          <hr class="my-8" />
+
+          <h2>Haftungsausschluss</h2>
+
+          <h3>Haftung für Inhalte</h3>
+          <p>
+            Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, 
+            Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
+          </p>
+
+          <h3>Haftung für Links</h3>
+          <p>
+            Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen 
+            Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. 
+            Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der 
+            Seiten verantwortlich.
+          </p>
+
+          <h3>Urheberrecht</h3>
+          <p>
+            Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen 
+            dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art 
+            der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen 
+            Zustimmung des jeweiligen Autors bzw. Erstellers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,37 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  data: any;
+}
+
+const { locale, data } = Astro.props;
+---
+
+<section id="besuchen" class="section bg-white">
+  <div class="container-custom">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="text-4xl mb-4 block">🧭</span>
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
+        {t(data?.title, locale) || (locale === 'de' ? 'Besuchen Sie uns!' : locale === 'en' ? 'Visit Us!' : 'សូមទស្សនាយើង!')}
+      </h2>
+      <div class="section-divider mb-8"></div>
+      
+      <p class="text-earth-700 text-lg leading-relaxed mb-8">
+        {t(data?.text, locale) || (locale === 'de'
+          ? 'Planen Sie eine Reise nach Kambodscha? Besuchen Sie uns in Siem Reap und sehen Sie unsere Arbeit mit eigenen Augen. Bitte melden Sie sich rechtzeitig an – wir freuen uns auf Sie!'
+          : locale === 'en'
+          ? 'Planning a trip to Cambodia? Visit us in Siem Reap and see our work with your own eyes. Please register in advance – we look forward to seeing you!'
+          : 'មានគម្រោងធ្វើដំណើរទៅកម្ពុជា? សូមទស្សនាយើងនៅសៀមរាប និងមើលការងាររបស់យើងដោយផ្ទាល់។')}
+      </p>
+
+      <a 
+        href="mailto:info@bamboo-shoots.de?subject=Besuchsanfrage"
+        class="btn-primary"
+      >
+        {locale === 'de' ? '📧 Kontaktieren Sie uns' : locale === 'en' ? '📧 Contact Us' : '📧 ទាក់ទងយើង'}
+      </a>
+    </div>
+  </div>
+</section>

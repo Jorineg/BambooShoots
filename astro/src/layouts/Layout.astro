@@ -1,0 +1,47 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLocale, type Locale } from '../lib/i18n';
+import { getSiteSettings } from '../lib/sanity';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  locale?: Locale;
+}
+
+const { title, description = 'Bamboo Shoots – Bildung. Gemeinschaft. Perspektiven für Kinder in Kambodscha.' } = Astro.props;
+const locale = getLocale(Astro.url);
+const settings = await getSiteSettings();
+---
+
+<!DOCTYPE html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={locale === 'de' ? 'de_DE' : locale === 'en' ? 'en_US' : 'km_KH'} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <title>{title} | Bamboo Shoots</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header locale={locale} settings={settings} />
+    
+    <main class="flex-grow">
+      <slot />
+    </main>
+    
+    <Footer locale={locale} settings={settings} />
+  </body>
+</html>

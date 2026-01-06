@@ -1,0 +1,36 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  data: any;
+}
+
+const { locale, data } = Astro.props;
+---
+
+<section id="willkommen" class="section bg-white">
+  <div class="container-custom">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-6">
+        {t(data?.greeting, locale) || (locale === 'de'
+          ? 'Herzlich willkommen – chum riap sur – bei Bamboo Shoots!'
+          : locale === 'en'
+          ? 'Welcome – chum riap sur – to Bamboo Shoots!'
+          : 'សូមស្វាគមន៍ មកកាន់ Bamboo Shoots!')}
+      </h2>
+      
+      <div class="section-divider mb-8"></div>
+      
+      <div class="text-earth-700 text-lg leading-relaxed space-y-4">
+        <p>
+          {t(data?.text, locale) || (locale === 'de'
+            ? 'Wir sind eine kambodschanische Nichtregierungsorganisation (NGO), die seit 2006 Kindern und Familien in ländlichen Regionen bei Siem Reap Bildung, Betreuung und praktische Unterstützung bietet.'
+            : locale === 'en'
+            ? 'We are a Cambodian non-governmental organization (NGO) that has been providing education, care and practical support to children and families in rural areas near Siem Reap since 2006.'
+            : 'យើងជាអង្គការមិនមែនរដ្ឋាភិបាលកម្ពុជា (NGO) ដែលបានផ្តល់ការអប់រំ ការថែរក្សា និងការគាំទ្រជាក់ស្តែងដល់កុមារ និងគ្រួសារនៅតំបន់ជនបទជុំវិញសៀមរាប ចាប់តាំងពីឆ្នាំ 2006។')}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

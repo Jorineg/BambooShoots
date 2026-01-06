@@ -1,0 +1,48 @@
+---
+import { t, type Locale } from '../../lib/i18n';
+import { urlFor } from '../../lib/sanity';
+
+interface Props {
+  locale: Locale;
+  images: any[];
+}
+
+const { locale, images } = Astro.props;
+---
+
+<section id="galerie" class="section bg-earth-100">
+  <div class="container-custom">
+    <div class="text-center mb-12">
+      <span class="text-4xl mb-4 block">🖼️</span>
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
+        {locale === 'de' ? 'Galerie' : locale === 'en' ? 'Gallery' : 'វិចិត្រសាល'}
+      </h2>
+      <div class="section-divider"></div>
+    </div>
+
+    {images && images.length > 0 ? (
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {images.map((image, index) => (
+          <div class="aspect-square rounded-xl overflow-hidden group cursor-pointer">
+            <img 
+              src={urlFor(image).width(400).height(400).url()}
+              alt={t(image.alt, locale) || `Gallery image ${index + 1}`}
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="bg-white rounded-2xl p-12 text-center">
+        <div class="text-6xl mb-4">📷</div>
+        <p class="text-earth-600">
+          {locale === 'de' 
+            ? 'Galerie im Aufbau – bald mehr Bilder!' 
+            : locale === 'en'
+            ? 'Gallery coming soon – more photos on the way!'
+            : 'វិចិត្រសាលកំពុងមកដល់ – រូបថតបន្ថែមកំពុងមក!'}
+        </p>
+      </div>
+    )}
+  </div>
+</section>
