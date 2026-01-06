@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/sections/Hero.astro';
+import Welcome from '../../components/sections/Welcome.astro';
+import Mission from '../../components/sections/Mission.astro';
+import Programs from '../../components/sections/Programs.astro';
+import Team from '../../components/sections/Team.astro';
+import CambodiaTeaser from '../../components/sections/CambodiaTeaser.astro';
+import Donate from '../../components/sections/Donate.astro';
+import Visit from '../../components/sections/Visit.astro';
+import Gallery from '../../components/sections/Gallery.astro';
+
+import { getLocale, t, locales, defaultLocale } from '../../lib/i18n';
+import { getHomePage, getTeamMembers, getDonationTiers, getSiteSettings } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'kh' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const locale = lang as any || defaultLocale;
+
+const homePage = await getHomePage();
+const teamMembers = await getTeamMembers();
+const donationTiers = await getDonationTiers();
+const settings = await getSiteSettings();
+
+const pageTitle = locale === 'de' 
+  ? 'Willkommen' 
+  : locale === 'en' 
+  ? 'Welcome' 
+  : 'សូមស្វាគមន៍';
+---
+
+<Layout title={pageTitle} locale={locale}>
+  <Hero locale={locale} data={homePage?.hero} />
+  <Welcome locale={locale} data={homePage?.welcome} />
+  <Mission locale={locale} data={homePage?.mission} />
+  <Programs locale={locale} programs={homePage?.programs} />
+  <Team locale={locale} members={teamMembers} />
+  <CambodiaTeaser locale={locale} data={homePage?.cambodiaTeaser} />
+  <Donate locale={locale} tiers={donationTiers} settings={settings} />
+  <Visit locale={locale} data={homePage?.visit} />
+  <Gallery locale={locale} images={homePage?.gallery} />
+</Layout>

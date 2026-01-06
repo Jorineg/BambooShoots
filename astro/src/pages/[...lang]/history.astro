@@ -1,9 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { getLocale, t, localizedUrl } from '../lib/i18n';
-import { getHistoryPage, getTimelineEvents } from '../lib/sanity';
+import Layout from '../../layouts/Layout.astro';
+import { getLocale, t, localizedUrl, defaultLocale } from '../../lib/i18n';
+import { getHistoryPage, getTimelineEvents } from '../../lib/sanity';
 
-const locale = getLocale(Astro.url);
+export async function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'kh' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const locale = lang as any || defaultLocale;
+
 const historyPage = await getHistoryPage();
 const timelineEvents = await getTimelineEvents();
 
@@ -26,7 +36,7 @@ const defaultEvents = [
 const displayEvents = timelineEvents?.length > 0 ? timelineEvents : defaultEvents;
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} locale={locale}>
   <!-- Hero -->
   <section class="bg-gradient-to-br from-bamboo-700 to-bamboo-900 text-white py-20 md:py-28">
     <div class="container-custom px-4 md:px-8">
@@ -82,7 +92,7 @@ const displayEvents = timelineEvents?.length > 0 ? timelineEvents : defaultEvent
           </p>
           <p class="text-earth-700 leading-relaxed">
             {locale === 'de'
-              ? 'Schulen und Krankenhäuser wurden zerstört, große Teile der gebildeten Bevölkerung ausgelöscht – etwa ein Viertel der damaligen Bevölkerung. Auch heute noch sind viele Landregionen von den Folgen dieser Zeit geprägt.'
+              ? 'Schulen und Krankenhäuser wurden zerstört, große Teile der gebildeten Bevölkerung ausgelöscht – etwa ein Viertel der damaligen Bevölkerung. Auch heute noch sind many Landregionen von den Folgen dieser Zeit geprägt.'
               : locale === 'en'
               ? 'Schools and hospitals were destroyed, large parts of the educated population were wiped out – about a quarter of the population at that time. Many rural areas are still affected by the consequences of this period today.'
               : 'សាលារៀន និងមន្ទីរពេទ្យត្រូវបានបំផ្លាញ។ ប្រជាជនមានការអប់រំមួយភាគធំត្រូវបានលុបបំបាត់។'}

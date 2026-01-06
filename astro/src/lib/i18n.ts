@@ -18,24 +18,36 @@ export function t(
     return localizedObject[locale] || localizedObject[defaultLocale] || '';
 }
 
-// Get current locale from URL or cookie
+// Get current locale from URL path
 export function getLocale(url: URL): Locale {
-    // Check URL parameter
-    const urlLocale = url.searchParams.get('lang') as Locale;
-    if (urlLocale && locales.includes(urlLocale)) {
-        return urlLocale;
+    const path = url.pathname;
+    const [, firstSegment] = path.split('/');
+    if (locales.includes(firstSegment as Locale)) {
+        return firstSegment as Locale;
     }
-
     return defaultLocale;
 }
 
-// Build URL with locale parameter
+// Build URL with locale path
 export function localizedUrl(path: string, locale: Locale): string {
-    if (locale === defaultLocale) {
-        return path;
+    // Handle anchor links
+    if (path.startsWith('#')) {
+        const prefix = locale === defaultLocale ? '' : `/${locale}`;
+        return `${prefix}${path}`;
     }
-    const separator = path.includes('?') ? '&' : '?';
-    return `${path}${separator}lang=${locale}`;
+
+    // Remove existing locale prefix from path
+    let segments = path.split('/').filter(Boolean);
+    if (segments.length > 0 && locales.includes(segments[0] as Locale)) {
+        segments.shift();
+    }
+    const cleanPath = '/' + segments.join('/');
+
+    if (locale === defaultLocale) {
+        return cleanPath;
+    }
+
+    return `/${locale}${cleanPath === '/' ? '' : cleanPath}`;
 }
 
 // Navigation items
