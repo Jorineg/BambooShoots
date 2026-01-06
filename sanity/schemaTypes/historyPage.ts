@@ -1,43 +1,12 @@
 import { defineType, defineField } from 'sanity'
-
-// Helper for creating localized text fields
-const localizedString = (name: string, title: string) => defineField({
-    name,
-    title,
-    type: 'object',
-    fields: [
-        { name: 'de', title: 'Deutsch', type: 'string' },
-        { name: 'en', title: 'English', type: 'string' },
-        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-    ]
-})
-
-const localizedText = (name: string, title: string) => defineField({
-    name,
-    title,
-    type: 'object',
-    fields: [
-        { name: 'de', title: 'Deutsch', type: 'text' },
-        { name: 'en', title: 'English', type: 'text' },
-        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'text' }
-    ]
-})
+import { localizedString, localizedText } from './i18n'
 
 export default defineType({
     name: 'historyPage',
     title: 'History Page',
     type: 'document',
     fields: [
-        defineField({
-            name: 'pageTitle',
-            title: 'Page Title',
-            type: 'object',
-            fields: [
-                { name: 'de', title: 'Deutsch', type: 'string' },
-                { name: 'en', title: 'English', type: 'string' },
-                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-            ]
-        }),
+        localizedString('pageTitle', 'Page Title'),
         localizedString('heroTitle', 'Hero Title'),
         localizedText('intro', 'Introduction Text'),
 

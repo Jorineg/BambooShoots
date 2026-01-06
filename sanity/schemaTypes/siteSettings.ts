@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { localizedString } from './i18n'
 
 export default defineType({
     name: 'siteSettings',
@@ -11,26 +12,8 @@ export default defineType({
             type: 'image',
             options: { hotspot: true }
         }),
-        defineField({
-            name: 'siteTitle',
-            title: 'Site Title',
-            type: 'object',
-            fields: [
-                { name: 'de', title: 'Deutsch', type: 'string' },
-                { name: 'en', title: 'English', type: 'string' },
-                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-            ]
-        }),
-        defineField({
-            name: 'tagline',
-            title: 'Tagline',
-            type: 'object',
-            fields: [
-                { name: 'de', title: 'Deutsch', type: 'string' },
-                { name: 'en', title: 'English', type: 'string' },
-                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-            ]
-        }),
+        localizedString('siteTitle', 'Site Title'),
+        localizedString('tagline', 'Tagline'),
         defineField({
             name: 'socialMedia',
             title: 'Social Media Links',

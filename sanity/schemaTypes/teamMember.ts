@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { localizedString, localizedText } from './i18n'
 
 export default defineType({
     name: 'teamMember',
@@ -11,32 +12,14 @@ export default defineType({
             type: 'string',
             validation: Rule => Rule.required()
         }),
-        defineField({
-            name: 'role',
-            title: 'Role',
-            type: 'object',
-            fields: [
-                { name: 'de', title: 'Deutsch', type: 'string' },
-                { name: 'en', title: 'English', type: 'string' },
-                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-            ]
-        }),
+        localizedString('role', 'Role'),
         defineField({
             name: 'image',
             title: 'Photo',
             type: 'image',
             options: { hotspot: true }
         }),
-        defineField({
-            name: 'description',
-            title: 'Description',
-            type: 'object',
-            fields: [
-                { name: 'de', title: 'Deutsch', type: 'text' },
-                { name: 'en', title: 'English', type: 'text' },
-                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'text' }
-            ]
-        }),
+        localizedText('description', 'Description'),
         defineField({
             name: 'order',
             title: 'Display Order',

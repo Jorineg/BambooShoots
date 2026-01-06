@@ -18,10 +18,18 @@ export function t(
     return localizedObject[locale] || localizedObject[defaultLocale] || '';
 }
 
+// Helper to get base path without trailing slash
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
 // Get current locale from URL path
 export function getLocale(url: URL): Locale {
     const path = url.pathname;
-    const [, firstSegment] = path.split('/');
+    // Remove base path if present to get the "routing" path
+    const relativePath = base && path.startsWith(base)
+        ? path.slice(base.length)
+        : path;
+
+    const [, firstSegment] = relativePath.split('/');
     if (locales.includes(firstSegment as Locale)) {
         return firstSegment as Locale;
     }
@@ -33,21 +41,27 @@ export function localizedUrl(path: string, locale: Locale): string {
     // Handle anchor links
     if (path.startsWith('#')) {
         const prefix = locale === defaultLocale ? '' : `/${locale}`;
-        return `${prefix}${path}`;
+        return `${base}${prefix}${path}`;
     }
 
     // Remove existing locale prefix from path
     let segments = path.split('/').filter(Boolean);
+
+    // If the first segment is the base path name (extracted from base), remove it
+    const baseSegment = base.replace(/^\//, '');
+    if (segments.length > 0 && segments[0] === baseSegment) {
+        segments.shift();
+    }
+
     if (segments.length > 0 && locales.includes(segments[0] as Locale)) {
         segments.shift();
     }
     const cleanPath = '/' + segments.join('/');
 
-    if (locale === defaultLocale) {
-        return cleanPath;
-    }
+    const localePrefix = locale === defaultLocale ? '' : `/${locale}`;
+    const result = `${base}${localePrefix}${cleanPath === '/' ? '' : cleanPath}`;
 
-    return `/${locale}${cleanPath === '/' ? '' : cleanPath}`;
+    return result || '/';
 }
 
 // Navigation items

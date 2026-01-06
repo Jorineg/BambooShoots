@@ -16,7 +16,7 @@ const currentPath = Astro.url.pathname;
   <div class="container-custom">
     <nav class="flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group">
+      <a href={localizedUrl('/', locale)} class="flex items-center gap-3 group">
         {settings?.logo ? (
           <img 
             src={urlFor(settings.logo).width(48).url()} 

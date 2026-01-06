@@ -1,27 +1,5 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
-
-// Helper for creating localized text fields
-const localizedString = (name: string, title: string) => defineField({
-    name,
-    title,
-    type: 'object',
-    fields: [
-        { name: 'de', title: 'Deutsch', type: 'string' },
-        { name: 'en', title: 'English', type: 'string' },
-        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-    ]
-})
-
-const localizedText = (name: string, title: string) => defineField({
-    name,
-    title,
-    type: 'object',
-    fields: [
-        { name: 'de', title: 'Deutsch', type: 'text' },
-        { name: 'en', title: 'English', type: 'text' },
-        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'text' }
-    ]
-})
+import { localizedString, localizedText } from './i18n'
 
 export default defineType({
     name: 'homePage',
@@ -100,11 +78,18 @@ export default defineType({
                             type: 'array',
                             of: [
                                 defineArrayMember({
+                                    name: 'feature',
+                                    title: 'Feature',
                                     type: 'object',
+                                    groups: [
+                                        { name: 'de', title: 'DE', default: true },
+                                        { name: 'en', title: 'EN' },
+                                        { name: 'kh', title: 'KH' }
+                                    ],
                                     fields: [
-                                        { name: 'de', title: 'Deutsch', type: 'string' },
-                                        { name: 'en', title: 'English', type: 'string' },
-                                        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
+                                        { name: 'de', title: 'Deutsch', type: 'string', group: 'de' },
+                                        { name: 'en', title: 'English', type: 'string', group: 'en' },
+                                        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string', group: 'kh' }
                                     ]
                                 })
                             ]
@@ -147,26 +132,8 @@ export default defineType({
                     type: 'image',
                     options: { hotspot: true },
                     fields: [
-                        defineField({
-                            name: 'alt',
-                            title: 'Alt Text',
-                            type: 'object',
-                            fields: [
-                                { name: 'de', title: 'Deutsch', type: 'string' },
-                                { name: 'en', title: 'English', type: 'string' },
-                                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-                            ]
-                        }),
-                        defineField({
-                            name: 'caption',
-                            title: 'Caption',
-                            type: 'object',
-                            fields: [
-                                { name: 'de', title: 'Deutsch', type: 'string' },
-                                { name: 'en', title: 'English', type: 'string' },
-                                { name: 'kh', title: 'ភាសាខ្មែរ', type: 'string' }
-                            ]
-                        })
+                        localizedString('alt', 'Alt Text'),
+                        localizedString('caption', 'Caption')
                     ]
                 })
             ]

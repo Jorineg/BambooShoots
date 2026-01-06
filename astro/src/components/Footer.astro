@@ -104,12 +104,12 @@ const text = footerText[locale];
         <h3 class="font-heading font-semibold text-lg mb-4">{text.legal}</h3>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/impressum" class="text-bamboo-200 hover:text-white transition-colors">
+            <a href={localizedUrl('/impressum', locale)} class="text-bamboo-200 hover:text-white transition-colors">
               {text.imprint}
             </a>
           </li>
           <li>
-            <a href="/datenschutz" class="text-bamboo-200 hover:text-white transition-colors">
+            <a href={localizedUrl('/datenschutz', locale)} class="text-bamboo-200 hover:text-white transition-colors">
               {text.privacy}
             </a>
           </li>
