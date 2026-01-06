@@ -13,7 +13,6 @@ const { locale, images } = Astro.props;
 <section id="galerie" class="section bg-earth-100">
   <div class="container-custom">
     <div class="text-center mb-12">
-      <span class="text-4xl mb-4 block">🖼️</span>
       <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
         {locale === 'de' ? 'Galerie' : locale === 'en' ? 'Gallery' : 'វិចិត្រសាល'}
       </h2>
@@ -34,7 +33,12 @@ const { locale, images } = Astro.props;
       </div>
     ) : (
       <div class="bg-white rounded-2xl p-12 text-center">
-        <div class="text-6xl mb-4">📷</div>
+        <div class="w-16 h-16 bg-earth-100 rounded-full flex items-center justify-center mx-auto mb-4 text-earth-400">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </div>
         <p class="text-earth-600">
           {locale === 'de' 
             ? 'Galerie im Aufbau – bald mehr Bilder!' 
