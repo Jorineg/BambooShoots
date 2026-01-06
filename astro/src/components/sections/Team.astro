@@ -38,7 +38,6 @@ const displayMembers = members?.length > 0 ? members : defaultMembers;
   <div class="container-custom">
     <!-- Section header -->
     <div class="text-center mb-12">
-      <span class="text-4xl mb-4 block">👨‍🏫</span>
       <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
         {locale === 'de' ? 'Unser Team vor Ort' : locale === 'en' ? 'Our Team on Site' : 'ក្រុមរបស់យើងនៅកន្លែង'}
       </h2>
@@ -66,7 +65,10 @@ const displayMembers = members?.length > 0 ? members : defaultMembers;
               />
             ) : (
               <div class="w-full h-full flex items-center justify-center">
-                <span class="text-6xl">👤</span>
+                <svg class="w-16 h-16 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
               </div>
             )}
           </div>

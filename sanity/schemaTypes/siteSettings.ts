@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity'
-import { localizedString } from './i18n'
+import { localizedString, localizedObject } from './i18n'
 
 export default defineType({
     name: 'siteSettings',
@@ -43,17 +43,13 @@ export default defineType({
                 { name: 'paypal', title: 'PayPal URL', type: 'url' }
             ]
         }),
-        defineField({
-            name: 'bankAccount',
-            title: 'Bank Account Germany',
-            type: 'object',
-            fields: [
-                { name: 'name', title: 'Account Name', type: 'string' },
-                { name: 'bank', title: 'Bank Name', type: 'string' },
-                { name: 'iban', title: 'IBAN', type: 'string' },
-                { name: 'bic', title: 'BIC', type: 'string' }
-            ]
-        })
+        localizedObject('bankAccount', 'Bank Account', [
+            { name: 'name', title: 'Account Name', type: 'string' },
+            { name: 'bank', title: 'Bank Name', type: 'string' },
+            { name: 'iban', title: 'IBAN / SWIFT', type: 'string' },
+            { name: 'bic', title: 'BIC / Account Number', type: 'string' },
+            { name: 'note', title: 'Note / Tax Info', type: 'text', rows: 3 }
+        ])
     ],
     preview: {
         prepare() {

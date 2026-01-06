@@ -12,7 +12,6 @@ const { locale, data } = Astro.props;
 <section id="besuchen" class="section bg-white">
   <div class="container-custom">
     <div class="max-w-3xl mx-auto text-center">
-      <span class="text-4xl mb-4 block">🧭</span>
       <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
         {t(data?.title, locale) || (locale === 'de' ? 'Besuchen Sie uns!' : locale === 'en' ? 'Visit Us!' : 'សូមទស្សនាយើង!')}
       </h2>
@@ -30,7 +29,7 @@ const { locale, data } = Astro.props;
         href="mailto:info@bamboo-shoots.de?subject=Besuchsanfrage"
         class="btn-primary"
       >
-        {locale === 'de' ? '📧 Kontaktieren Sie uns' : locale === 'en' ? '📧 Contact Us' : '📧 ទាក់ទងយើង'}
+        {locale === 'de' ? 'Kontaktieren Sie uns' : locale === 'en' ? 'Contact Us' : 'ទាក់ទងយើង'}
       </a>
     </div>
   </div>

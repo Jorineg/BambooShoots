@@ -30,7 +30,6 @@ const { locale, data } = Astro.props;
     <div class="max-w-3xl">
       <!-- Small badge -->
       <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-bamboo-100 text-sm mb-6 animate-fade-in">
-        <span class="text-lg">🌱</span>
         <span>Bamboo Shoots – time to grow</span>
       </div>
 
@@ -64,7 +63,7 @@ const { locale, data } = Astro.props;
       <!-- CTAs -->
       <div class="flex flex-wrap gap-4 animate-slide-up" style="animation-delay: 0.3s;">
         <a href="#spenden" class="btn-donate">
-          {locale === 'de' ? '💚 Jetzt spenden' : locale === 'en' ? '💚 Donate now' : '💚 បរិច្ចាគឥឡូវ'}
+          {locale === 'de' ? 'Jetzt spenden' : locale === 'en' ? 'Donate now' : 'បរិច្ចាគឥឡូវ'}
         </a>
         <a href="#mission" class="btn-secondary bg-white/10 border-white/30 text-white hover:bg-white/20">
           {locale === 'de' ? 'Mehr erfahren' : locale === 'en' ? 'Learn more' : 'ស្វែងយល់បន្ថែម'}

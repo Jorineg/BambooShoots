@@ -14,7 +14,6 @@ const { locale, data } = Astro.props;
     <div class="max-w-4xl mx-auto">
       <!-- Title -->
       <div class="text-center mb-12">
-        <span class="text-4xl mb-4 block">💡</span>
         <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
           {t(data?.title, locale) || (locale === 'de' ? 'Unsere Mission' : locale === 'en' ? 'Our Mission' : 'បេសកកម្មរបស់យើង')}
         </h2>

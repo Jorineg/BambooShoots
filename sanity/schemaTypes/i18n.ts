@@ -18,3 +18,19 @@ export const localizedFields = (type: 'string' | 'text') => (name: string, title
 
 export const localizedString = localizedFields('string')
 export const localizedText = localizedFields('text')
+
+export const localizedObject = (name: string, title: string, fields: any[]) => defineField({
+    name,
+    title,
+    type: 'object',
+    groups: [
+        { name: 'de', title: 'DE', default: true },
+        { name: 'en', title: 'EN' },
+        { name: 'kh', title: 'KH' }
+    ],
+    fields: [
+        { name: 'de', title: 'Deutsch', type: 'object', group: 'de', fields },
+        { name: 'en', title: 'English', type: 'object', group: 'en', fields },
+        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'object', group: 'kh', fields }
+    ]
+})

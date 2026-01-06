@@ -43,5 +43,31 @@ const settings = await getSiteSettings();
     </main>
     
     <Footer locale={locale} settings={settings} />
+
+    <script is:inline>
+      (function() {
+        // Only run on the root path
+        if (window.location.pathname !== '/' && window.location.pathname !== '/BambooShoots/') return;
+        
+        const lang = localStorage.getItem('preferred-language');
+        if (lang) {
+          if (lang !== 'de') {
+            window.location.href = window.location.origin + window.location.pathname + lang + '/';
+          }
+          return;
+        }
+
+        const browserLang = navigator.language.split('-')[0];
+        const supportedLocales = ['de', 'en', 'kh'];
+        const targetLocale = supportedLocales.includes(browserLang) ? browserLang : 'en';
+        
+        if (targetLocale !== 'de') {
+          localStorage.setItem('preferred-language', targetLocale);
+          window.location.href = window.location.origin + window.location.pathname + targetLocale + '/';
+        } else {
+          localStorage.setItem('preferred-language', 'de');
+        }
+      })();
+    </script>
   </body>
 </html>

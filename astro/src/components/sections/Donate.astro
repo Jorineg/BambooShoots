@@ -51,7 +51,6 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
   <div class="container-custom relative z-10">
     <!-- Section header -->
     <div class="text-center mb-12">
-      <span class="text-4xl mb-4 block">💸</span>
       <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">
         {locale === 'de' ? 'Spenden & Mitmachen' : locale === 'en' ? 'Donate & Get Involved' : 'បរិច្ចាគ និងចូលរួម'}
       </h2>
@@ -111,6 +110,32 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
           {locale === 'de' ? 'Mit PayPal spenden' : locale === 'en' ? 'Donate with PayPal' : 'បរិច្ចាគជាមួយ PayPal'}
         </a>
       )}
+    </div>
+
+    <!-- Bank Transfer Details -->
+    <div class="max-w-md mx-auto bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 mb-12 text-center">
+      <h3 class="font-heading font-semibold text-lg mb-4">
+        {locale === 'de' ? 'Direkte Banküberweisung' : locale === 'en' ? 'Direct Bank Transfer' : 'ផ្ទេរប្រាក់តាមធនាគារផ្ទាល់'}
+      </h3>
+      <div class="text-bamboo-100 text-sm space-y-1">
+        {settings?.bankAccount?.[locale] ? (
+          <>
+            <p class="font-medium text-white">{settings.bankAccount[locale].name}</p>
+            <p>{settings.bankAccount[locale].bank}</p>
+            <p class="font-mono text-base mt-2">{settings.bankAccount[locale].iban}</p>
+            <p class="text-xs text-bamboo-300">BIC: {settings.bankAccount[locale].bic}</p>
+            {settings.bankAccount[locale].note && (
+              <p class="text-xs text-bamboo-300 italic mt-4 max-w-sm mx-auto leading-relaxed border-t border-white/10 pt-4">
+                {settings.bankAccount[locale].note}
+              </p>
+            )}
+          </>
+        ) : (
+          <p class="italic text-bamboo-400">
+            {locale === 'de' ? 'Bankinformationen folgen in Kürze.' : locale === 'en' ? 'Bank details coming soon.' : 'ព័ត៌មានធនាគារនឹងមកដល់ក្នុងពេលឆាប់ៗនេះ។'}
+          </p>
+        )}
+      </div>
     </div>
 
     <!-- Info text -->

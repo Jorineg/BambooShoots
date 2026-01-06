@@ -69,7 +69,6 @@ export default defineType({
                 defineArrayMember({
                     type: 'object',
                     fields: [
-                        { name: 'icon', title: 'Icon (Emoji)', type: 'string' },
                         localizedString('title', 'Title'),
                         localizedText('description', 'Description'),
                         defineField({
@@ -102,9 +101,9 @@ export default defineType({
                         })
                     ],
                     preview: {
-                        select: { title: 'title.de', icon: 'icon' },
-                        prepare({ title, icon }) {
-                            return { title: `${icon || ''} ${title}` }
+                        select: { title: 'title.de' },
+                        prepare({ title }) {
+                            return { title: title }
                         }
                     }
                 })

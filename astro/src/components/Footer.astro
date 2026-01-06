@@ -57,9 +57,6 @@ const text = footerText[locale];
       <!-- Logo & Mission -->
       <div class="lg:col-span-1">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-12 h-12 bg-bamboo-500 rounded-full flex items-center justify-center text-2xl">
-            🌱
-          </div>
           <span class="text-xl font-heading font-bold">Bamboo Shoots</span>
         </div>
         <p class="text-bamboo-200 text-sm leading-relaxed">
@@ -82,7 +79,7 @@ const text = footerText[locale];
             href={`mailto:${settings?.contactEmail || 'info@bamboo-shoots.de'}`}
             class="block text-bamboo-300 hover:text-white transition-colors mt-3"
           >
-            📧 {settings?.contactEmail || 'info@bamboo-shoots.de'}
+            {settings?.contactEmail || 'info@bamboo-shoots.de'}
           </a>
         </address>
       </div>
@@ -91,10 +88,24 @@ const text = footerText[locale];
       <div>
         <h3 class="font-heading font-semibold text-lg mb-4">{text.donate}</h3>
         <div class="text-bamboo-200 text-sm space-y-1">
-          <p class="font-medium text-white">{settings?.bankAccount?.name || 'Bamboo Shoots e.V.'}</p>
-          <p>{settings?.bankAccount?.bank || 'GLS Bank eG'}</p>
-          <p class="font-mono">{settings?.bankAccount?.iban || 'DE31 4306 0967 1119 0524 00'}</p>
-          <p class="text-xs text-bamboo-400">BIC: {settings?.bankAccount?.bic || 'GENODEM1GLS'}</p>
+          {settings?.bankAccount?.[locale] ? (
+            <>
+              <p class="font-medium text-white">{settings.bankAccount[locale].name}</p>
+              <p>{settings.bankAccount[locale].bank}</p>
+              <p class="font-mono">{settings.bankAccount[locale].iban}</p>
+              <p class="text-xs text-bamboo-400">BIC: {settings.bankAccount[locale].bic}</p>
+              {settings.bankAccount[locale].note && (
+                <p class="text-xs text-bamboo-400 italic mt-2 leading-tight">{settings.bankAccount[locale].note}</p>
+              )}
+            </>
+          ) : (
+            <>
+              <p class="font-medium text-white">{settings?.bankAccount?.name || 'Bamboo Shoots e.V.'}</p>
+              <p>{settings?.bankAccount?.bank || 'GLS Bank eG'}</p>
+              <p class="font-mono">{settings?.bankAccount?.iban || 'DE31 4306 0967 1119 0524 00'}</p>
+              <p class="text-xs text-bamboo-400">BIC: {settings?.bankAccount?.bic || 'GENODEM1GLS'}</p>
+            </>
+          )}
         </div>
         <p class="text-xs text-bamboo-400 mt-3">{text.nonprofit}</p>
       </div>
