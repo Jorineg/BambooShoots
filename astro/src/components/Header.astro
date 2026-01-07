@@ -1,6 +1,13 @@
 ---
-import { navigation, localeNames, locales, localizedUrl, t, type Locale } from '../lib/i18n';
-import { urlFor } from '../lib/sanity';
+import {
+  navigation,
+  localeNames,
+  locales,
+  localizedUrl,
+  t,
+  type Locale,
+} from "../lib/i18n";
+import { urlFor } from "../lib/sanity";
 
 interface Props {
   locale: Locale;
@@ -12,107 +19,165 @@ const navItems = navigation[locale];
 const currentPath = Astro.url.pathname;
 ---
 
-<header 
+<header
   id="main-header"
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent w-full"
 >
   <div class="w-full px-6 md:px-12 lg:px-16">
-    <nav class="flex items-center justify-between h-[var(--header-height-mobile)] md:h-[var(--header-height-desktop)]">
+    <nav
+      class="flex items-center justify-between h-[var(--header-height-mobile)] md:h-[var(--header-height-desktop)]"
+    >
       <!-- Logo -->
-      <a href={localizedUrl('/', locale)} class="flex items-center gap-3 group">
-        {settings?.logo ? (
-          <img 
-            src={urlFor(settings.logo).width(48).url()} 
-            alt="Bamboo Shoots Logo" 
-            class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl transition-all duration-500">
-            <svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-            </svg>
-          </div>
-        )}
-        <span class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight">
+      <a href={localizedUrl("/", locale)} class="flex items-center gap-3 group">
+        {
+          settings?.logo ? (
+            <img
+              src={urlFor(settings.logo).width(48).url()}
+              alt="Bamboo Shoots Logo"
+              class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl transition-all duration-500">
+              <svg
+                class="w-6 h-6 md:w-8 md:h-8"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+            </div>
+          )
+        }
+        <span
+          class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight"
+        >
           Bamboo Shoots
         </span>
       </a>
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-10">
-        {navItems.map((item) => (
-          <a 
-            href={item.href.startsWith('#') ? localizedUrl(item.href, locale) : localizedUrl(item.href, locale)} 
-            class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
-          >
-            <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">{item.label}</span>
-            <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300"></span>
-          </a>
-        ))}
+        {
+          navItems.map((item) => (
+            <a
+              href={
+                item.href.startsWith("#")
+                  ? localizedUrl(item.href, locale)
+                  : localizedUrl(item.href, locale)
+              }
+              class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
+            >
+              <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
+                {item.label}
+              </span>
+              <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300" />
+            </a>
+          ))
+        }
       </div>
 
       <!-- Language Toggle & Donate Button -->
       <div class="flex items-center gap-2 md:gap-8">
         <!-- Language Selector -->
         <div class="relative group">
-          <button 
+          <button
             class="lang-btn flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
             aria-label="Select language"
           >
-            <svg class="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              class="w-4 h-4 opacity-70"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              <path
+                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+              ></path>
             </svg>
-            <span class="text-[10px] font-bold uppercase tracking-widest">{localeNames[locale]}</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest"
+              >{localeNames[locale]}</span
+            >
           </button>
-          
+
           <!-- Dropdown -->
-          <div class="absolute right-0 top-full mt-2 py-2 bg-branding-dark rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[140px] translate-y-2 group-hover:translate-y-0">
-            {locales.map((loc) => (
-              <a 
-                href={localizedUrl(currentPath, loc)}
-                class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? 'text-secondary bg-white/5' : 'text-white/60 hover:text-white'}`}
-                onclick={`localStorage.setItem('preferred-language', '${loc}')`}
-              >
-                {localeNames[loc]}
-              </a>
-            ))}
+          <div
+            class="absolute right-0 top-full mt-2 py-2 bg-branding-dark rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[140px] translate-y-2 group-hover:translate-y-0"
+          >
+            {
+              locales.map((loc) => (
+                <a
+                  href={localizedUrl(currentPath, loc)}
+                  class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? "text-secondary bg-white/5" : "text-white/60 hover:text-white"}`}
+                  onclick={`localStorage.setItem('preferred-language', '${loc}')`}
+                >
+                  {localeNames[loc]}
+                </a>
+              ))
+            }
           </div>
         </div>
 
         <!-- Donate Button -->
-        <a 
-          href="#spenden" 
+        <a
+          href="#spenden"
           class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl shadow-secondary/20"
         >
-          {locale === 'de' ? 'Spenden' : locale === 'en' ? 'Donate' : 'បរិច្ចាគ'}
+          {
+            locale === "de"
+              ? "Spenden"
+              : locale === "en"
+                ? "Donate"
+                : "បរិច្ចាគ"
+          }
         </a>
 
         <!-- Mobile Menu Button -->
-        <button 
+        <button
           id="mobile-menu-btn"
           class="lg:hidden p-2 text-white hover:text-secondary transition-colors"
           aria-label="Toggle menu"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
       </div>
     </nav>
 
     <!-- Mobile Navigation -->
-    <div id="mobile-menu" class="lg:hidden hidden border-t border-white/10 bg-branding-dark">
+    <div
+      id="mobile-menu"
+      class="lg:hidden hidden border-t border-white/10 bg-branding-dark"
+    >
       <div class="py-6 px-6 space-y-4">
-        {navItems.map((item) => (
-          <a 
-            href={localizedUrl(item.href, locale)} 
-            class="block py-3 px-4 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 font-medium"
-          >
-            {item.label}
-          </a>
-        ))}
+        {
+          navItems.map((item) => (
+            <a
+              href={localizedUrl(item.href, locale)}
+              class="block py-3 px-4 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 font-medium"
+            >
+              {item.label}
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>
@@ -123,22 +188,41 @@ const currentPath = Astro.url.pathname;
     @apply w-full;
   }
 
-  /* Lösung C: Subtle shadow on hero for readability */
-  header:not(.scrolled) .nav-link-dynamic,
-  header:not(.scrolled) .header-text,
-  header:not(.scrolled) .lang-btn {
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 20px rgba(0,0,0,0.2);
+  /* Base styles (at top) */
+  #main-header {
+    background-color: transparent;
+    backdrop-filter: blur(0px) saturate(100%);
+    border-bottom: 1px solid transparent;
   }
 
-  header:not(.scrolled) .lang-btn svg {
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  .header-text,
+  .nav-link-dynamic,
+  .lang-btn,
+  #mobile-menu-btn {
+    color: white;
+    text-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(0, 0, 0, 0.2);
   }
-  
+
+  .nav-link-dynamic {
+    @apply text-white/90;
+  }
+
+  .lang-btn {
+    @apply text-white/70;
+  }
+
+  .lang-btn svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+  }
+
+  /* Class-based fallback for older browsers */
   header.scrolled {
     @apply shadow-lg;
-    background-color: rgba(235, 230, 222, 0.85); /* earth-200ish with transparency */
+    background-color: rgba(229, 221, 210, 0.85); /* earth-200 */
     backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
 
   header.scrolled .header-text {
@@ -156,34 +240,130 @@ const currentPath = Astro.url.pathname;
     text-shadow: none;
   }
 
+  header.scrolled .lang-btn svg {
+    filter: none;
+  }
+
   header.scrolled #mobile-menu-btn {
     @apply text-branding-dark;
+  }
+
+  /* Scroll-driven animations for modern browsers */
+  @supports (animation-timeline: scroll()) {
+    #main-header {
+      animation: header-fade-bg linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 500px;
+    }
+
+    .header-text,
+    #main-header #mobile-menu-btn {
+      animation: header-fade-text linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 300px;
+    }
+
+    .nav-link-dynamic {
+      animation: header-fade-link linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100px;
+    }
+
+    .lang-btn {
+      animation: header-fade-lang linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100px;
+    }
+
+    .lang-btn svg {
+      animation: header-fade-svg linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100px;
+    }
+  }
+
+  @keyframes header-fade-bg {
+    to {
+      background-color: rgba(229, 221, 210, 0.85); /* earth-200 */
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @keyframes header-fade-text {
+    from {
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    to {
+      color: rgb(20, 83, 45);
+      text-shadow: none;
+    }
+  }
+
+  @keyframes header-fade-link {
+    from {
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    to {
+      color: rgba(20, 83, 45, 0.8);
+      text-shadow: none;
+    }
+  }
+
+  @keyframes header-fade-lang {
+    from {
+      color: rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    to {
+      color: rgba(20, 83, 45, 0.6);
+      text-shadow: none;
+    }
+  }
+
+  @keyframes header-fade-svg {
+    from {
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    }
+    to {
+      filter: none;
+    }
   }
 </style>
 
 <script>
-  const header = document.getElementById('main-header');
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  
+  const header = document.getElementById("main-header");
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
   const handleScroll = () => {
+    // Skip scroll class management if CSS animation-timeline is supported
+    if (window.CSS && CSS.supports("animation-timeline", "scroll()")) {
+      return;
+    }
+
     if (window.scrollY > 50) {
-      header?.classList.add('scrolled');
+      header?.classList.add("scrolled");
     } else {
-      header?.classList.remove('scrolled');
+      header?.classList.remove("scrolled");
     }
   };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener("scroll", handleScroll, { passive: true });
   handleScroll(); // Initial check
 
-  mobileMenuBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
+  mobileMenuBtn?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden");
     // If opening on hero, maybe force a background
-    if (!mobileMenu?.classList.contains('hidden') && window.scrollY <= 50) {
-       header?.classList.add('scrolled');
+    if (!mobileMenu?.classList.contains("hidden") && window.scrollY <= 50) {
+      header?.classList.add("scrolled");
     } else if (window.scrollY <= 50) {
-       header?.classList.remove('scrolled');
+      header?.classList.remove("scrolled");
     }
   });
 </script>
