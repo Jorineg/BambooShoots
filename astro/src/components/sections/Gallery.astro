@@ -14,28 +14,29 @@ const useCarousel = images && images.length >= 5;
 <section id="galerie" class="section bg-branding-accent overflow-hidden">
   <div class="container-custom">
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-12">
+      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark">
         {locale === 'de' ? 'Galerie' : locale === 'en' ? 'Gallery' : 'វិចិត្រសាល'}
       </h2>
     </div>
+  </div>
 
-    {images && images.length > 0 ? (
-      <div class="relative">
-        {useCarousel ? (
-          <div class="relative group/gallery">
-            <!-- Soft Fade Overlays -->
-            <!-- Left Wing + Fade -->
-            <div class="absolute inset-y-0 -left-[100vw] right-full bg-branding-accent z-10 pointer-events-none"></div>
-            <div class="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-branding-accent to-transparent z-10 pointer-events-none"></div>
-            
-            <!-- Right Wing + Fade -->
-            <div class="absolute inset-y-0 left-full -right-[100vw] bg-branding-accent z-10 pointer-events-none"></div>
-            <div class="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-branding-accent to-transparent z-10 pointer-events-none"></div>
+  {images && images.length > 0 ? (
+    <div class="relative">
+      {useCarousel ? (
+        <div class="relative group/gallery w-full overflow-hidden">
+          <!-- Masking: Wings + Fades at the SCREEN edges (Desktop only) -->
+          <div class="hidden md:block absolute inset-y-0 left-0 w-8 lg:w-16 bg-branding-accent z-10 pointer-events-none"></div>
+          <div class="hidden md:block absolute inset-y-0 left-8 lg:left-16 w-32 lg:w-64 bg-gradient-to-r from-branding-accent to-transparent z-10 pointer-events-none"></div>
+          
+          <div class="hidden md:block absolute inset-y-0 right-0 w-8 lg:w-16 bg-branding-accent z-10 pointer-events-none"></div>
+          <div class="hidden md:block absolute inset-y-0 right-8 lg:right-16 w-32 lg:w-64 bg-gradient-to-l from-branding-accent to-transparent z-10 pointer-events-none"></div>
 
-            <div class="swiper gallery-swiper relative px-4 md:px-0 !overflow-visible">
-              <div class="swiper-wrapper">
-                {images.map((image, index) => (
-                  <div class="swiper-slide h-auto">
+          <!-- Swiper: Standard structure with overflow visible and dynamic side padding -->
+          <div class="swiper gallery-swiper !overflow-visible w-full">
+            <div class="swiper-wrapper">
+              {images.map((image, index) => (
+                <div class="swiper-slide h-auto">
+                  <div class="px-2 md:px-3"> <!-- Slid-level padding for spacing -->
                     <a 
                       href={urlFor(image).width(1200).url()} 
                       class="glightbox block aspect-square rounded-2xl overflow-hidden group cursor-pointer relative"
@@ -55,10 +56,12 @@ const useCarousel = images && images.length >= 5;
                       </div>
                     </a>
                   </div>
-                ))}
-              </div>
-              
-              <div class="flex justify-center items-center gap-8 mt-12">
+                </div>
+              ))}
+            </div>
+            
+            <div class="container-custom px-4 md:px-8 mt-12">
+              <div class="flex justify-center items-center gap-8">
                 <button class="swiper-prev p-3 rounded-full border-2 border-branding-dark text-branding-dark hover:bg-branding-dark hover:text-white transition-colors duration-300 z-20" aria-label="Previous slide">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
@@ -69,7 +72,9 @@ const useCarousel = images && images.length >= 5;
               </div>
             </div>
           </div>
-        ) : (
+        </div>
+      ) : (
+        <div class="container-custom px-4 md:px-8">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {images.map((image, index) => (
               <a 
@@ -92,9 +97,11 @@ const useCarousel = images && images.length >= 5;
               </a>
             ))}
           </div>
-        )}
-      </div>
-    ) : (
+        </div>
+      )}
+    </div>
+  ) : (
+    <div class="container-custom px-4 md:px-8">
       <div class="bg-branding-bg rounded-2xl p-12 text-center border border-branding-earth/50">
         <div class="w-16 h-16 bg-branding-earth rounded-full flex items-center justify-center mx-auto mb-4 text-branding-muted/50">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,8 +117,8 @@ const useCarousel = images && images.length >= 5;
             : 'វិចិត្រសាលកំពុងមកដល់ – រូបថតបន្ថែមកំពុងមក!'}
         </p>
       </div>
-    )}
-  </div>
+    </div>
+  )}
 </section>
 
 <script>
@@ -136,12 +143,20 @@ const useCarousel = images && images.length >= 5;
     });
 
     // Initialize Swiper
-    const swiperElement = document.querySelector('.gallery-swiper');
+    const swiperElement = document.querySelector('.gallery-swiper') as HTMLElement;
     if (swiperElement) {
-      new Swiper('.gallery-swiper', {
+      const getGridOffset = () => {
+        const containerWidth = 1152; // max-w-6xl
+        return Math.max(16, (window.innerWidth - containerWidth) / 2);
+      };
+
+      const swiper = new Swiper('.gallery-swiper', {
         modules: [Navigation, Pagination],
-        slidesPerView: 1,
-        spaceBetween: 20,
+        slidesPerView: 1.2,
+        centeredSlides: false,
+        spaceBetween: 0,
+        slidesOffsetBefore: getGridOffset(),
+        slidesOffsetAfter: getGridOffset(),
         loop: false,
         rewind: true,
         pagination: {
@@ -153,19 +168,22 @@ const useCarousel = images && images.length >= 5;
           prevEl: '.swiper-prev',
         },
         breakpoints: {
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 24,
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 30,
-          },
-          1280: {
+          640: { slidesPerView: 2.2 },
+          1024: { slidesPerView: 3.2 },
+          1280: { 
             slidesPerView: 4,
-            spaceBetween: 40,
+            slidesOffsetBefore: getGridOffset(),
+            slidesOffsetAfter: getGridOffset(),
           },
         },
+        on: {
+          resize: function (s) {
+            const offset = getGridOffset();
+            s.params.slidesOffsetBefore = offset;
+            s.params.slidesOffsetAfter = offset;
+            s.update();
+          }
+        }
       });
     }
   }
