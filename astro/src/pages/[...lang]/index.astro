@@ -1,8 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/sections/Hero.astro';
-import Welcome from '../../components/sections/Welcome.astro';
-import Mission from '../../components/sections/Mission.astro';
+import Purpose from '../../components/sections/Purpose.astro';
 import Programs from '../../components/sections/Programs.astro';
 import Team from '../../components/sections/Team.astro';
 import CambodiaTeaser from '../../components/sections/CambodiaTeaser.astro';
@@ -38,8 +37,7 @@ const pageTitle = locale === 'de'
 
 <Layout title={pageTitle} locale={locale}>
   <Hero locale={locale} data={homePage?.hero} />
-  <Welcome locale={locale} data={homePage?.welcome} />
-  <Mission locale={locale} data={homePage?.mission} />
+  <Purpose locale={locale} welcomeData={homePage?.welcome} missionData={homePage?.mission} />
   <Programs locale={locale} programs={homePage?.programs} />
   <Team locale={locale} members={teamMembers} />
   <CambodiaTeaser locale={locale} data={homePage?.cambodiaTeaser} />

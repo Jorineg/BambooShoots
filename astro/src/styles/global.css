@@ -96,8 +96,4 @@
     @apply bg-white/80 backdrop-blur-md;
   }
 
-  /* Section divider */
-  .section-divider {
-    @apply w-20 h-1 bg-gradient-to-r from-bamboo-400 to-bamboo-600 rounded-full mx-auto;
-  }
 }

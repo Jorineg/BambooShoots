@@ -9,19 +9,17 @@ interface Props {
 const { locale, data } = Astro.props;
 ---
 
-<section class="section bg-earth-50">
+<section class="section bg-earth-100">
   <div class="container-custom">
     <div class="max-w-3xl mx-auto text-center">
       <!-- Content -->
-      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-6">
+      <h2 class="text-3xl md:text-5xl font-heading font-bold text-bamboo-800 mb-8">
         {t(data?.title, locale) || (locale === 'de' 
           ? 'Kambodscha: Wurzeln, Wandel und Hoffnung'
           : locale === 'en'
           ? 'Cambodia: Roots, Change, and Hope'
           : 'កម្ពុជា៖ ឫសគល់ ការផ្លាស់ប្តូរ និងសេចក្តីសង្ឃឹម')}
       </h2>
-      
-      <div class="section-divider mb-8"></div>
 
       <p class="text-earth-700 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
         {t(data?.text, locale) || (locale === 'de'

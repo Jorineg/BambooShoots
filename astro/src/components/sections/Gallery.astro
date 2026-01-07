@@ -10,13 +10,12 @@ interface Props {
 const { locale, images } = Astro.props;
 ---
 
-<section id="galerie" class="section bg-earth-100">
+<section id="galerie" class="section bg-bamboo-50">
   <div class="container-custom">
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-6">
+      <h2 class="text-3xl md:text-5xl font-heading font-bold text-bamboo-800 mb-12">
         {locale === 'de' ? 'Galerie' : locale === 'en' ? 'Gallery' : 'វិចិត្រសាល'}
       </h2>
-      <div class="section-divider mb-8"></div>
     </div>
 
     {images && images.length > 0 ? (
