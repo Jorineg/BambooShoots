@@ -67,7 +67,7 @@ const currentPath = Astro.url.pathname;
           </button>
           
           <!-- Dropdown -->
-          <div class="absolute right-0 top-full mt-1 py-1 bg-white rounded-lg shadow-lg border border-branding-accent opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[120px]">
+          <div class="absolute right-0 top-full mt-1 py-1 bg-branding-bg rounded-lg shadow-lg border border-branding-accent opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[120px]">
             {locales.map((loc) => (
               <a 
                 href={localizedUrl(currentPath, loc)}
@@ -102,7 +102,7 @@ const currentPath = Astro.url.pathname;
     </nav>
 
     <!-- Mobile Navigation -->
-    <div id="mobile-menu" class="lg:hidden hidden border-t border-branding-accent bg-white">
+    <div id="mobile-menu" class="lg:hidden hidden border-t border-branding-accent bg-branding-bg">
       <div class="py-4 px-4 space-y-2">
         {navItems.map((item) => (
           <a 
