@@ -13,6 +13,7 @@ export default defineType({
             type: 'object',
             fields: [
                 localizedString('title', 'Title'),
+                localizedString('titleAccent', 'Title Accent (Terracotta)'),
                 localizedString('subtitle', 'Subtitle'),
                 localizedText('description', 'Description'),
                 defineField({

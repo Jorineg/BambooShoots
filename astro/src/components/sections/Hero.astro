@@ -8,74 +8,180 @@ interface Props {
 }
 
 const { locale, data } = Astro.props;
+
+// Fallback logic
+const heroImage = data?.image 
+  ? urlFor(data.image).width(1920).quality(90).url() 
+  : '/BambooShoots/images/hero_child.png';
+
+const fullTitle = t(data?.title, locale) || '';
+const [rawMain, rawAccent] = fullTitle.includes('|') ? fullTitle.split('|') : [fullTitle, ''];
+
+const titleMain = rawMain.trim() || 'Bamboo Shoots';
+
+// Handle accent from separate field or from the split title
+const titleAccent = t(data?.titleAccent, locale) || rawAccent.trim() || (
+  locale === 'kh' ? 'ពេលវេលាដើម្បីរីកចម្រើន' : 'Time to grow'
+);
+
+const subtitle = t(data?.subtitle, locale) || (
+  locale === 'de' ? 'Bildung. Gemeinschaft. Perspektiven.' :
+  locale === 'en' ? 'Education. Community. Opportunities.' :
+  'ការអប់រំ។ សហគមន៍។ ឱកាស។'
+);
+
+const description = t(data?.description, locale) || (
+  locale === 'de' ? 'Wir glauben, dass jedes Kind eine faire chance verdient. Mit gezielten Bildungsprojekten schaffen wir nachhaltige Perspektiven vor Ort.' :
+  locale === 'en' ? 'We believe every child deserves a fair chance. With targeted education projects, we create sustainable opportunities on the ground.' :
+  'យើងជឿជាក់ថាកុមារគ្រប់រូបសមនឹងទទួលបានឱកាសដ៏ត្រឹមត្រូវ។'
+);
+
+// Hotspot support
+const hotspot = data?.image?.hotspot;
+const objectPosition = hotspot 
+  ? `${hotspot.x * 100}% ${hotspot.y * 100}%` 
+  : 'center center';
 ---
 
 <section 
   id="start" 
-  class="relative flex items-center overflow-hidden min-h-[calc(100dvh-var(--header-height-mobile))] md:min-h-[calc(100dvh-var(--header-height-desktop))]"
+  class="hero-container relative flex items-center overflow-hidden min-h-[calc(100dvh-var(--header-height-mobile))] md:min-h-[calc(100dvh-var(--header-height-desktop))] bg-[#0d2a17]"
 >
-  <!-- Background Image with Overlay -->
-  <div class="absolute inset-0 z-0">
-    {data?.image ? (
+  <!-- Background Image Layer -->
+  <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="parallax-wrapper absolute inset-0 w-full h-full">
       <img 
-        src={urlFor(data.image).width(1920).quality(85).url()}
+        id="hero-parallax-img"
+        src={heroImage}
         alt=""
-        class="w-full h-full object-cover"
+        class="parallax-target absolute top-[-12%] left-0 w-full h-[120%] object-cover will-change-transform"
+        style={`object-position: ${objectPosition};`}
       />
-    ) : (
-      <div class="w-full h-full bg-branding-dark"></div>
-    )}
-    <div class="absolute inset-0 bg-gradient-to-r from-branding-dark/95 via-branding-dark/80 to-branding-dark/60"></div>
+    </div>
+    
+    <!-- Overlays -->
+    <div class="absolute inset-0 z-10 hidden md:block bg-[linear-gradient(to_right,rgba(13,42,23,0.95)_0%,rgba(13,42,23,0.85)_30%,rgba(13,42,23,0.1)_70%,transparent_100%)]"></div>
+    <div class="absolute inset-0 z-10 md:hidden bg-[linear-gradient(to_top,rgba(13,42,23,0.9)_0%,rgba(13,42,23,0.4)_100%)]"></div>
+    <div class="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,0.3)]"></div>
   </div>
 
-  <!-- Content -->
-  <div class="container-custom relative z-10 px-4 md:px-8 py-16">
-    <div class="max-w-3xl">
-      <!-- Main heading -->
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 animate-slide-up">
-        {t(data?.title, locale) || (locale === 'de' 
-          ? 'Bildung. Gemeinschaft. Perspektiven.' 
-          : locale === 'en'
-          ? 'Education. Community. Opportunities.'
-          : 'ការអប់រំ។ សហគមន៍។ ឱកាស។')}
+  <!-- Content Container -->
+  <div class="container-custom relative z-30 px-4 md:px-8 py-20 md:py-32">
+    <div class="max-w-4xl border-l-2 border-secondary/30 pl-8 md:pl-12">
+      <div class="w-12 h-1 bg-secondary mb-8 rounded-full animate-slide-up"></div>
+
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white leading-[1.1] mb-6 animate-slide-up tracking-tight">
+        <span class="block">{titleMain}</span>
+        <span class="text-secondary block mt-1">{titleAccent}</span>
       </h1>
 
-      <!-- Subtitle -->
-      <p class="text-sm md:text-base uppercase tracking-[0.3em] font-bold text-secondary mb-4 animate-slide-up" style="animation-delay: 0.1s;">
-        {t(data?.subtitle, locale) || (locale === 'de'
-          ? 'Bildung. Gemeinschaft. Perspektiven.'
-          : locale === 'en'
-          ? 'Education. Community. Opportunities.'
-          : 'ការអប់រំ។ សហគមន៍។ ឱកាស។')}
+      <p class="text-xs md:text-sm uppercase tracking-[0.4em] font-semibold text-earth-100/50 mb-8 animate-slide-up delay-100 italic">
+        {subtitle}
       </p>
 
-      <!-- Description -->
-      <p class="text-branding-light/90 text-base md:text-lg max-w-2xl mb-8 animate-slide-up" style="animation-delay: 0.2s;">
-        {t(data?.description, locale) || (locale === 'de'
-          ? 'Gemeinsam gestalten wir Zukunft – mit Vorschulbildung, Lernförderung & konkreter Hilfe im Alltag.'
-          : locale === 'en'
-          ? 'Together we shape the future – with preschool education, learning support & practical assistance.'
-          : 'រួមគ្នាយើងកំណត់អនាគត – ជាមួយការអប់រំមត្តេយ្យ ការគាំទ្រការរៀន និងជំនួយជាក់ស្តែង។')}
+      <p class="text-branding-light/90 text-lg md:text-xl max-w-2xl mb-12 animate-slide-up leading-relaxed font-light" style="animation-delay: 0.2s;">
+        {description}
       </p>
 
-      <!-- CTAs -->
-      <div class="flex flex-wrap gap-4 animate-slide-up" style="animation-delay: 0.3s;">
-        <a href="#spenden" class="btn-donate">
-          {locale === 'de' ? 'Jetzt spenden' : locale === 'en' ? 'Donate now' : 'បរិច្ចាគឥឡូវ'}
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-slide-up" style="animation-delay: 0.3s;">
+        <a href="#spenden" class="btn-donate group px-10 py-4 text-lg rounded-xl">
+          <span>{locale === 'de' ? 'Jetzt unterstützen' : locale === 'en' ? 'Support now' : 'គាំទ្រឥឡូវ'}</span>
+          <svg class="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </a>
-        <a href="#mission" class="btn-secondary bg-white/10 border-white/30 text-white hover:bg-white/20 hover-lift">
-          {locale === 'de' ? 'Mehr erfahren' : locale === 'en' ? 'Learn more' : 'ស្វែងយល់បន្ថែម'}
+        <a href="#mission" class="group text-white/80 hover:text-white transition-all flex items-center gap-2 py-1">
+          <span class="font-medium tracking-wider border-b border-white/10 group-hover:border-white transition-all uppercase text-sm">
+            {locale === 'de' ? 'Unsere Mission' : 'Our Mission'}
+          </span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
       </div>
     </div>
   </div>
 
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float hidden md:block">
-    <a href="#mission" class="text-white/70 hover:text-white transition-all duration-300 hover:-translate-y-1 inline-block">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-      </svg>
-    </a>
+  <!-- Vertical Scroll Indicator on the Right -->
+  <div class="absolute bottom-16 right-16 z-40 hidden xl:block">
+    <div class="flex flex-col items-center gap-10 translate-y-4">
+      <span class="text-[9px] uppercase font-black tracking-[1em] text-white/70 [writing-mode:vertical-lr] whitespace-nowrap">{locale === 'de' ? 'Scrollen' : 'Scroll'}</span>
+      <div class="w-[1.5px] h-32 bg-white/10 relative overflow-hidden">
+        <div class="absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-secondary/40 to-transparent animate-flow-line"></div>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  /* 2026 HYBRID PARALLAX STRATEGY */
+  .hero-container {
+    view-timeline: --hero-v block;
+  }
+
+  @keyframes parallax-native {
+    from { transform: translateY(0); }
+    to { transform: translateY(20%); }
+  }
+
+  /* 1. NATIVE CSS PARALLAX (Chrome/Safari) */
+  @supports (animation-timeline: view()) {
+    .parallax-target {
+      animation: parallax-native linear both;
+      animation-timeline: --hero-v;
+      animation-range: entry 0% exit 100%;
+    }
+  }
+
+  /* Entrance Animations */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-up {
+    animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Scroll line animation - subtle and slow */
+  @keyframes flowLine {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(300%); }
+  }
+  .animate-flow-line {
+    animation: flowLine 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
+
+<script is:inline>
+  /**
+   * 2. JS FALLBACK (Firefox)
+   */
+  (function() {
+    if (CSS.supports('animation-timeline', 'view()') || CSS.supports('animation-timeline', 'scroll()')) {
+      return;
+    }
+
+    const img = document.getElementById('hero-parallax-img');
+    if (!img) return;
+    
+    let ticking = false;
+    const update = () => {
+      const scrollY = window.pageYOffset;
+      if (scrollY < window.innerHeight) {
+        // Strengthened factor for JS parallax (matches 20% CSS movement)
+        const yPos = scrollY * 0.4;
+        img.style.transform = `translate3d(0, ${yPos}px, 0)`;
+      }
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    
+    update();
+  })();
+</script>

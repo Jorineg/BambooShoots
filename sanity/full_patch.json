@@ -1,0 +1,59 @@
+{
+    "_id": "cc60b9f6-b34d-4cc2-b3cf-9c2f053ef71c",
+    "_type": "homePage",
+    "hero": {
+        "title": {
+            "de": "Bamboo Shoots",
+            "en": "Bamboo Shoots",
+            "kh": "បាំប៊ូ ស៊ូត"
+        },
+        "titleAccent": {
+            "de": "Time to grow",
+            "en": "Time to grow",
+            "kh": "ពេលវេលាដើម្បីរីកចម្រើន"
+        },
+        "subtitle": {
+            "de": "Bildung. Gemeinschaft. Perspektiven.",
+            "en": "Education. Community. Opportunities.",
+            "kh": "ការអប់រំ។ សហគមន៍។ ឱកាស។"
+        },
+        "description": {
+            "de": "Gemeinsam unterstützen wir Kinder und Familien in Kambodscha auf ihrem Weg in eine selbstbestimmte Zukunft.",
+            "en": "Together we support children and families in Cambodia on their way to a self-determined future.",
+            "kh": "រួមគ្នាយើងគាំទ្រកុមារ និងគ្រួសារនៅកម្ពuchea លើមាគ៌ាឆ្ពោះទៅកាន់អនាគតមួយដែលពួកគេអាចកំណត់ដោយខ្លួនឯង។"
+        },
+        "image": {
+            "_type": "image",
+            "asset": {
+                "_ref": "image-5d14c48d3cf4f104687d2f937610ddb05b923410-1024x1024-jpg",
+                "_type": "reference"
+            },
+            "crop": {
+                "_type": "sanity.imageCrop",
+                "bottom": 0,
+                "left": 0,
+                "right": 0.09286840535242478,
+                "top": 0
+            },
+            "hotspot": {
+                "_type": "sanity.imageHotspot",
+                "height": 1,
+                "width": 0.9071315946475752,
+                "x": 0.4535657973237876,
+                "y": 0.5
+            }
+        }
+    },
+    "welcome": {
+        "greeting": {
+            "de": "Herzlich willkommen – chum riap sur – bei Bamboo Shoots!",
+            "en": "A warm welcome – chum riap sur – to Bamboo Shoots!",
+            "kh": "សូមស្វាគមន៍យ៉ាងកក់ក្តៅ – ជំរាបសួរ – មកកាន់ បាំប៊ូ ស៊ូត!"
+        },
+        "text": {
+            "de": "Wir sind eine kambodschanische Nichtregierungsorganisation (NGO), die seit 2006 Kindern und Familien in ländlichen Regionen bei Siem Reap Bildung, Betreuung und praktische Unterstützung bietet. Unser Ziel ist es, Kinder frühzeitig zu fördern, Familien zu stärken und Perspektiven zu schaffen – nachhaltig und nah an den Menschen.",
+            "en": "We are a Cambodian non-governmental organization (NGO) that has been providing education, care, and practical support to children and families in rural regions near Siem Reap since 2006. Our goal is to promote children's development early on, strengthen families, and create perspectives – sustainably and close to the people.",
+            "kh": "យើងគឺជាអង្គការមិនមែនរដ្ឋាភិបាលកម្ពុជា (NGO) ដែលបានផ្តល់ការអប់រំ ការថែទាំ និងការគាំទ្រជាក់ស្តែងដល់កុមារ និងក្រុមគ្រួសារនៅតំបន់ជនបទក្បែរខេត្តសៀមរាប តាំងពីឆ្នាំ២០០៦។ គោលដៅរបស់យើងគឺជំរុញការអភិវឌ្ឍន៍របស់កុមារតាំងពីតូច ពង្រឹងគ្រួសារ និងបង្កើតឱកាស – ប្រកបដោយនិរន្តរភាព និងជិតស្និទ្ធជាមួយប្រជាជន។"
+        }
+    }
+}

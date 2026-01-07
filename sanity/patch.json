@@ -1,0 +1,33 @@
+{
+    "_id": "cc60b9f6-b34d-4cc2-b3cf-9c2f053ef71c",
+    "_type": "homePage",
+    "hero": {
+        "title": {
+            "de": "Bamboo Shoots",
+            "en": "Bamboo Shoots",
+            "kh": "បាំប៊ូ ស៊ូត"
+        },
+        "titleAccent": {
+            "de": "Time to grow",
+            "en": "Time to grow",
+            "kh": "ពេលវេលាដើម្បីរីកចម្រើន"
+        },
+        "subtitle": {
+            "de": "Bildung. Gemeinschaft. Perspektiven.",
+            "en": "Education. Community. Opportunities.",
+            "kh": "ការអប់រំ។ សហគមន៍។ ឱកាស។"
+        },
+        "description": {
+            "de": "Wir glauben, dass jedes Kind eine faire chance verdient. Mit gezielten Bildungsprojekten schaffen wir nachhaltige Perspektiven vor Ort.",
+            "en": "We believe every child deserves a fair chance. With targeted education projects, we create sustainable opportunities on the ground.",
+            "kh": "យើងជឿជាក់ថាកុមារគ្រប់រូបសមនឹងទទួលបានឱកាសដ៏ត្រឹមត្រូវ។"
+        },
+        "image": {
+            "_type": "image",
+            "asset": {
+                "_ref": "image-5d14c48d3cf4f104687d2f937610ddb05b923410-1024x1024-jpg",
+                "_type": "reference"
+            }
+        }
+    }
+}
