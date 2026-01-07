@@ -20,9 +20,9 @@ const { locale, data } = Astro.props;
         class="w-full h-full object-cover"
       />
     ) : (
-      <div class="w-full h-full bg-gradient-to-br from-bamboo-700 to-bamboo-900"></div>
+      <div class="w-full h-full bg-branding-dark"></div>
     )}
-    <div class="absolute inset-0 bg-gradient-to-r from-bamboo-900/90 via-bamboo-800/80 to-bamboo-700/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-branding-dark/95 via-branding-dark/80 to-branding-dark/60"></div>
   </div>
 
   <!-- Content -->
@@ -38,7 +38,7 @@ const { locale, data } = Astro.props;
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-sm md:text-base uppercase tracking-[0.3em] font-bold text-khmer-400 mb-4 animate-slide-up" style="animation-delay: 0.1s;">
+      <p class="text-sm md:text-base uppercase tracking-[0.3em] font-bold text-secondary mb-4 animate-slide-up" style="animation-delay: 0.1s;">
         {t(data?.subtitle, locale) || (locale === 'de'
           ? 'Bildung. Gemeinschaft. Perspektiven.'
           : locale === 'en'
@@ -47,7 +47,7 @@ const { locale, data } = Astro.props;
       </p>
 
       <!-- Description -->
-      <p class="text-earth-100/90 text-base md:text-lg max-w-2xl mb-8 animate-slide-up" style="animation-delay: 0.2s;">
+      <p class="text-branding-light/90 text-base md:text-lg max-w-2xl mb-8 animate-slide-up" style="animation-delay: 0.2s;">
         {t(data?.description, locale) || (locale === 'de'
           ? 'Gemeinsam gestalten wir Zukunft – mit Vorschulbildung, Lernförderung & konkreter Hilfe im Alltag.'
           : locale === 'en'
@@ -60,7 +60,7 @@ const { locale, data } = Astro.props;
         <a href="#spenden" class="btn-donate">
           {locale === 'de' ? 'Jetzt spenden' : locale === 'en' ? 'Donate now' : 'បរិច្ចាគឥឡូវ'}
         </a>
-        <a href="#mission" class="btn-secondary bg-white/10 border-white/30 text-white hover:bg-white/20">
+        <a href="#mission" class="btn-secondary bg-white/10 border-white/30 text-white hover:bg-white/20 hover-lift">
           {locale === 'de' ? 'Mehr erfahren' : locale === 'en' ? 'Learn more' : 'ស្វែងយល់បន្ថែម'}
         </a>
       </div>
@@ -69,7 +69,7 @@ const { locale, data } = Astro.props;
 
   <!-- Scroll indicator -->
   <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float hidden md:block">
-    <a href="#mission" class="text-white/70 hover:text-white transition-colors">
+    <a href="#mission" class="text-white/70 hover:text-white transition-all duration-300 hover:-translate-y-1 inline-block">
       <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
       </svg>

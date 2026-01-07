@@ -32,17 +32,17 @@ const t = content[locale as keyof typeof content];
 ---
 
 <Layout title={t.title} locale={locale}>
-  <section class="section bg-white min-h-[60vh]">
+  <section class="section bg-branding-bg min-h-[60vh]">
     <div class="container-custom">
       <div class="max-w-3xl mx-auto">
-        <a href={localizedUrl('/', locale)} class="inline-flex items-center gap-2 text-bamboo-600 hover:text-bamboo-700 mb-6 transition-colors">
+        <a href={localizedUrl('/', locale)} class="inline-flex items-center gap-2 text-primary hover:text-primary-hover mb-6 transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
           {t.backLink}
         </a>
 
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-8">{t.title}</h1>
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-branding-dark mb-8">{t.title}</h1>
 
         <div class="prose prose-lg prose-bamboo max-w-none">
           
@@ -68,7 +68,7 @@ const t = content[locale as keyof typeof content];
           </p>
 
           <h2>3. Cookies</h2>
-          <p class="bg-bamboo-50 p-4 rounded-lg border-l-4 border-bamboo-500">
+          <p class="bg-branding-accent p-4 rounded-lg border-l-4 border-primary">
             <strong>Diese Website verwendet keine Cookies.</strong><br />
             Wir verzichten bewusst auf den Einsatz von Cookies und Tracking-Technologien, 
             um Ihre Privatsphäre zu schützen.
@@ -140,7 +140,7 @@ const t = content[locale as keyof typeof content];
 
           <hr class="my-8" />
 
-          <p class="text-sm text-earth-500">
+          <p class="text-sm text-branding-muted">
             Stand: Januar 2025
           </p>
         </div>

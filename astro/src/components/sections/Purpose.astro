@@ -10,28 +10,28 @@ interface Props {
 const { locale, welcomeData, missionData } = Astro.props;
 ---
 
-<section id="mission" class="section bg-white">
+<section id="mission" class="section bg-branding-bg">
   <div class="container-custom">
     <div class="max-w-4xl mx-auto">
       <!-- Welcome Message -->
       <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-bamboo-800 mb-10 leading-tight">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-branding-dark mb-10 leading-tight">
           {t(welcomeData?.greeting, locale) || (locale === 'de' ? 'Herzlich willkommen' : locale === 'en' ? 'Welcome' : 'សូមស្វាគមន៍')}
         </h2>
         
-        <p class="text-xl md:text-2xl text-earth-700 leading-relaxed max-w-3xl mx-auto italic font-light">
+        <p class="text-xl md:text-2xl text-branding-muted leading-relaxed max-w-3xl mx-auto italic font-light">
           {t(welcomeData?.text, locale)}
         </p>
       </div>
 
       <!-- Separation (subtle line) -->
       <div class="flex justify-center mb-20">
-        <div class="w-16 h-px bg-bamboo-200"></div>
+        <div class="w-16 h-px bg-primary/20"></div>
       </div>
 
       <!-- Mission Message -->
       <div class="text-center">
-        <h3 class="text-sm md:text-base uppercase tracking-[0.2em] font-bold text-bamboo-500 mb-6">
+        <h3 class="text-sm md:text-base uppercase tracking-[0.2em] font-bold text-primary mb-6">
           {t(missionData?.title, locale) || (locale === 'de' ? 'Unsere Mission' : locale === 'en' ? 'Our Mission' : 'បេសកកម្មរបស់យើង')}
         </h3>
         
@@ -39,7 +39,7 @@ const { locale, welcomeData, missionData } = Astro.props;
           {locale === 'de' ? 'Bildung verändert Leben.' : locale === 'en' ? 'Education changes lives.' : 'ការអប់រំផ្លាស់ប្តូរជីវិត។'}
         </p>
         
-        <p class="text-lg md:text-xl text-earth-800 leading-relaxed max-w-3xl mx-auto">
+        <p class="text-lg md:text-xl text-branding-text leading-relaxed max-w-3xl mx-auto">
           {t(missionData?.text, locale)}
         </p>
       </div>

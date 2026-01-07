@@ -34,14 +34,14 @@ const defaultMembers = [
 const displayMembers = members?.length > 0 ? members : defaultMembers;
 ---
 
-<section id="team" class="section bg-white">
+<section id="team" class="section bg-branding-bg">
   <div class="container-custom">
     <!-- Section header -->
     <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-5xl font-heading font-bold text-bamboo-800 mb-8">
+      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-8">
         {locale === 'de' ? 'Unser Team vor Ort' : locale === 'en' ? 'Our Team on Site' : 'ក្រុមរបស់យើងនៅកន្លែង'}
       </h2>
-      <p class="text-earth-600 max-w-2xl mx-auto">
+      <p class="text-branding-muted max-w-2xl mx-auto">
         {locale === 'de' 
           ? 'Unsere Arbeit wird getragen von einem engagierten Team aus rund zehn kambodschanischen Lehrer:innen und Mitarbeitenden.'
           : locale === 'en'
@@ -53,9 +53,9 @@ const displayMembers = members?.length > 0 ? members : defaultMembers;
     <!-- Team members -->
     <div class="flex flex-wrap justify-center gap-8">
       {displayMembers.map((member) => (
-        <div class="w-full sm:w-80 bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow">
+        <div class="w-full sm:w-80 bg-branding-bg rounded-2xl border border-branding-earth/30 hover-lift overflow-hidden group">
           <!-- Photo -->
-          <div class="h-48 bg-gradient-to-br from-bamboo-400 to-bamboo-600 relative">
+          <div class="h-48 relative hover-zoom-container" style="background: linear-gradient(to bottom right, rgb(var(--color-primary) / 0.4), rgb(var(--color-primary) / 0.6))">
             {member.image ? (
               <img 
                 src={urlFor(member.image).width(320).height(192).url()}
@@ -74,13 +74,13 @@ const displayMembers = members?.length > 0 ? members : defaultMembers;
           
           <!-- Info -->
           <div class="p-6">
-            <h3 class="text-xl font-heading font-semibold text-bamboo-800 mb-1">
+            <h3 class="text-xl font-heading font-semibold text-branding-dark mb-1">
               {member.name}
             </h3>
-            <p class="text-bamboo-600 text-sm font-medium mb-3">
+            <p class="text-primary text-sm font-medium mb-3">
               {t(member.role, locale)}
             </p>
-            <p class="text-earth-600 text-sm leading-relaxed">
+            <p class="text-branding-muted text-sm leading-relaxed">
               {t(member.description, locale)}
             </p>
           </div>

@@ -9,11 +9,11 @@ interface Props {
 const { locale, data } = Astro.props;
 ---
 
-<section class="section bg-earth-100">
+<section class="section bg-branding-earth">
   <div class="container-custom">
     <div class="max-w-3xl mx-auto text-center">
       <!-- Content -->
-      <h2 class="text-3xl md:text-5xl font-heading font-bold text-bamboo-800 mb-8">
+      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-8">
         {t(data?.title, locale) || (locale === 'de' 
           ? 'Kambodscha: Wurzeln, Wandel und Hoffnung'
           : locale === 'en'
@@ -21,7 +21,7 @@ const { locale, data } = Astro.props;
           : 'កម្ពុជា៖ ឫសគល់ ការផ្លាស់ប្តូរ និងសេចក្តីសង្ឃឹម')}
       </h2>
 
-      <p class="text-earth-700 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+      <p class="text-branding-text text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
         {t(data?.text, locale) || (locale === 'de'
           ? 'Um zu verstehen, woran wir heute arbeiten, muss man den Weg kennen, den dieses Land gegangen ist. Von den Schatten der Vergangenheit zum Mut der nächsten Generation.'
           : locale === 'en'
@@ -31,10 +31,10 @@ const { locale, data } = Astro.props;
 
       <a 
         href={localizedUrl('/history', locale)}
-        class="inline-flex items-center gap-2 text-bamboo-600 font-bold hover:text-bamboo-700 transition-colors group text-lg"
+        class="inline-flex items-center gap-2 text-primary font-bold hover:text-primary-hover transition-all duration-300 group text-lg"
       >
         <span>{t(data?.linkText, locale) || (locale === 'de' ? 'Unsere Geschichte entdecken' : locale === 'en' ? 'Discover our history' : 'ស្វែងយល់ពីប្រវត្តិរបស់យើង')}</span>
-        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
         </svg>
       </a>

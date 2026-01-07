@@ -4,7 +4,38 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Google Fonts moved to top */
+:root {
+  /* Brand Colors (RGB triplets) */
+  --color-primary: 22 163 74;
+  /* #16a34a */
+  --color-primary-hover: 21 128 61;
+  /* #15803d */
+  --color-primary-active: 22 101 52;
+  /* #166534 */
+
+  --color-secondary: 220 110 90;
+  /* Softer Red/Terracotta */
+  --color-secondary-hover: 195 90 75;
+  --color-secondary-active: 170 80 65;
+
+  /* Neutrals & Text */
+  --color-text-main: 90 70 60;
+  /* #5a463c */
+  --color-text-muted: 161 126 99;
+  /* #a17e63 */
+  --color-text-light: 243 239 233;
+  /* #f3efe9 */
+
+  /* Backgrounds */
+  --color-bg-page: 255 255 255;
+  /* #ffffff */
+  --color-bg-accent: 240 253 244;
+  /* #f0fdf4 */
+  --color-bg-earth: 243 239 233;
+  /* #f3efe9 */
+  --color-bg-dark: 20 83 45;
+  /* #14532d */
+}
 
 @layer base {
   html {
@@ -12,7 +43,9 @@
   }
 
   body {
-    @apply font-sans text-earth-900 bg-earth-50 antialiased;
+    @apply font-sans antialiased;
+    background-color: rgb(var(--color-bg-page));
+    color: rgb(var(--color-text-main));
   }
 
   /* Khmer font for Cambodian text */
@@ -42,45 +75,100 @@
     @apply max-w-6xl mx-auto w-full;
   }
 
-  /* Button styles */
+  /* Button styles using semantic variables */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-bamboo-600 text-white font-medium rounded-lg hover:bg-bamboo-700 active:bg-bamboo-800 transition-all duration-200 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0;
+    background-color: rgb(var(--color-primary));
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: rgb(var(--color-primary-hover));
+  }
+
+  .btn-primary:active {
+    background-color: rgb(var(--color-primary-active));
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-white text-bamboo-700 font-medium rounded-lg border-2 border-bamboo-600 hover:bg-bamboo-50 active:bg-bamboo-100 transition-all duration-200 ease-in-out;
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg border-2 transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-1 active:translate-y-0;
+    background-color: white;
+    color: rgb(var(--color-primary));
+    border-color: rgb(var(--color-primary));
+  }
+
+  .btn-secondary:hover {
+    background-color: rgb(var(--color-bg-accent));
   }
 
   .btn-donate {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-khmer-500 to-khmer-600 text-white font-semibold rounded-lg hover:from-khmer-600 hover:to-khmer-700 active:from-khmer-700 active:to-khmer-800 transition-all duration-200 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-0.5;
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0;
+    background-color: rgb(var(--color-secondary));
+    color: white;
+  }
+
+  .btn-donate:hover {
+    background-color: rgb(var(--color-secondary-hover));
+  }
+
+  .btn-donate:active {
+    background-color: rgb(var(--color-secondary-active));
   }
 
   /* Card styles */
   .card {
-    @apply bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-earth-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+    @apply rounded-2xl shadow-lg p-6 md:p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+    background-color: rgb(var(--color-bg-page));
+    border: 1px solid rgb(var(--color-bg-accent));
   }
 
   /* Timeline item */
   .timeline-item {
-    @apply relative pl-8 pb-8 border-l-2 border-bamboo-300 last:border-l-transparent;
+    @apply relative pl-8 pb-8 border-l-2 last:border-l-transparent;
+    border-color: rgb(var(--color-bg-earth));
   }
 
   .timeline-dot {
-    @apply absolute left-0 top-0 w-4 h-4 bg-bamboo-500 rounded-full -translate-x-[9px] ring-4 ring-bamboo-100;
+    @apply absolute left-0 top-0 w-4 h-4 rounded-full -translate-x-[9px] ring-4;
+    background-color: rgb(var(--color-primary));
+    --tw-ring-color: rgb(var(--color-primary) / 0.1);
   }
 
   /* Navigation link */
   .nav-link {
-    @apply text-earth-700 hover:text-bamboo-600 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-bamboo-500 hover:after:w-full after:transition-all after:duration-300;
+    @apply font-medium transition-all duration-300 relative inline-block;
+    color: rgb(var(--color-text-main));
+  }
+
+  .nav-link:after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300;
+    background-color: rgb(var(--color-primary));
+  }
+
+  .nav-link:hover {
+    color: rgb(var(--color-primary));
+  }
+
+  .nav-link:hover:after {
+    @apply w-full;
   }
 
   /* Language toggle */
   .lang-toggle {
-    @apply inline-flex items-center gap-1 px-2 py-1 text-sm font-medium text-earth-600 hover:text-bamboo-600 hover:bg-bamboo-50 rounded-md transition-all duration-200;
+    @apply inline-flex items-center gap-1 px-2 py-1 text-sm font-medium rounded-md transition-all duration-300;
+    color: rgb(var(--color-text-muted));
+  }
+
+  .lang-toggle:hover {
+    color: rgb(var(--color-primary));
+    background-color: rgb(var(--color-bg-accent));
   }
 
   .lang-toggle.active {
-    @apply text-bamboo-700 bg-bamboo-100;
+    @apply font-bold;
+    color: rgb(var(--color-primary));
+    background-color: rgb(var(--color-bg-accent));
   }
 }
 
@@ -88,12 +176,33 @@
 
   /* Text gradient */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-bamboo-600 to-bamboo-800;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, rgb(var(--color-primary)), rgb(var(--color-primary-hover)));
   }
 
   /* Glass effect */
   .glass {
-    @apply bg-white/80 backdrop-blur-md;
+    @apply bg-white/80 backdrop-blur-md transition-all duration-300;
   }
 
+  /* Utility Hover Patterns */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl active:translate-y-0 active:shadow-lg;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105 active:scale-100;
+  }
+
+  .hover-zoom-container {
+    @apply overflow-hidden;
+  }
+
+  .hover-zoom-container img {
+    @apply transition-transform duration-500;
+  }
+
+  .hover-zoom-container:hover img {
+    @apply scale-110;
+  }
 }

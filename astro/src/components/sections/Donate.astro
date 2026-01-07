@@ -43,14 +43,14 @@ const defaultTiers = [
 const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
 ---
 
-<section id="spenden" class="section bg-bamboo-900 text-white relative overflow-hidden">
+<section id="spenden" class="section bg-branding-dark text-white relative overflow-hidden">
   <div class="container-custom relative z-10">
     <!-- Section header -->
     <div class="text-center mb-16 md:mb-24">
       <h2 class="text-3xl md:text-5xl font-heading font-bold text-white mb-8">
         {locale === 'de' ? 'Spenden & Mitmachen' : locale === 'en' ? 'Donate & Get Involved' : 'បរិច្ចាគ និងចូលរួម'}
       </h2>
-      <p class="text-bamboo-200 text-lg max-w-2xl mx-auto leading-relaxed">
+      <p class="text-primary-hover text-lg max-w-2xl mx-auto leading-relaxed">
         {locale === 'de' 
           ? 'Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll.'
           : locale === 'en'
@@ -71,29 +71,29 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
             href={paypalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class={`group relative bg-bamboo-800/40 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-bamboo-700/50 hover:border-khmer-500/50 hover:bg-bamboo-800/60 transition-all duration-500 flex flex-col h-full ${index === 0 ? 'ring-1 ring-khmer-500/30' : ''}`}
+            class={`group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-white/10 hover-lift ${index === 0 ? 'ring-1 ring-secondary/50' : ''}`}
           >
             {index === 0 && (
-              <div class="absolute top-6 right-6 bg-khmer-600 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-sm">
+              <div class="absolute top-6 right-6 bg-secondary text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-sm">
                 {locale === 'de' ? 'Beliebt' : locale === 'en' ? 'Popular' : 'ពេញនិយម'}
               </div>
             )}
             
-            <div class="text-3xl md:text-5xl font-heading font-bold mb-4 text-white group-hover:scale-105 transition-transform origin-left">
+            <div class="text-3xl md:text-5xl font-heading font-bold mb-4 text-white group-hover:scale-105 transition-transform duration-300 origin-left">
               {tier.amount ? `${tier.amount} €` : (locale === 'de' ? 'Freier Betrag' : locale === 'en' ? 'Any Amount' : 'ចំនួនណាមួយ')}
             </div>
             
-            <h3 class="text-xl font-bold mb-4 text-bamboo-100">
+            <h3 class="text-xl font-bold mb-4 text-white/90">
               {t(tier.title, locale)}
             </h3>
             
-            <p class="text-bamboo-200/80 text-sm leading-relaxed mb-8 flex-grow">
+            <p class="text-white/60 text-sm leading-relaxed mb-8 flex-grow">
               {t(tier.description, locale)}
             </p>
 
-            <div class="flex items-center gap-2 text-khmer-400 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300">
               <span>{locale === 'de' ? 'Jetzt spenden' : locale === 'en' ? 'Donate now' : 'បរិច្ចាគឥឡូវ'}</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
               </svg>
             </div>
@@ -104,9 +104,9 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
       <!-- Digital Donation -->
-      <div class="bg-earth-100 rounded-3xl p-10 md:p-15 border border-earth-200 flex flex-col">
-        <h3 class="text-bamboo-900 font-heading font-bold text-2xl mb-8 flex items-center gap-4">
-          <svg class="w-6 h-6 text-khmer-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-branding-earth rounded-3xl p-10 md:p-15 border border-white/10 flex flex-col shadow-2xl">
+        <h3 class="text-branding-dark font-heading font-bold text-2xl mb-8 flex items-center gap-4">
+          <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
           </svg>
@@ -119,10 +119,10 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
               href={settings.donationLinks.betterplace}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-between group p-6 bg-white rounded-2xl border border-earth-200 hover:border-bamboo-300 transition-all hover:shadow-md"
+              class="flex items-center justify-between group p-6 bg-white rounded-2xl border border-black/5 hover-lift"
             >
-              <span class="text-bamboo-800 font-bold uppercase tracking-tight">betterplace.org</span>
-              <svg class="w-6 h-6 text-bamboo-300 group-hover:text-bamboo-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span class="text-branding-dark font-bold uppercase tracking-tight">betterplace.org</span>
+              <svg class="w-6 h-6 text-black/20 group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
             </a>
@@ -133,12 +133,12 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
               href={settings.donationLinks.paypal}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-between group p-6 bg-[#0070ba] text-white rounded-2xl border border-[#005ea6] hover:bg-[#005ea6] transition-all hover:shadow-lg"
+              class="flex items-center justify-between group p-6 bg-[#0070ba] text-white rounded-2xl border border-[#005ea6] hover-lift"
             >
               <div class="flex items-center gap-2">
                 <span class="font-extrabold italic text-xl">PayPal</span>
               </div>
-              <svg class="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
             </a>
@@ -147,37 +147,37 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
       </div>
 
       <!-- Bank Transfer Details -->
-      <div class="bg-bamboo-800 rounded-3xl p-10 md:p-12 border border-bamboo-700 shadow-xl">
+      <div class="bg-primary-active rounded-3xl p-10 md:p-12 border border-white/5 shadow-2xl">
         <h3 class="font-heading font-bold text-2xl text-white mb-8 flex items-center gap-4">
-          <svg class="w-6 h-6 text-bamboo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
           </svg>
           {locale === 'de' ? 'Banküberweisung' : locale === 'en' ? 'Bank Transfer' : 'ផ្ទេរប្រាក់តាមធនាគារ'}
         </h3>
-        <div class="text-bamboo-100 text-sm space-y-4">
+        <div class="text-white/80 text-sm space-y-4">
           {settings?.bankAccount?.[locale] ? (
             <div class="space-y-4">
               <div>
-                <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">Kontoinhaber</p>
+                <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1">Kontoinhaber</p>
                 <p class="font-bold text-white text-lg">{settings.bankAccount[locale].name}</p>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">Bank</p>
+                  <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1">Bank</p>
                   <p class="text-white">{settings.bankAccount[locale].bank}</p>
                 </div>
                 <div>
-                  <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">BIC</p>
+                  <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1">BIC</p>
                   <p class="text-white font-mono uppercase tracking-wider">{settings.bankAccount[locale].bic}</p>
                 </div>
               </div>
               <div>
-                <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">IBAN</p>
-                <p class="font-mono text-xl text-khmer-400 break-all">{settings.bankAccount[locale].iban}</p>
+                <p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mb-1">IBAN</p>
+                <p class="font-mono text-xl text-white break-all">{settings.bankAccount[locale].iban}</p>
               </div>
             </div>
           ) : (
-            <p class="italic text-bamboo-400 py-8">
+            <p class="italic text-white/40 py-8">
               {locale === 'de' ? 'Bankinformationen folgen in Kürze.' : locale === 'en' ? 'Bank details coming soon.' : 'ព័ត៌មានធនាគារនឹងមកដល់ក្នុងពេលឆាប់ៗនេះ។'}
             </p>
           )}
@@ -186,15 +186,15 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
     </div>
 
     <!-- Info text -->
-    <div class="mt-20 pt-10 border-t border-bamboo-800 text-center max-w-3xl mx-auto space-y-4">
-      <p class="text-bamboo-100 font-medium">
-        {locale === 'de' 
-          ? 'Gefördert durch den deutschen Verein „Bamboo Shoots e.V."'
-          : locale === 'en' 
-          ? 'Supported by the German association "Bamboo Shoots e.V."'
-          : 'គាំទ្រដោយសមាគមអាល្លឺម៉ង់ "Bamboo Shoots e.V."'}
+    <div class="mt-20 pt-10 border-t border-white/10 text-center max-w-3xl mx-auto space-y-4">
+      <p class="text-branding-light/80 font-medium">
+        {t(settings?.donationFooterInfo, locale) || (locale === 'de'
+          ? 'Fragen zu Ihrer Spende? Wir helfen Ihnen gerne weiter.'
+          : locale === 'en'
+          ? 'Questions about your donation? We are happy to help.'
+          : 'មានសំណួរអំពីការបរិច្ចាគរបស់អ្នក? យើងរីករាយនឹងជួយ។')}
       </p>
-      <p class="text-bamboo-400 text-sm leading-relaxed">
+      <p class="text-white/40 text-sm leading-relaxed">
         {locale === 'de' 
           ? 'Der Förderverein wird ehrenamtlich geführt. Ihre Spenden fließen direkt in die Projektarbeit vor Ort.'
           : locale === 'en' 

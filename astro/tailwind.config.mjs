@@ -45,6 +45,26 @@ export default {
                     800: '#6e5547',
                     900: '#5a463c',
                     950: '#30241f'
+                },
+                // Semantic Aliases using modern RGB format for full opacity support
+                primary: {
+                    DEFAULT: 'rgb(var(--color-primary)/<alpha-value>)',
+                    hover: 'rgb(var(--color-primary-hover)/<alpha-value>)',
+                    active: 'rgb(var(--color-primary-active)/<alpha-value>)',
+                },
+                secondary: {
+                    DEFAULT: 'rgb(var(--color-secondary)/<alpha-value>)',
+                    hover: 'rgb(var(--color-secondary-hover)/<alpha-value>)',
+                    active: 'rgb(var(--color-secondary-active)/<alpha-value>)',
+                },
+                branding: {
+                    text: 'rgb(var(--color-text-main)/<alpha-value>)',
+                    muted: 'rgb(var(--color-text-muted)/<alpha-value>)',
+                    light: 'rgb(var(--color-text-light)/<alpha-value>)',
+                    bg: 'rgb(var(--color-bg-page)/<alpha-value>)',
+                    accent: 'rgb(var(--color-bg-accent)/<alpha-value>)',
+                    earth: 'rgb(var(--color-bg-earth)/<alpha-value>)',
+                    dark: 'rgb(var(--color-bg-dark)/<alpha-value>)',
                 }
             },
             fontFamily: {
@@ -54,7 +74,7 @@ export default {
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                'hero-pattern': 'linear-gradient(135deg, rgba(22, 101, 52, 0.9) 0%, rgba(21, 128, 61, 0.8) 100%)'
+                'hero-pattern': 'linear-gradient(135deg, rgb(var(--color-primary-active) / 0.9) 0%, rgb(var(--color-primary-hover) / 0.8) 100%)'
             },
             animation: {
                 'fade-in': 'fadeIn 0.5s ease-in-out',

@@ -12,7 +12,7 @@ const navItems = navigation[locale];
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 glass border-b border-earth-200">
+<header class="fixed top-0 left-0 right-0 z-50 glass border-b border-branding-accent">
   <div class="container-custom">
     <nav class="flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
       <!-- Logo -->
@@ -21,16 +21,16 @@ const currentPath = Astro.url.pathname;
           <img 
             src={urlFor(settings.logo).width(48).url()} 
             alt="Bamboo Shoots Logo" 
-            class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform"
+            class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div class="w-10 h-10 md:w-12 md:h-12 bg-bamboo-500 rounded-full flex items-center justify-center text-white text-xl">
+          <div class="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl">
             <svg class="w-6 h-6 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
           </div>
         )}
-        <span class="text-lg md:text-xl font-heading font-bold text-bamboo-800 hidden sm:block">
+        <span class="text-lg md:text-xl font-heading font-bold text-branding-dark hidden sm:block">
           Bamboo Shoots
         </span>
       </a>
@@ -55,23 +55,23 @@ const currentPath = Astro.url.pathname;
             class="lang-toggle flex items-center gap-2"
             aria-label="Select language"
           >
-            <svg class="w-4 h-4 text-earth-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="w-4 h-4 text-branding-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="2" y1="12" x2="22" y2="12"></line>
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
             <span class="text-sm font-medium">{localeNames[locale]}</span>
-            <svg class="w-4 h-4 text-earth-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-branding-muted/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           
           <!-- Dropdown -->
-          <div class="absolute right-0 top-full mt-1 py-1 bg-white rounded-lg shadow-lg border border-earth-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[120px]">
+          <div class="absolute right-0 top-full mt-1 py-1 bg-white rounded-lg shadow-lg border border-branding-accent opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[120px]">
             {locales.map((loc) => (
               <a 
                 href={localizedUrl(currentPath, loc)}
-                class={`block px-4 py-2 text-sm hover:bg-bamboo-50 ${loc === locale ? 'text-bamboo-700 bg-bamboo-50 font-medium' : 'text-earth-700'}`}
+                class={`block px-4 py-2 text-sm transition-all duration-300 hover:bg-branding-accent ${loc === locale ? 'text-primary bg-branding-accent font-medium' : 'text-branding-text'}`}
                 onclick={`localStorage.setItem('preferred-language', '${loc}')`}
               >
                 {localeNames[loc]}
@@ -91,7 +91,7 @@ const currentPath = Astro.url.pathname;
         <!-- Mobile Menu Button -->
         <button 
           id="mobile-menu-btn"
-          class="lg:hidden p-2 text-earth-700 hover:text-bamboo-600"
+          class="lg:hidden p-2 text-branding-text hover:text-primary"
           aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,12 +102,12 @@ const currentPath = Astro.url.pathname;
     </nav>
 
     <!-- Mobile Navigation -->
-    <div id="mobile-menu" class="lg:hidden hidden border-t border-earth-200 bg-white">
+    <div id="mobile-menu" class="lg:hidden hidden border-t border-branding-accent bg-white">
       <div class="py-4 px-4 space-y-2">
         {navItems.map((item) => (
           <a 
             href={localizedUrl(item.href, locale)} 
-            class="block py-2 px-4 text-earth-700 hover:text-bamboo-600 hover:bg-bamboo-50 rounded-lg transition-colors"
+            class="block py-2 px-4 text-branding-text hover:text-primary hover:bg-branding-accent rounded-lg transition-all duration-300"
           >
             {item.label}
           </a>
