@@ -131,7 +131,6 @@ export default defineType({
                     type: 'image',
                     options: { hotspot: true },
                     fields: [
-                        localizedString('alt', 'Alt Text'),
                         localizedString('caption', 'Caption')
                     ]
                 })

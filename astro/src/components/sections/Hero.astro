@@ -10,7 +10,10 @@ interface Props {
 const { locale, data } = Astro.props;
 ---
 
-<section id="start" class="relative min-h-[80vh] md:min-h-[90vh] flex items-center overflow-hidden">
+<section 
+  id="start" 
+  class="relative flex items-center overflow-hidden min-h-[calc(100dvh-var(--header-height-mobile))] md:min-h-[calc(100dvh-var(--header-height-desktop))]"
+>
   <!-- Background Image with Overlay -->
   <div class="absolute inset-0 z-0">
     {data?.image ? (

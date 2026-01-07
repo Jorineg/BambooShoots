@@ -35,6 +35,12 @@
   /* Earth 200 #e5ddd2 */
   --color-bg-dark: 20 83 45;
   /* #14532d */
+
+  /* Header Heights */
+  --header-height-mobile: 4rem;
+  /* 64px */
+  --header-height-desktop: 5rem;
+  /* 80px */
 }
 
 @layer base {
@@ -124,14 +130,33 @@
 
   /* Timeline item */
   .timeline-item {
-    @apply relative pl-8 pb-8 border-l-2 last:border-l-transparent;
-    border-color: rgb(var(--color-bg-earth));
+    @apply relative pl-10 pb-12 last:pb-0;
+  }
+
+  /* The vertical line */
+  .timeline-item::before {
+    content: '';
+    @apply absolute left-0 top-0 bottom-0 w-0.5;
+    background-color: rgb(var(--color-primary));
+    transform: translateX(-50%);
+  }
+
+  .timeline-item:first-child::before {
+    @apply top-[calc(50%-1.5rem)];
+  }
+
+  .timeline-item:last-child::before {
+    @apply bottom-1/2;
   }
 
   .timeline-dot {
-    @apply absolute left-0 top-0 w-4 h-4 rounded-full -translate-x-[9px] ring-4;
+    @apply absolute left-0 top-[calc(50%-1.5rem)] -translate-y-1/2 w-4 h-4 rounded-full -translate-x-1/2 ring-4 z-10;
     background-color: rgb(var(--color-primary));
     --tw-ring-color: rgb(var(--color-primary) / 0.1);
+  }
+
+  .timeline-item:last-child .timeline-dot {
+    @apply top-1/2;
   }
 
   /* Navigation link */

@@ -8,9 +8,10 @@ interface Props {
 }
 
 const { locale, images } = Astro.props;
+const useCarousel = images && images.length >= 5;
 ---
 
-<section id="galerie" class="section bg-branding-accent">
+<section id="galerie" class="section bg-branding-accent overflow-hidden">
   <div class="container-custom">
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-12">
@@ -19,16 +20,79 @@ const { locale, images } = Astro.props;
     </div>
 
     {images && images.length > 0 ? (
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((image, index) => (
-          <div class="aspect-square rounded-xl overflow-hidden group cursor-pointer hover-lift hover-zoom-container">
-            <img 
-              src={urlFor(image).width(400).height(400).url()}
-              alt={t(image.alt, locale) || `Gallery image ${index + 1}`}
-              class="w-full h-full object-cover"
-            />
+      <div class="relative">
+        {useCarousel ? (
+          <div class="relative group/gallery">
+            <!-- Soft Fade Overlays -->
+            <!-- Left Wing + Fade -->
+            <div class="absolute inset-y-0 -left-[100vw] right-full bg-branding-accent z-10 pointer-events-none"></div>
+            <div class="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-branding-accent to-transparent z-10 pointer-events-none"></div>
+            
+            <!-- Right Wing + Fade -->
+            <div class="absolute inset-y-0 left-full -right-[100vw] bg-branding-accent z-10 pointer-events-none"></div>
+            <div class="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-branding-accent to-transparent z-10 pointer-events-none"></div>
+
+            <div class="swiper gallery-swiper relative px-4 md:px-0 !overflow-visible">
+              <div class="swiper-wrapper">
+                {images.map((image, index) => (
+                  <div class="swiper-slide h-auto">
+                    <a 
+                      href={urlFor(image).width(1200).url()} 
+                      class="glightbox block aspect-square rounded-2xl overflow-hidden group cursor-pointer relative"
+                      data-gallery="gallery"
+                      data-glightbox={`title: ${t(image.caption, locale) || ''}`}
+                    >
+                      <img 
+                        src={urlFor(image).width(600).height(600).url()}
+                        alt={t(image.caption, locale) || `Gallery image ${index + 1}`}
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-branding-dark/80 via-branding-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
+                         <p class="text-white text-center text-sm font-medium transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                            {t(image.caption, locale)}
+                         </p>
+                      </div>
+                    </a>
+                  </div>
+                ))}
+              </div>
+              
+              <div class="flex justify-center items-center gap-8 mt-12">
+                <button class="swiper-prev p-3 rounded-full border-2 border-branding-dark text-branding-dark hover:bg-branding-dark hover:text-white transition-colors duration-300 z-20" aria-label="Previous slide">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <div class="swiper-pagination !static z-20"></div>
+                <button class="swiper-next p-3 rounded-full border-2 border-branding-dark text-branding-dark hover:bg-branding-dark hover:text-white transition-colors duration-300 z-20" aria-label="Next slide">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+              </div>
+            </div>
           </div>
-        ))}
+        ) : (
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {images.map((image, index) => (
+              <a 
+                href={urlFor(image).width(1200).url()} 
+                class="glightbox aspect-square rounded-2xl overflow-hidden group cursor-pointer relative"
+                data-gallery="gallery"
+                data-glightbox={`title: ${t(image.caption, locale) || ''}`}
+              >
+                <img 
+                  src={urlFor(image).width(600).height(600).url()}
+                  alt={t(image.caption, locale) || `Gallery image ${index + 1}`}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-branding-dark/80 via-branding-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
+                   <p class="text-white text-center text-sm font-medium transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                      {t(image.caption, locale)}
+                   </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     ) : (
       <div class="bg-branding-bg rounded-2xl p-12 text-center border border-branding-earth/50">
@@ -49,3 +113,179 @@ const { locale, images } = Astro.props;
     )}
   </div>
 </section>
+
+<script>
+  import GLightbox from 'glightbox';
+  import Swiper from 'swiper';
+  import { Navigation, Pagination } from 'swiper/modules';
+  import 'glightbox/dist/css/glightbox.min.css';
+  import 'swiper/css';
+  import 'swiper/css/navigation';
+  import 'swiper/css/pagination';
+
+  function initGallery() {
+    // Initialize GLightbox
+    GLightbox({
+      selector: '.glightbox',
+      touchNavigation: true,
+      loop: true,
+      zoomable: true,
+      openEffect: 'zoom',
+      closeEffect: 'zoom',
+      draggable: true
+    });
+
+    // Initialize Swiper
+    const swiperElement = document.querySelector('.gallery-swiper');
+    if (swiperElement) {
+      new Swiper('.gallery-swiper', {
+        modules: [Navigation, Pagination],
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: false,
+        rewind: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-next',
+          prevEl: '.swiper-prev',
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 24,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+          1280: {
+            slidesPerView: 4,
+            spaceBetween: 40,
+          },
+        },
+      });
+    }
+  }
+
+  // Initialize on load and on view transitions
+  initGallery();
+  document.addEventListener('astro:after-swap', initGallery);
+</script>
+
+<style is:global>
+  /* GLightbox Refinements */
+  .glightbox-container .gslide-title {
+    color: #fff !important;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    margin-bottom: 0 !important;
+  }
+  
+  .glightbox-container .gslide-description {
+    background: transparent !important;
+    color: #fff !important;
+    text-align: center;
+    padding: 20px !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+  }
+
+  .glightbox-container .gslide-caption {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent) !important;
+    padding: 40px 20px 20px !important;
+    bottom: 0 !important;
+    width: 100% !important;
+  }
+
+  .goverlay {
+    background: rgba(14, 28, 11, 0.95) !important; /* branding-dark with high opacity */
+    backdrop-filter: blur(8px);
+  }
+
+  .swiper-pagination.swiper-pagination-bullets {
+    position: static !important;
+    width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #2d4a22 !important; /* branding-dark */
+    opacity: 1 !important;
+  }
+
+  .swiper-pagination-bullet {
+    margin: 0 !important;
+    transition: all 0.3s ease;
+  }
+
+  /* Remove GLightbox button backgrounds */
+  .glightbox-container .gnext,
+  .glightbox-container .gprev,
+  .glightbox-container .gclose {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  .glightbox-container .gnext svg,
+  .glightbox-container .gprev svg,
+  .glightbox-container .gclose svg {
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+  }
+
+  /* 
+     MODERN SCROLLBAR FIX:
+     Using scrollbar-gutter: stable on the HTML element reserves space for the scrollbar.
+     By applying it only when GLightbox is open, we ensure the content stays perfectly
+     in place without shifting left or right.
+  */
+  html.glightbox-open {
+    scrollbar-gutter: stable;
+    overflow: hidden !important;
+    /* Dark background for the gutter to blend with the overlay */
+    background-color: #0e1c0b !important; 
+  }
+
+  /* 
+     Move the page background color to body.
+     Note: html itself should be transparent so it doesn't create a "stripe" 
+     in the reserved gutter space.
+  */
+  html {
+    background-color: transparent;
+  }
+
+  body {
+    background-color: #f3efe9; /* previous html background */
+    min-height: 100vh;
+  }
+
+  /* 
+     Stop GLightbox from adding its own padding-right to the body.
+     The scrollbar-gutter handles the space preservation.
+  */
+  body.glightbox-open {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    /* When open, the body keeps its color, but the html gutter 
+       (which is outside the body) will show the dark color set above. */
+  }
+
+  /* 
+     Header Fix: 
+     Fixed elements with width: 100% will automatically respect the scrollbar-gutter 
+     on the HTML element, so they won't shift or overlap.
+  */
+  header {
+    width: 100%;
+  }
+</style>

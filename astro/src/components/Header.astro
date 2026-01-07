@@ -14,7 +14,7 @@ const currentPath = Astro.url.pathname;
 
 <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-branding-accent">
   <div class="container-custom">
-    <nav class="flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
+    <nav class="flex items-center justify-between h-[var(--header-height-mobile)] md:h-[var(--header-height-desktop)] px-4 md:px-8">
       <!-- Logo -->
       <a href={localizedUrl('/', locale)} class="flex items-center gap-3 group">
         {settings?.logo ? (
@@ -118,7 +118,7 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <!-- Spacer for fixed header -->
-<div class="h-16 md:h-20"></div>
+<div class="h-[var(--header-height-mobile)] md:h-[var(--header-height-desktop)]"></div>
 
 <script>
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
