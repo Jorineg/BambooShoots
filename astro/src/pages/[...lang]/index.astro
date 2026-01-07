@@ -38,10 +38,9 @@ const pageTitle = locale === 'de'
 <Layout title={pageTitle} locale={locale}>
   <Hero locale={locale} data={homePage?.hero} />
   <Purpose locale={locale} welcomeData={homePage?.welcome} missionData={homePage?.mission} />
+  <CambodiaTeaser locale={locale} data={homePage?.cambodiaTeaser} />
   <Programs locale={locale} programs={homePage?.programs} />
   <Team locale={locale} members={teamMembers} />
-  <CambodiaTeaser locale={locale} data={homePage?.cambodiaTeaser} />
   <Donate locale={locale} tiers={donationTiers} settings={settings} />
   <Visit locale={locale} data={homePage?.visit} />
-  <Gallery locale={locale} images={homePage?.gallery} />
 </Layout>

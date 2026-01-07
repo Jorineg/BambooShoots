@@ -46,7 +46,18 @@ const settings = await getSiteSettings();
 
     <script is:inline>
       (function() {
-        // Only run on the root path
+        // Global reveal observer
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Language redirect logic (Root only)
         if (window.location.pathname !== '/' && window.location.pathname !== '/BambooShoots/') return;
         
         const lang = localStorage.getItem('preferred-language');

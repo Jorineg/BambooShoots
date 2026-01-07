@@ -12,6 +12,12 @@ export default defineType({
             type: 'image',
             options: { hotspot: true }
         }),
+        defineField({
+            name: 'donationBgImage',
+            title: 'Donation Section Background',
+            type: 'image',
+            options: { hotspot: true }
+        }),
         localizedString('siteTitle', 'Site Title'),
         localizedString('tagline', 'Tagline'),
         defineField({

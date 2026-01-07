@@ -34,14 +34,17 @@ const defaultMembers = [
 const displayMembers = members?.length > 0 ? members : defaultMembers;
 ---
 
-<section id="team" class="section bg-branding-bg">
+<section id="team" class="section bg-branding-bg py-32 md:py-48">
   <div class="container-custom">
     <!-- Section header -->
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-8">
-        {locale === 'de' ? 'Unser Team vor Ort' : locale === 'en' ? 'Our Team on Site' : 'ក្រុមរបស់យើងនៅកន្លែង'}
+    <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
+      <h2 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60">
+        {locale === 'de' ? 'Das Herz der NGO' : locale === 'en' ? 'The Heart of the NGO' : 'បេះដូងនៃអង្គការ'}
       </h2>
-      <p class="text-branding-muted max-w-2xl mx-auto">
+      <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
+        {locale === 'de' ? 'Unser Team vor Ort' : locale === 'en' ? 'Our Team on Site' : 'ក្រុមរបស់យើងនៅកន្លែង'}
+      </h3>
+      <p class="text-branding-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed">
         {locale === 'de' 
           ? 'Unsere Arbeit wird getragen von einem engagierten Team aus rund zehn kambodschanischen Lehrer:innen und Mitarbeitenden.'
           : locale === 'en'
@@ -51,36 +54,37 @@ const displayMembers = members?.length > 0 ? members : defaultMembers;
     </div>
 
     <!-- Team members -->
-    <div class="flex flex-wrap justify-center gap-8">
-      {displayMembers.map((member) => (
-        <div class="w-full sm:w-80 bg-branding-bg rounded-2xl border border-branding-earth/30 hover-lift overflow-hidden group">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+      {displayMembers.map((member, index) => (
+        <div class={`reveal reveal-delay-${index * 150} flex flex-col bg-white rounded-[2.5rem] border border-black/5 hover:shadow-2xl transition-all duration-700 overflow-hidden group`}>
           <!-- Photo -->
-          <div class="h-48 relative hover-zoom-container" style="background: linear-gradient(to bottom right, rgb(var(--color-primary) / 0.4), rgb(var(--color-primary) / 0.6))">
+          <div class="aspect-[4/3] relative overflow-hidden">
             {member.image ? (
               <img 
-                src={urlFor(member.image).width(320).height(192).url()}
+                src={urlFor(member.image).width(600).height(450).url()}
                 alt={member.name}
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
               />
             ) : (
-              <div class="w-full h-full flex items-center justify-center">
-                <svg class="w-16 h-16 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <div class="w-full h-full bg-branding-accent flex items-center justify-center">
+                <svg class="w-16 h-16 text-primary/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
               </div>
             )}
+            <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500"></div>
           </div>
           
           <!-- Info -->
-          <div class="p-6">
-            <h3 class="text-xl font-heading font-semibold text-branding-dark mb-1">
+          <div class="p-8 md:p-10 flex flex-col flex-grow">
+            <h3 class="text-2xl font-heading font-extrabold text-branding-dark mb-2 tracking-tight group-hover:text-primary transition-colors duration-300">
               {member.name}
             </h3>
-            <p class="text-primary text-sm font-medium mb-3">
+            <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-6">
               {t(member.role, locale)}
             </p>
-            <p class="text-branding-muted text-sm leading-relaxed">
+            <p class="text-branding-muted text-base leading-relaxed font-light italic flex-grow">
               {t(member.description, locale)}
             </p>
           </div>

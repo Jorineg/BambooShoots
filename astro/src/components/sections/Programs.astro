@@ -9,21 +9,35 @@ interface Props {
 
 const { locale, programs } = Astro.props;
 
-// Default programs if none from Sanity
+// Icons mapping for fallback/placeholders
+const getIcon = (iconName: string) => {
+  switch (iconName) {
+    case 'babies': case 'preschool':
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M2 21a10 10 0 0 1 20 0"/></svg>`;
+    case 'education': case 'afternoon':
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+    case 'library':
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`;
+    case 'community':
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+    default:
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`;
+  }
+};
+
 const defaultPrograms = [
   {
     icon: 'preschool',
     title: { de: 'Vorschule & Bildung', en: 'Preschool & Education', kh: 'មត្តេយ្យ និងការអប់រំ' },
     description: { 
-      de: 'Frühförderung ist der erste Schritt in eine bessere Zukunft. Wir betreiben Vorschulen in abgelegenen Dörfern rund um Siem Reap.',
+      de: 'Frühförderung ist der erste Schritt in eine bessere Zukunft. Wir betreiben Vorschulen in abgelegenen Dörfern rund um Siem Reap. Dort werden Kinder zwischen drei und fünf Jahren spielerisch auf die Schule vorbereitet.',
       en: 'Early childhood education is the first step to a better future. We operate preschools in remote villages around Siem Reap.',
       kh: 'ការអប់រំកុមារភាពដំបូងគឺជាជំហានដំបូងទៅកាន់អនាគតល្អប្រសើរ។'
     },
     features: [
-      { de: 'Altersgerechter Unterricht', en: 'Age-appropriate teaching', kh: 'ការបង្រៀនសមស្របតាមអាយុ' },
-      { de: 'Hygienische Erziehung', en: 'Hygiene education', kh: 'ការអប់រំអនាម័យ' },
-      { de: 'Täglich warme Mahlzeit', en: 'Daily warm meal', kh: 'អាហារក្តៅប្រចាំថ្ងៃ' },
-      { de: 'Integration aller Kinder', en: 'Inclusion of all children', kh: 'ការដាក់បញ្ចូលកុមារទាំងអស់' }
+      { de: 'Altersgerechter Unterricht', en: 'Age-appropriate teaching' },
+      { de: 'Hygienische Erziehung', en: 'Hygiene education' },
+      { de: 'Täglich warme Mahlzeit', en: 'Daily warm meal' }
     ]
   },
   {
@@ -35,9 +49,8 @@ const defaultPrograms = [
       kh: 'សម្រាប់កុមារសាលា យើងផ្តល់វគ្គសិក្សាពេលរសៀលជាភាសាខ្មែរ អង់គ្លេស និងគណិតវិទ្យា។'
     },
     features: [
-      { de: 'Kinder 6–17 Jahre', en: 'Children aged 6–17', kh: 'កុមារអាយុ 6-17 ឆ្នាំ' },
-      { de: 'Kambodschanische Lehrer:innen', en: 'Cambodian teachers', kh: 'គ្រូបង្រៀនកម្ពុជា' },
-      { de: 'Individuell und motivierend', en: 'Individual and motivating', kh: 'បុគ្គល និងលើកទឹកចិត្ត' }
+      { de: 'Kambodschanische Lehrer:innen', en: 'Cambodian teachers' },
+      { de: 'Individuell und motivierend', en: 'Individual and motivating' }
     ]
   },
   {
@@ -49,105 +62,102 @@ const defaultPrograms = [
       kh: 'បណ្ណាល័យគឺច្រើនជាងកន្លែងរៀន៖ វាជាចំណុចជួបជុំ បន្ទប់អាន និងកន្លែងសុវត្ថិភាពដើម្បីរីកចម្រើន។'
     },
     features: [
-      { de: 'Leihbücher für alle Altersgruppen', en: 'Books for all ages', kh: 'សៀវភៅសម្រាប់គ្រប់អាយុ' },
-      { de: 'Kreative Förderung durch Basteln', en: 'Creative activities', kh: 'សកម្មភាពច្នៃប្រឌិត' },
-      { de: 'Themenreihen: Hygiene, Umgang mit Geld', en: 'Themed series: Hygiene, money management', kh: 'ស៊េរីប្រធានបទ' }
+      { de: 'Leihbücher für alle Altersgruppen', en: 'Books for all ages' },
+      { de: 'Kreative Förderung', en: 'Creative activities' }
     ]
   },
   {
     icon: 'community',
     title: { de: 'Hilfe für die Gemeinschaft', en: 'Community Support', kh: 'ការគាំទ្រសហគមន៍' },
     description: {
-      de: 'Wir unterstützen die Familien auch in Notsituationen. Hilfe zur Selbsthilfe.',
-      en: 'We also support families in emergency situations. Help for self-help.',
+      de: 'Wir unterstützen die Familien auch in Notsituationen. Hilfe zur Selbsthilfe durch Reis- und Hygienepakete sowie individuelle Beratung.',
+      en: 'We also support families in emergency situations. Help for self-help through rice and hygiene packages and individual counseling.',
       kh: 'យើងក៏គាំទ្រគ្រួសារក្នុងស្ថានភាពបន្ទាន់។'
     },
     features: [
-      { de: 'Moskitonetze & Fahrräder', en: 'Mosquito nets & bicycles', kh: 'មុងគ្រែបាញ់ និងកង់' },
-      { de: 'Reis- und Hygienepakete', en: 'Rice and hygiene packages', kh: 'កញ្ចប់អង្ករ និងអនាម័យ' },
-      { de: 'Hausbesuche & Beratung', en: 'Home visits & consultation', kh: 'ទស្សនាផ្ទះ និងពិគ្រោះយោបល់' },
-      { de: 'Bildung für Erwachsene', en: 'Adult education', kh: 'ការអប់រំមនុស្សពេញវ័យ' }
+      { de: 'Reis- und Hygienepakete', en: 'Rice and hygiene packages' },
+      { de: 'Hausbesuche & Beratung', en: 'Home visits & consultation' }
     ]
   }
 ];
 
 const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
-
-const getIcon = (key: string) => {
-  switch(key) {
-    case 'baby': case 'preschool': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 6v12M6 12h12"/></svg>';
-    case 'book': case 'afternoon': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V5A2.5 2.5 0 0 1 6.5 2.5H20v14.5"/></svg>';
-    case 'library': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 17H2M2 22h20M7 17V3M17 17V3M2 3h20"/></svg>';
-    case 'community': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
-    default: return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
-  }
-};
 ---
 
-<section id="programme" class="section bg-branding-accent relative overflow-hidden">
-  <div class="container-custom relative z-10">
-    <!-- Section header -->
-    <div class="reveal mb-20 border-l-2 border-primary/30 pl-8 md:pl-12">
-        <h2 class="text-xs md:text-sm uppercase tracking-[0.4em] font-bold text-primary mb-6 opacity-60">
-            {locale === 'de' ? 'Unsere Arbeit' : 'Our Work'}
-        </h2>
-        <p class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark tracking-tighter">
-            {locale === 'de' ? 'Unsere Programme' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
-        </p>
+<section id="programme" class="py-32 md:py-48 bg-branding-accent overflow-hidden">
+  <div class="container-custom">
+    <!-- Section Header -->
+    <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
+      <h2 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60">
+        {locale === 'de' ? 'Fokus' : locale === 'en' ? 'Focus' : 'ការផ្តោតអារម្មណ៍'}
+      </h2>
+      <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
+        {locale === 'de' ? 'Unsere Arbeit' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
+      </h3>
     </div>
 
-    <!-- Program cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+    <!-- Side-by-Side Portfolio Layout -->
+    <div class="space-y-32 md:space-y-48">
       {displayPrograms.map((program, index) => (
-        <div class={`reveal reveal-delay-${(index % 2) * 200} group flex flex-col h-full bg-white rounded-[2.5rem] overflow-hidden border border-black/5 hover:shadow-2xl transition-all duration-700`}>
-          <!-- Image Header -->
-          <div class="aspect-[16/10] overflow-hidden relative hover-zoom-container">
-            {program.image ? (
-              <img 
-                src={urlFor(program.image).width(800).height(500).url()} 
-                alt={t(program.title, locale)}
-                class="w-full h-full object-cover"
-              />
-            ) : (
-              <div class="w-full h-full bg-branding-dark/5 flex items-center justify-center">
-                 <div class="w-24 h-24 text-primary/20 group-hover:text-primary/40 transition-colors duration-500" set:html={getIcon(program.icon)} />
+        <div class={`flex flex-col lg:flex-row items-center gap-12 md:gap-24 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
+          <!-- Image Side -->
+          <div class="w-full lg:w-1/2 reveal">
+            <div class="relative group">
+              <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl bg-white">
+                {program.image ? (
+                  <img 
+                    src={urlFor(program.image).width(1200).height(900).url()} 
+                    alt={t(program.title, locale)}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                  />
+                ) : (
+                  <div class="w-full h-full bg-branding-accent flex items-center justify-center text-primary/20">
+                    <div class="w-24 h-24" set:html={getIcon(program.icon || 'default')}></div>
+                  </div>
+                )}
+                <!-- Overlay accent -->
+                <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500"></div>
               </div>
-            )}
-            <!-- Overlay Gradient -->
-            <div class="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.4)_0%,transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <!-- Number Indicator -->
+              <div class="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 w-20 h-20 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-xl z-20 font-heading font-extrabold text-secondary/20 text-2xl md:text-4xl italic transition-transform group-hover:scale-110 duration-500">
+                0{index + 1}
+              </div>
+            </div>
           </div>
 
-          <div class="p-8 md:p-12 flex flex-col flex-grow">
-            <!-- Title Row -->
-            <div class="flex items-start justify-between mb-8">
-              <div class="flex-grow">
-                 <h3 class="text-2xl md:text-3xl font-heading font-extrabold text-branding-dark leading-tight tracking-tight group-hover:text-primary transition-colors duration-300">
-                    {t(program.title, locale)}
-                  </h3>
-              </div>
-              <div class="w-10 h-10 text-secondary opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 flex-shrink-0 ml-4" set:html={getIcon(program.icon)} />
-            </div>
+          <!-- Content Side -->
+          <div class="w-full lg:w-1/2 reveal">
+             <div class="max-w-xl mx-auto lg:mx-0">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                        <div class="w-6 h-6" set:html={getIcon(program.icon || 'default')}></div>
+                    </div>
+                </div>
 
-            <!-- Description -->
-            <p class="text-branding-muted text-lg mb-10 leading-relaxed font-light">
-              {t(program.description, locale)}
-            </p>
+                <h4 class="text-3xl md:text-4xl font-heading font-extrabold text-branding-dark mb-8 tracking-tight">
+                  {t(program.title, locale)}
+                </h4>
+                
+                <p class="text-lg md:text-xl text-branding-muted leading-relaxed font-light mb-10">
+                  {t(program.description, locale)}
+                </p>
 
-            <!-- Features list -->
-            {program.features && (
-              <ul class="space-y-4 mb-8">
-                {program.features.map((feature: any) => (
-                  <li class="flex items-center gap-4 text-branding-text group/item">
-                    <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-secondary group-hover/item:scale-150 transition-transform duration-300"></div>
-                    <span class="text-sm font-medium tracking-wide ">{t(feature, locale)}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            
-            <div class="mt-auto pt-4 border-t border-black/5 flex justify-end">
-                 <div class="w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
-            </div>
+                {program.features && (
+                  <ul class="space-y-4 border-l-2 border-primary/10 pl-8">
+                    {program.features.map((feature: any) => (
+                      <li class="flex items-start gap-3 group/item">
+                        <svg class="w-5 h-5 text-secondary mt-1 group-hover/item:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="10" stroke-width="2" class="opacity-20"></circle>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                        </svg>
+                        <span class="text-branding-muted font-medium">
+                          {typeof feature === 'string' ? feature : t(feature, locale)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+             </div>
           </div>
         </div>
       ))}

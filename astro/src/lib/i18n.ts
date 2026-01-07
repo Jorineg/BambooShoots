@@ -68,25 +68,25 @@ export function localizedUrl(path: string, locale: Locale): string {
 export const navigation = {
     de: [
         { label: 'Start', href: '#start' },
-        { label: 'Mission', href: '#mission' },
         { label: 'Programme', href: '#programme' },
         { label: 'Team', href: '#team' },
+        { label: 'Galerie', href: '/galerie' },
         { label: 'Spenden', href: '#spenden' },
         { label: 'Geschichte', href: '/history' }
     ],
     en: [
         { label: 'Home', href: '#start' },
-        { label: 'Mission', href: '#mission' },
         { label: 'Programs', href: '#programme' },
         { label: 'Team', href: '#team' },
+        { label: 'Gallery', href: '/galerie' },
         { label: 'Donate', href: '#spenden' },
         { label: 'History', href: '/history' }
     ],
     kh: [
         { label: 'ទំព័រដើម', href: '#start' },
-        { label: 'បេសកកម្ម', href: '#mission' },
         { label: 'កម្មវិធី', href: '#programme' },
         { label: 'ក្រុម', href: '#team' },
+        { label: 'វិចិត្រសាល', href: '/galerie' },
         { label: 'បរិច្ចាគ', href: '#spenden' },
         { label: 'ប្រវត្តិ', href: '/history' }
     ]

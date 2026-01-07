@@ -30,6 +30,11 @@ export async function getHistoryPage() {
     return sanityClient.fetch(`*[_type == "historyPage"][0]`);
 }
 
+// Fetch gallery page content
+export async function getGalleryPage() {
+    return sanityClient.fetch(`*[_type == "galleryPage"][0]`);
+}
+
 // Fetch team members
 export async function getTeamMembers() {
     return sanityClient.fetch(`*[_type == "teamMember"] | order(order asc)`);

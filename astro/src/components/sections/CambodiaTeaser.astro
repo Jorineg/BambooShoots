@@ -9,25 +9,31 @@ interface Props {
 
 const { locale, data } = Astro.props;
 
-// Use a default image if none provided
-const bgImage = data?.image 
+// Debug log for data
+console.log('[CambodiaTeaser] data:', JSON.stringify(data, null, 2));
+
+const hasSanityImage = !!(data?.image?.asset?._ref || data?.image?.asset?._id);
+const bgImage = hasSanityImage 
   ? urlFor(data.image).width(1920).url() 
-  : '/BambooShoots/images/cambodia_culture.png'; 
+  : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`; 
+
+console.log('[CambodiaTeaser] Using bgImage:', bgImage);
 ---
 
-<section class="relative min-h-[60vh] flex items-center overflow-hidden bg-branding-dark py-24 md:py-32">
+<section class="teaser-container relative min-h-[60vh] flex items-center overflow-hidden bg-branding-dark py-24 md:py-32">
   <!-- Parallax Background -->
   <div class="absolute inset-0 z-0">
     <div class="parallax-wrapper absolute inset-0 w-full h-full">
       <img 
+        id="cambodia-parallax-img"
         src={bgImage}
         alt=""
-        class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover grayscale opacity-30 brightness-[0.3]"
+        class="parallax-target-slow absolute top-[-15%] left-0 w-full h-[130%] object-cover opacity-100"
       />
     </div>
-    <!-- Deep Green Tint Overlays -->
-    <div class="absolute inset-0 bg-[#0d2a17]/80"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark"></div>
+    <!-- Clean, Cinematic Depth Overlays (Neutral) -->
+    <div class="absolute inset-0 bg-branding-dark/40"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"></div>
   </div>
 
   <div class="container-custom relative z-10 px-4 md:px-8">
@@ -55,7 +61,7 @@ const bgImage = data?.image
           </p>
     
           <a 
-            href={localizedUrl('/geschichte', locale)}
+            href={localizedUrl('/history', locale)}
             class="group inline-flex items-center gap-4 text-white font-bold hover:text-secondary transition-all duration-500"
           >
             <span class="text-sm uppercase tracking-[0.3em] border-b border-white/20 group-hover:border-secondary transition-all">
@@ -73,6 +79,10 @@ const bgImage = data?.image
 </section>
 
 <style>
+  .teaser-container {
+    view-timeline: --teaser-v block;
+  }
+
   @keyframes parallax-slow {
     from { transform: translateY(0); }
     to { transform: translateY(15%); }
@@ -81,8 +91,48 @@ const bgImage = data?.image
   @supports (animation-timeline: view()) {
     .parallax-target-slow {
       animation: parallax-slow linear both;
-      animation-timeline: view();
+      animation-timeline: --teaser-v;
       animation-range: entry 0% exit 100%;
     }
   }
 </style>
+
+<script is:inline>
+  (function() {
+    // Check for native support
+    if (CSS.supports('animation-timeline', 'view()') || CSS.supports('animation-timeline', 'scroll()')) {
+      return;
+    }
+    
+    const img = document.getElementById('cambodia-parallax-img');
+    const section = img?.closest('section');
+    if (!img || !section) return;
+
+    let ticking = false;
+    const update = () => {
+      const rect = section.getBoundingClientRect();
+      const viewHeight = window.innerHeight;
+      
+      if (rect.top < viewHeight && rect.bottom > 0) {
+        // Calculate how much of the section has been scrolled through the viewport
+        const totalDist = viewHeight + rect.height;
+        const currentDist = viewHeight - rect.top;
+        const scrolled = currentDist / totalDist;
+        
+        // Match the 20% range of the CSS animation
+        const yPos = scrolled * 20; 
+        img.style.transform = `translate3d(0, ${yPos}%, 0)`;
+      }
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    
+    update();
+  })();
+</script>

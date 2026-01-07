@@ -49,13 +49,13 @@ const objectPosition = hotspot
 >
   <!-- Background Image Layer -->
   <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-    <div class="parallax-wrapper absolute inset-0 w-full h-full">
+    <div class="parallax-wrapper absolute inset-0 w-full h-full animate-fade-in" style="animation-delay: 0.2s;">
       <img 
         id="hero-parallax-img"
         src={heroImage}
         alt=""
-        class="parallax-target absolute top-[-10%] left-0 w-full h-[120%] object-cover will-change-transform opacity-0 animate-fade-in"
-        style={`object-position: ${objectPosition}; animation-delay: 0.2s;`}
+        class="parallax-target absolute top-[-10%] left-0 w-full h-[120%] object-cover will-change-transform"
+        style={`object-position: ${objectPosition};`}
       />
     </div>
     
@@ -165,13 +165,21 @@ const objectPosition = hotspot
       return;
     }
     const img = document.getElementById('hero-parallax-img');
-    if (!img) return;
+    const section = img?.closest('section');
+    if (!img || !section) return;
+
     let ticking = false;
     const update = () => {
-      const scrollY = window.pageYOffset;
-      if (scrollY < window.innerHeight) {
-        const yPos = scrollY * 0.4;
-        img.style.transform = `translate3d(0, ${yPos}px, 0)`;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const viewHeight = window.innerHeight;
+      const sectionHeight = section.offsetHeight;
+      
+      if (scrollY < sectionHeight + viewHeight) {
+        // Calculate scroll progress for the top section
+        const scrolled = Math.min(1, scrollY / sectionHeight);
+        // Match the 20% range of the CSS animation
+        const yPos = scrolled * 20; 
+        img.style.transform = `translate3d(0, ${yPos}%, 0)`;
       }
       ticking = false;
     };

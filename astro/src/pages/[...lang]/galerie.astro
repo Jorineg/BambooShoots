@@ -1,0 +1,139 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getLocale, t, defaultLocale } from '../../lib/i18n';
+import { getGalleryPage, urlFor } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } },
+    { params: { lang: 'kh' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const locale = lang as any || defaultLocale;
+
+const galleryPage = await getGalleryPage();
+const images = galleryPage?.images || [];
+
+const pageTitle = t(galleryPage?.title, locale) || (locale === 'de' 
+  ? 'Galerie' 
+  : locale === 'en' 
+  ? 'Gallery' 
+  : 'វិចិត្រសាល');
+
+const pageSubtitle = t(galleryPage?.description, locale) || (locale === 'de'
+  ? 'Einblicke in unsere Arbeit und das Leben vor Ort.'
+  : locale === 'en'
+  ? 'Insights into our work and life on site.'
+  : 'ការយល់ដឹងអំពីការងាររបស់យើង និងជីវិតនៅនឹងកន្លែង។');
+---
+
+<Layout title={pageTitle} locale={locale}>
+  <main class="pt-32 pb-48 bg-branding-bg min-h-screen">
+    <div class="container-custom">
+      <!-- Header -->
+      <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
+        <h1 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60">
+          {locale === 'de' ? 'Impressionen' : locale === 'en' ? 'Impressions' : 'ចំណាប់អារម្មណ៍'}
+        </h1>
+        <h2 class="text-5xl md:text-7xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
+          {pageTitle}
+        </h2>
+        <p class="text-branding-muted text-lg md:text-2xl font-light leading-relaxed max-w-2xl">
+          {pageSubtitle}
+        </p>
+      </div>
+
+      <!-- Masonry Grid -->
+      <div id="gallery-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
+        {images.map((image: any, index: number) => (
+          <div 
+            class="break-inside-avoid reveal"
+            style={`transition-delay: ${(index % 3) * 100}ms`}
+          >
+            <a 
+              href={urlFor(image).width(1600).url()} 
+              class="gallery-item block group relative overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-700 bg-white"
+            >
+              <img 
+                src={urlFor(image).width(800).url()} 
+                alt={image.alt || t(image.caption, locale) || 'Bamboo Shoots Gallery'}
+                class="w-full h-auto object-cover transform transition-transform duration-1000 group-hover:scale-110"
+                loading="lazy"
+              />
+              
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                {image.caption && (
+                  <p class="text-white text-sm font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    {t(image.caption, locale)}
+                  </p>
+                )}
+                <div class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform duration-500">
+                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                   </svg>
+                </div>
+              </div>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      {images.length === 0 && (
+        <div class="text-center py-32 reveal">
+            <p class="text-branding-muted italic">
+                {locale === 'de' ? 'Noch keine Fotos in der Galerie.' : 'No photos in the gallery yet.'}
+            </p>
+        </div>
+      )}
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import GLightbox from 'glightbox';
+  import 'glightbox/dist/css/glightbox.min.css';
+
+  // Initialize Lightbox
+  const initLightbox = () => {
+    GLightbox({
+      selector: '.gallery-item',
+      touchNavigation: true,
+      loop: true,
+      autoplayVideos: true
+    });
+  };
+
+  // Run on page load and when swapping via View Transitions if used
+  initLightbox();
+
+  // Reveal Animation (if not globally handled well for Masonry)
+  const observeGrid = () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('#gallery-grid .reveal').forEach(el => observer.observe(el));
+  };
+  
+  observeGrid();
+</script>
+
+<style>
+  /* Masonry adjustments */
+  .columns-1 { column-count: 1; }
+  @media (min-width: 640px) { .sm\:columns-2 { column-count: 2; } }
+  @media (min-width: 1024px) { .lg\:columns-3 { column-count: 3; } }
+  
+  .break-inside-avoid {
+    break-inside: avoid;
+    display: block;
+  }
+</style>

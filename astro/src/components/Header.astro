@@ -42,10 +42,10 @@ const currentPath = Astro.url.pathname;
       <div class="hidden lg:flex items-center gap-10">
         {navItems.map((item) => (
           <a 
-            href={localizedUrl(item.href, locale)} 
-            class="nav-link-dynamic text-white/80 hover:text-white font-medium transition-all duration-300 relative py-2"
+            href={item.href.startsWith('#') ? localizedUrl(item.href, locale) : localizedUrl(item.href, locale)} 
+            class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
           >
-            <span class="relative z-10 text-xs uppercase tracking-widest">{item.label}</span>
+            <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">{item.label}</span>
             <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300"></span>
           </a>
         ))}
@@ -122,22 +122,38 @@ const currentPath = Astro.url.pathname;
   .nav-link-dynamic:hover .nav-underline {
     @apply w-full;
   }
+
+  /* Lösung C: Subtle shadow on hero for readability */
+  header:not(.scrolled) .nav-link-dynamic,
+  header:not(.scrolled) .header-text,
+  header:not(.scrolled) .lang-btn {
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 20px rgba(0,0,0,0.2);
+  }
+
+  header:not(.scrolled) .lang-btn svg {
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  }
   
   header.scrolled {
-    @apply glass border-branding-accent shadow-lg;
-    background-color: rgba(255, 255, 255, 0.85);
+    @apply shadow-lg;
+    background-color: rgba(235, 230, 222, 0.85); /* earth-200ish with transparency */
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
   }
 
   header.scrolled .header-text {
     @apply text-branding-dark;
+    text-shadow: none;
   }
 
   header.scrolled .nav-link-dynamic {
-    @apply text-branding-text hover:text-primary;
+    @apply text-branding-dark/80 hover:text-primary;
+    text-shadow: none;
   }
 
   header.scrolled .lang-btn {
-    @apply text-branding-muted hover:text-primary hover:bg-branding-accent;
+    @apply text-branding-dark/60 hover:text-primary hover:bg-black/5;
+    text-shadow: none;
   }
 
   header.scrolled #mobile-menu-btn {

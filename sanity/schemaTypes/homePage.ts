@@ -57,7 +57,13 @@ export default defineType({
             fields: [
                 localizedString('title', 'Title'),
                 localizedText('text', 'Teaser Text'),
-                localizedString('linkText', 'Link Text')
+                localizedString('linkText', 'Link Text'),
+                defineField({
+                    name: 'image',
+                    title: 'Background Image',
+                    type: 'image',
+                    options: { hotspot: true }
+                })
             ]
         }),
 
@@ -118,25 +124,16 @@ export default defineType({
             type: 'object',
             fields: [
                 localizedString('title', 'Title'),
-                localizedText('text', 'Text')
+                localizedText('text', 'Text'),
+                defineField({
+                    name: 'image',
+                    title: 'Background Image',
+                    type: 'image',
+                    options: { hotspot: true }
+                })
             ]
         }),
 
-        // Gallery
-        defineField({
-            name: 'gallery',
-            title: 'Gallery',
-            type: 'array',
-            of: [
-                defineArrayMember({
-                    type: 'image',
-                    options: { hotspot: true },
-                    fields: [
-                        localizedString('caption', 'Caption')
-                    ]
-                })
-            ]
-        })
     ],
     preview: {
         prepare() {
