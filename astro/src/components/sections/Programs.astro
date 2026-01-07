@@ -77,43 +77,63 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
 <section id="programme" class="section bg-white">
   <div class="container-custom">
     <!-- Section header -->
-    <div class="text-center mb-12 md:mb-16">
-      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
+    <div class="text-center mb-16 md:mb-24">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-6">
         {locale === 'de' ? 'Unsere Programme' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
       </h2>
-      <div class="section-divider"></div>
+      <div class="section-divider mb-8"></div>
     </div>
 
     <!-- Program cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
       {displayPrograms.map((program, index) => (
-        <div class="card group" style={`animation-delay: ${index * 0.1}s`}>
-          <!-- Icon & Title -->
-          <div class="flex items-start gap-4 mb-4">
-            <span class="text-4xl group-hover:scale-110 transition-transform">{program.icon}</span>
-            <h3 class="text-xl md:text-2xl font-heading font-semibold text-bamboo-800">
-              {t(program.title, locale)}
-            </h3>
+        <div class="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden border border-earth-100 hover:border-bamboo-200 hover:shadow-2xl transition-all duration-500" style={`animation-delay: ${index * 0.1}s`}>
+          <!-- Image Header -->
+          <div class="aspect-[16/9] overflow-hidden relative">
+            {program.image ? (
+              <img 
+                src={urlFor(program.image).width(800).height(450).url()} 
+                alt={t(program.title, locale)}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+            ) : (
+              <div class="w-full h-full bg-bamboo-50 flex items-center justify-center">
+                <span class="text-6xl group-hover:scale-110 transition-transform duration-500 opacity-20">{program.icon}</span>
+              </div>
+            )}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
           </div>
 
-          <!-- Description -->
-          <p class="text-earth-600 mb-4 leading-relaxed">
-            {t(program.description, locale)}
-          </p>
+          <div class="p-8 md:p-10 flex flex-col flex-grow">
+            <!-- Icon & Title (Fixed Gap) -->
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-2xl group-hover:scale-110 transition-transform duration-300">{program.icon}</span>
+              <h3 class="text-2xl md:text-3xl font-heading font-bold text-bamboo-900 leading-tight">
+                {t(program.title, locale)}
+              </h3>
+            </div>
 
-          <!-- Features list -->
-          {program.features && (
-            <ul class="space-y-2">
-              {program.features.map((feature: any) => (
-                <li class="flex items-center gap-2 text-sm text-earth-700">
-                  <svg class="w-4 h-4 text-bamboo-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                  </svg>
-                  <span>{t(feature, locale)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+            <!-- Description -->
+            <p class="text-earth-600 text-lg mb-8 leading-relaxed">
+              {t(program.description, locale)}
+            </p>
+
+            <!-- Features list -->
+            {program.features && (
+              <ul class="space-y-4 mt-auto">
+                {program.features.map((feature: any) => (
+                  <li class="flex items-start gap-3 text-earth-700">
+                    <div class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-khmer-50 flex items-center justify-center">
+                      <svg class="w-3 h-3 text-khmer-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                      </svg>
+                    </div>
+                    <span class="text-sm font-medium">{t(feature, locale)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       ))}
     </div>

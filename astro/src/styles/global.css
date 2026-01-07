@@ -34,12 +34,12 @@
 
   /* Section spacing */
   .section {
-    @apply py-16 md:py-24 px-4 md:px-8;
+    @apply py-20 md:py-32 px-4 md:px-8;
   }
 
   /* Container */
   .container-custom {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-6xl mx-auto w-full;
   }
 
   /* Button styles */
@@ -52,7 +52,7 @@
   }
 
   .btn-donate {
-    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-khmer-500 to-khmer-600 text-white font-semibold rounded-lg hover:from-khmer-600 hover:to-khmer-700 active:from-khmer-700 active:to-khmer-800 transition-all duration-200 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-0.5 animate-pulse;
+    @apply inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-khmer-500 to-khmer-600 text-white font-semibold rounded-lg hover:from-khmer-600 hover:to-khmer-700 active:from-khmer-700 active:to-khmer-800 transition-all duration-200 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-0.5;
   }
 
   /* Card styles */

@@ -1,5 +1,6 @@
 ---
 import { t, type Locale } from '../../lib/i18n';
+import { urlFor } from '../../lib/sanity';
 
 interface Props {
   locale: Locale;
@@ -7,26 +8,33 @@ interface Props {
 }
 
 const { locale, data } = Astro.props;
+
+const quoteText = t(data?.quote, locale) || (locale === 'de'
+  ? 'Kinder sind wie Bambussprossen – sie wachsen mit der richtigen Pflege stark heran.'
+  : locale === 'en'
+  ? 'Children are like bamboo shoots – they grow strong with the right care.'
+  : 'កុមារដូចជាដើមឬស្សី – ពួកគេរីកចម្រើនខ្លាំងជាមួយការថែរក្សាត្រឹមត្រូវ។');
+
+const quoteSource = t(data?.quoteSource, locale) || (locale === 'de' ? 'Kambodschanisches Sprichwort' : locale === 'en' ? 'Cambodian Proverb' : 'សុភាសិតខ្មែរ');
 ---
 
-<section id="mission" class="section bg-earth-100">
-  <div class="container-custom">
-    <div class="max-w-4xl mx-auto">
-      <!-- Title -->
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-4">
+<section id="mission" class="bg-white overflow-hidden">
+  <!-- Mission Statement -->
+  <div class="container-custom py-24 md:py-32">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-6">
           {t(data?.title, locale) || (locale === 'de' ? 'Unsere Mission' : locale === 'en' ? 'Our Mission' : 'បេសកកម្មរបស់យើង')}
         </h2>
-        <div class="section-divider"></div>
+        <div class="section-divider mb-8"></div>
       </div>
 
-      <!-- Main text -->
-      <div class="bg-white rounded-2xl p-8 md:p-12 shadow-lg mb-8">
-        <p class="text-2xl md:text-3xl font-heading font-semibold text-bamboo-700 text-center mb-6">
+      <div class="bg-earth-50 rounded-[2.5rem] p-10 md:p-16 border border-earth-100 shadow-sm">
+        <p class="text-2xl md:text-3xl font-heading font-bold text-bamboo-800 text-center mb-10 leading-tight">
           {locale === 'de' ? 'Bildung verändert Leben.' : locale === 'en' ? 'Education changes lives.' : 'ការអប់រំផ្លាស់ប្តូរជីវិត។'}
         </p>
         
-        <p class="text-earth-700 text-lg leading-relaxed text-center max-w-3xl mx-auto">
+        <p class="text-earth-700 text-xl leading-relaxed text-center max-w-3xl mx-auto">
           {t(data?.text, locale) || (locale === 'de'
             ? 'Wir glauben, dass jedes Kind ein Recht auf Bildung und eine faire Chance auf eine gute Zukunft hat – unabhängig vom sozialen und kulturellen Hintergrund. Deshalb fördern wir Kinder und Jugendliche aus einkommensschwachen, kambodschanischen Familien mit kostenlosen Bildungsangeboten.'
             : locale === 'en'
@@ -34,23 +42,37 @@ const { locale, data } = Astro.props;
             : 'យើងជឿជាក់ថាកុមារគ្រប់រូបមានសិទ្ធិទទួលបានការអប់រំ និងឱកាសយុត្តិធម៌សម្រាប់អនាគតល្អ។')}
         </p>
       </div>
+    </div>
+  </div>
 
-      <!-- Quote -->
-      <div class="relative">
-        <div class="absolute -top-4 left-8 text-6xl text-bamboo-300 font-serif">"</div>
-        <blockquote class="bg-gradient-to-r from-bamboo-600 to-bamboo-700 text-white rounded-2xl p-8 md:p-10 relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-          <p class="text-xl md:text-2xl font-medium italic mb-4 relative z-10">
-            {t(data?.quote, locale) || (locale === 'de'
-              ? 'Kinder sind wie Bambussprossen – sie wachsen mit der richtigen Pflege stark heran.'
-              : locale === 'en'
-              ? 'Children are like bamboo shoots – they grow strong with the right care.'
-              : 'កុមារដូចជាដើមឬស្សី – ពួកគេរីកចម្រើនខ្លាំងជាមួយការថែរក្សាត្រឹមត្រូវ។')}
-          </p>
-          <footer class="text-bamboo-100 text-sm relative z-10">
-            — {t(data?.quoteSource, locale) || (locale === 'de' ? 'Kambodschanisches Sprichwort' : locale === 'en' ? 'Cambodian Proverb' : 'សុភាសិតខ្មែរ')}
-          </footer>
+  <!-- Full-bleed Quote -->
+  <div class="relative bg-bamboo-900 py-32 md:py-48 overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-khmer-900/20 -skew-x-12 translate-x-1/4"></div>
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 left-10 w-64 h-64 border border-white rounded-full"></div>
+      <div class="absolute bottom-10 right-10 w-96 h-96 border border-white rounded-full"></div>
+    </div>
+
+    <div class="container-custom relative z-10 text-center">
+      <div class="max-w-4xl mx-auto px-6">
+        <!-- Quote Icon -->
+        <div class="mb-12 inline-block">
+          <svg class="w-16 h-16 text-khmer-500 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H16.017C14.9124 8 14.017 7.10457 14.017 6V5C14.017 3.89543 14.9124 3 16.017 3H21.017C22.1216 3 23.017 3.89543 23.017 5V15C23.017 18.3137 20.3307 21 17.017 21H14.017ZM1.017 21L1.017 18C1.017 16.8954 1.91243 16 3.017 16H6.017C6.56928 16 7.017 15.5523 7.017 15V9C7.017 8.44772 6.56928 8 6.017 8H3.017C1.91243 8 1.017 7.10457 1.017 6V5C1.017 3.89543 1.91243 3 3.017 3H8.017C9.12157 3 10.017 3.89543 10.017 5V15C10.017 18.3137 7.33071 21 4.017 21H1.017Z" />
+          </svg>
+        </div>
+
+        <blockquote class="text-3xl md:text-5xl lg:text-6xl font-heading font-light text-white leading-tight md:leading-tight mb-12 italic">
+          {quoteText}
         </blockquote>
+
+        <div class="flex flex-col items-center">
+          <div class="h-px w-24 bg-khmer-500 mb-8"></div>
+          <p class="text-khmer-400 font-bold uppercase tracking-widest text-sm">
+            {quoteSource}
+          </p>
+        </div>
       </div>
     </div>
   </div>

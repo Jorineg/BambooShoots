@@ -9,41 +9,37 @@ interface Props {
 const { locale, data } = Astro.props;
 ---
 
-<section class="section bg-gradient-to-r from-earth-200 to-earth-100">
+<section class="section bg-earth-50">
   <div class="container-custom">
-    <div class="max-w-4xl mx-auto bg-white rounded-2xl p-8 md:p-12 shadow-lg">
-      <div class="flex flex-col md:flex-row gap-8 items-center">
-        <!-- Icon/Image -->
-        <div class="flex-shrink-0">
-          <div class="w-24 h-24 bg-bamboo-100 rounded-full flex items-center justify-center">
-            <span class="text-5xl">🇰🇭</span>
-          </div>
-        </div>
+    <div class="max-w-3xl mx-auto text-center">
+      <!-- Content -->
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-bamboo-800 mb-6">
+        {t(data?.title, locale) || (locale === 'de' 
+          ? 'Kambodscha: Wurzeln, Wandel und Hoffnung'
+          : locale === 'en'
+          ? 'Cambodia: Roots, Change, and Hope'
+          : 'កម្ពុជា៖ ឫសគល់ ការផ្លាស់ប្តូរ និងសេចក្តីសង្ឃឹម')}
+      </h2>
+      
+      <div class="section-divider mb-8"></div>
 
-        <!-- Content -->
-        <div class="flex-grow text-center md:text-left">
-          <h3 class="text-2xl font-heading font-bold text-bamboo-800 mb-3">
-            {t(data?.title, locale) || (locale === 'de' 
-              ? 'Kambodscha heute: Zwischen Vergangenheit und Aufbruch'
-              : locale === 'en'
-              ? 'Cambodia today: Between past and new beginnings'
-              : 'កម្ពុជាថ្ងៃនេះ៖ រវាងអតីតកាល និងការចាប់ផ្តើមថ្មី')}
-          </h3>
-          <p class="text-earth-600 mb-6 leading-relaxed">
-            {t(data?.text, locale) || (locale === 'de'
-              ? 'Kambodscha hat eine schwere Geschichte hinter sich. Erfahren Sie mehr über das Land, seine Menschen und warum Bildung so wichtig ist.'
-              : locale === 'en'
-              ? 'Cambodia has a difficult history. Learn more about the country, its people and why education is so important.'
-              : 'កម្ពុជាមានប្រវត្តិសាស្រ្តលំបាក។ ស្វែងយល់បន្ថែមអំពីប្រទេស មនុស្ស និងហេតុអ្វីការអប់រំមានសារៈសំខាន់។')}
-          </p>
-          <a 
-            href={localizedUrl('/history', locale)}
-            class="btn-primary inline-flex"
-          >
-            {t(data?.linkText, locale) || (locale === 'de' ? 'Zur Geschichte →' : locale === 'en' ? 'Read our history →' : 'អានប្រវត្តិរបស់យើង →')}
-          </a>
-        </div>
-      </div>
+      <p class="text-earth-700 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+        {t(data?.text, locale) || (locale === 'de'
+          ? 'Um zu verstehen, woran wir heute arbeiten, muss man den Weg kennen, den dieses Land gegangen ist. Von den Schatten der Vergangenheit zum Mut der nächsten Generation.'
+          : locale === 'en'
+          ? 'To understand what we are working on today, one must know the path this country has taken. From the shadows of the past to the courage of the next generation.'
+          : 'ដើម្បីយល់ពីអ្វីដែលយើងកំពុងធ្វើនៅថ្ងៃនេះ គេត្រូវតែស្វែងយល់ពីផ្លូវដែលប្រទេសនេះបានដើរ។')}
+      </p>
+
+      <a 
+        href={localizedUrl('/history', locale)}
+        class="inline-flex items-center gap-2 text-bamboo-600 font-bold hover:text-bamboo-700 transition-colors group text-lg"
+      >
+        <span>{t(data?.linkText, locale) || (locale === 'de' ? 'Unsere Geschichte entdecken' : locale === 'en' ? 'Discover our history' : 'ស្វែងយល់ពីប្រវត្តិរបស់យើង')}</span>
+        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
     </div>
   </div>
 </section>

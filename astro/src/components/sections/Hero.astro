@@ -28,11 +28,6 @@ const { locale, data } = Astro.props;
   <!-- Content -->
   <div class="container-custom relative z-10 px-4 md:px-8 py-16">
     <div class="max-w-3xl">
-      <!-- Small badge -->
-      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-bamboo-100 text-sm mb-6 animate-fade-in">
-        <span>Bamboo Shoots – time to grow</span>
-      </div>
-
       <!-- Main heading -->
       <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6 animate-slide-up">
         {t(data?.title, locale) || (locale === 'de' 

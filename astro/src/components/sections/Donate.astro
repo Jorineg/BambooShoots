@@ -43,18 +43,15 @@ const defaultTiers = [
 const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
 ---
 
-<section id="spenden" class="section bg-gradient-to-br from-bamboo-700 via-bamboo-800 to-bamboo-900 text-white relative overflow-hidden">
-  <!-- Background decoration -->
-  <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-  <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-
+<section id="spenden" class="section bg-bamboo-900 text-white relative overflow-hidden">
   <div class="container-custom relative z-10">
     <!-- Section header -->
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">
+    <div class="text-center mb-16 md:mb-24">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
         {locale === 'de' ? 'Spenden & Mitmachen' : locale === 'en' ? 'Donate & Get Involved' : 'បរិច្ចាគ និងចូលរួម'}
       </h2>
-      <p class="text-bamboo-100 text-lg max-w-2xl mx-auto">
+      <div class="section-divider mb-8 bg-white/30"></div>
+      <p class="text-bamboo-200 text-lg max-w-2xl mx-auto leading-relaxed">
         {locale === 'de' 
           ? 'Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll.'
           : locale === 'en'
@@ -64,95 +61,146 @@ const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
     </div>
 
     <!-- Donation tiers -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      {displayTiers.map((tier, index) => (
-        <div class={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/20 hover:bg-white/15 transition-all ${index === 0 ? 'ring-2 ring-khmer-400' : ''}`}>
-          {index === 0 && (
-            <div class="bg-khmer-500 text-white text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
-              {locale === 'de' ? 'Beliebt' : locale === 'en' ? 'Popular' : 'ពេញនិយម'}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+      {displayTiers.map((tier, index) => {
+        const paypalUrl = settings?.donationLinks?.paypal && tier.amount 
+          ? `${settings.donationLinks.paypal}&amount=${tier.amount}`
+          : settings?.donationLinks?.paypal;
+
+        return (
+          <a 
+            href={paypalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={`group relative bg-bamboo-800/40 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-bamboo-700/50 hover:border-khmer-500/50 hover:bg-bamboo-800/60 transition-all duration-500 flex flex-col h-full ${index === 0 ? 'ring-1 ring-khmer-500/30' : ''}`}
+          >
+            {index === 0 && (
+              <div class="absolute top-6 right-6 bg-khmer-600 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow-sm">
+                {locale === 'de' ? 'Beliebt' : locale === 'en' ? 'Popular' : 'ពេញនិយម'}
+              </div>
+            )}
+            
+            <div class="text-3xl md:text-5xl font-heading font-bold mb-4 text-white group-hover:scale-105 transition-transform origin-left">
+              {tier.amount ? `${tier.amount} €` : (locale === 'de' ? 'Freier Betrag' : locale === 'en' ? 'Any Amount' : 'ចំនួនណាមួយ')}
             </div>
+            
+            <h3 class="text-xl font-bold mb-4 text-bamboo-100">
+              {t(tier.title, locale)}
+            </h3>
+            
+            <p class="text-bamboo-200/80 text-sm leading-relaxed mb-8 flex-grow">
+              {t(tier.description, locale)}
+            </p>
+
+            <div class="flex items-center gap-2 text-khmer-400 font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+              <span>{locale === 'de' ? 'Jetzt spenden' : locale === 'en' ? 'Donate now' : 'បរិច្ចាគឥឡូវ'}</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+      <!-- Digital Donation -->
+      <div class="bg-earth-100 rounded-3xl p-10 md:p-15 border border-earth-200 flex flex-col">
+        <h3 class="text-bamboo-900 font-heading font-bold text-2xl mb-8 flex items-center gap-4">
+          <svg class="w-6 h-6 text-khmer-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+          </svg>
+          {locale === 'de' ? 'Online spenden' : locale === 'en' ? 'Donate Online' : 'បរិច្ចាគអនឡាញ'}
+        </h3>
+        
+        <div class="flex flex-col gap-4">
+          {settings?.donationLinks?.betterplace && (
+            <a 
+              href={settings.donationLinks.betterplace}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-between group p-6 bg-white rounded-2xl border border-earth-200 hover:border-bamboo-300 transition-all hover:shadow-md"
+            >
+              <span class="text-bamboo-800 font-bold uppercase tracking-tight">betterplace.org</span>
+              <svg class="w-6 h-6 text-bamboo-300 group-hover:text-bamboo-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </a>
           )}
           
-          <div class="text-3xl md:text-4xl font-heading font-bold mb-2">
-            {tier.amount ? `${tier.amount} €` : (locale === 'de' ? 'Freier Betrag' : locale === 'en' ? 'Any Amount' : 'ចំនួនណាមួយ')}
-          </div>
-          
-          <h3 class="text-lg font-semibold mb-3">
-            {t(tier.title, locale)}
-          </h3>
-          
-          <p class="text-bamboo-100 text-sm leading-relaxed">
-            {t(tier.description, locale)}
-          </p>
+          {settings?.donationLinks?.paypal && (
+            <a 
+              href={settings.donationLinks.paypal}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center justify-between group p-6 bg-[#0070ba] text-white rounded-2xl border border-[#005ea6] hover:bg-[#005ea6] transition-all hover:shadow-lg"
+            >
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold italic text-xl">PayPal</span>
+              </div>
+              <svg class="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </a>
+          )}
         </div>
-      ))}
-    </div>
+      </div>
 
-    <!-- Donation links -->
-    <div class="flex flex-wrap justify-center gap-4 mb-8">
-      {settings?.donationLinks?.betterplace && (
-        <a 
-          href={settings.donationLinks.betterplace}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-primary bg-white text-bamboo-700 hover:bg-earth-100 px-8"
-        >
-          {locale === 'de' ? 'Über betterplace.org spenden' : locale === 'en' ? 'Donate via betterplace.org' : 'បរិច្ចាគតាម betterplace.org'}
-        </a>
-      )}
-      {settings?.donationLinks?.paypal && (
-        <a 
-          href={settings.donationLinks.paypal}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-secondary border-white/30 text-white hover:bg-white/10"
-        >
-          {locale === 'de' ? 'Mit PayPal spenden' : locale === 'en' ? 'Donate with PayPal' : 'បរិច្ចាគជាមួយ PayPal'}
-        </a>
-      )}
-    </div>
-
-    <!-- Bank Transfer Details -->
-    <div class="max-w-md mx-auto bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 mb-12 text-center">
-      <h3 class="font-heading font-semibold text-lg mb-4">
-        {locale === 'de' ? 'Direkte Banküberweisung' : locale === 'en' ? 'Direct Bank Transfer' : 'ផ្ទេរប្រាក់តាមធនាគារផ្ទាល់'}
-      </h3>
-      <div class="text-bamboo-100 text-sm space-y-1">
-        {settings?.bankAccount?.[locale] ? (
-          <>
-            <p class="font-medium text-white">{settings.bankAccount[locale].name}</p>
-            <p>{settings.bankAccount[locale].bank}</p>
-            <p class="font-mono text-base mt-2">{settings.bankAccount[locale].iban}</p>
-            <p class="text-xs text-bamboo-300">BIC: {settings.bankAccount[locale].bic}</p>
-            {settings.bankAccount[locale].note && (
-              <p class="text-xs text-bamboo-300 italic mt-4 max-w-sm mx-auto leading-relaxed border-t border-white/10 pt-4">
-                {settings.bankAccount[locale].note}
-              </p>
-            )}
-          </>
-        ) : (
-          <p class="italic text-bamboo-400">
-            {locale === 'de' ? 'Bankinformationen folgen in Kürze.' : locale === 'en' ? 'Bank details coming soon.' : 'ព័ត៌មានធនាគារនឹងមកដល់ក្នុងពេលឆាប់ៗនេះ។'}
-          </p>
-        )}
+      <!-- Bank Transfer Details -->
+      <div class="bg-bamboo-800 rounded-3xl p-10 md:p-12 border border-bamboo-700 shadow-xl">
+        <h3 class="font-heading font-bold text-2xl text-white mb-8 flex items-center gap-4">
+          <svg class="w-6 h-6 text-bamboo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+          </svg>
+          {locale === 'de' ? 'Banküberweisung' : locale === 'en' ? 'Bank Transfer' : 'ផ្ទេរប្រាក់តាមធនាគារ'}
+        </h3>
+        <div class="text-bamboo-100 text-sm space-y-4">
+          {settings?.bankAccount?.[locale] ? (
+            <div class="space-y-4">
+              <div>
+                <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">Kontoinhaber</p>
+                <p class="font-bold text-white text-lg">{settings.bankAccount[locale].name}</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">Bank</p>
+                  <p class="text-white">{settings.bankAccount[locale].bank}</p>
+                </div>
+                <div>
+                  <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">BIC</p>
+                  <p class="text-white font-mono uppercase tracking-wider">{settings.bankAccount[locale].bic}</p>
+                </div>
+              </div>
+              <div>
+                <p class="text-bamboo-400 text-[10px] uppercase font-bold tracking-widest mb-1">IBAN</p>
+                <p class="font-mono text-xl text-khmer-400 break-all">{settings.bankAccount[locale].iban}</p>
+              </div>
+            </div>
+          ) : (
+            <p class="italic text-bamboo-400 py-8">
+              {locale === 'de' ? 'Bankinformationen folgen in Kürze.' : locale === 'en' ? 'Bank details coming soon.' : 'ព័ត៌មានធនាគារនឹងមកដល់ក្នុងពេលឆាប់ៗនេះ។'}
+            </p>
+          )}
+        </div>
       </div>
     </div>
 
     <!-- Info text -->
-    <div class="text-center text-bamboo-100 text-sm space-y-2">
-      <p>
+    <div class="mt-20 pt-10 border-t border-bamboo-800 text-center max-w-3xl mx-auto space-y-4">
+      <p class="text-bamboo-100 font-medium">
         {locale === 'de' 
           ? 'Gefördert durch den deutschen Verein „Bamboo Shoots e.V."'
-          : locale === 'en'
+          : locale === 'en' 
           ? 'Supported by the German association "Bamboo Shoots e.V."'
           : 'គាំទ្រដោយសមាគមអាល្លឺម៉ង់ "Bamboo Shoots e.V."'}
       </p>
-      <p class="text-bamboo-200">
+      <p class="text-bamboo-400 text-sm leading-relaxed">
         {locale === 'de' 
           ? 'Der Förderverein wird ehrenamtlich geführt. Ihre Spenden fließen direkt in die Projektarbeit vor Ort.'
-          : locale === 'en'
+          : locale === 'en' 
           ? 'The support association is run on a volunteer basis. Your donations go directly to project work on site.'
-          : 'សមាគមគាំទ្រត្រូវបានដំណើរការដោយស្ម័គ្រចិត្ត។ ការបរិច្ចាគរបស់អ្នកទៅដោយផ្ទាល់ទៅកាន់ការងារគម្រោងនៅកន្លែង។'}
+          : 'សមាគមគាំទ្រត្រូវបានដំណើរការដោយស្ម័គ្រចិត្ត។'}
       </p>
     </div>
   </div>
