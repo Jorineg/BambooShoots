@@ -40,8 +40,7 @@ export function getLocale(url: URL): Locale {
 export function localizedUrl(path: string, locale: Locale): string {
     // Handle anchor links
     if (path.startsWith('#')) {
-        const prefix = locale === defaultLocale ? '' : `/${locale}`;
-        return `${base}${prefix}${path}`;
+        return localizedUrl('/', locale) + path;
     }
 
     // Remove existing locale prefix from path
@@ -70,24 +69,24 @@ export const navigation = {
         { label: 'Start', href: '#start' },
         { label: 'Programme', href: '#programme' },
         { label: 'Team', href: '#team' },
-        { label: 'Galerie', href: '/galerie' },
         { label: 'Spenden', href: '#spenden' },
-        { label: 'Geschichte', href: '/history' }
+        { label: 'Geschichte', href: '/history' },
+        { label: 'Galerie', href: '/galerie' }
     ],
     en: [
         { label: 'Home', href: '#start' },
         { label: 'Programs', href: '#programme' },
         { label: 'Team', href: '#team' },
-        { label: 'Gallery', href: '/galerie' },
         { label: 'Donate', href: '#spenden' },
-        { label: 'History', href: '/history' }
+        { label: 'History', href: '/history' },
+        { label: 'Gallery', href: '/galerie' }
     ],
     kh: [
         { label: 'ទំព័រដើម', href: '#start' },
         { label: 'កម្មវិធី', href: '#programme' },
         { label: 'ក្រុម', href: '#team' },
-        { label: 'វិចិត្រសាល', href: '/galerie' },
         { label: 'បរិច្ចាគ', href: '#spenden' },
-        { label: 'ប្រវត្តិ', href: '/history' }
+        { label: 'ប្រវត្តិ', href: '/history' },
+        { label: 'វិចិត្រសាល', href: '/galerie' }
     ]
 };

@@ -64,11 +64,7 @@ const currentPath = Astro.url.pathname;
         {
           navItems.map((item) => (
             <a
-              href={
-                item.href.startsWith("#")
-                  ? localizedUrl(item.href, locale)
-                  : localizedUrl(item.href, locale)
-              }
+              href={localizedUrl(item.href, locale)}
               class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
             >
               <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
@@ -85,11 +81,11 @@ const currentPath = Astro.url.pathname;
         <!-- Language Selector -->
         <div class="relative group">
           <button
-            class="lang-btn flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
+            class="lang-btn flex items-center gap-2 text-white hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
             aria-label="Select language"
           >
             <svg
-              class="w-4 h-4 opacity-70"
+              class="w-4 h-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -128,7 +124,7 @@ const currentPath = Astro.url.pathname;
 
         <!-- Donate Button -->
         <a
-          href="#spenden"
+          href={localizedUrl("#spenden", locale)}
           class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl shadow-secondary/20"
         >
           {
@@ -188,11 +184,44 @@ const currentPath = Astro.url.pathname;
     @apply w-full;
   }
 
+  /* Define custom property for mask animation - Supported in modern browsers */
+  @property --mask-stop {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 100%;
+  }
+
   /* Base styles (at top) */
   #main-header {
     background-color: transparent;
+    /* Removed background/backdrop from parent to use pseudo-element for masking */
+  }
+
+  /* Background layer with mask capability */
+  #main-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: all 0.5s ease;
+
+    /* Default state (hidden/transparent) */
+    background-color: transparent;
     backdrop-filter: blur(0px) saturate(100%);
     border-bottom: 1px solid transparent;
+
+    /* Mask setup for soft edge effect */
+    mask-image: linear-gradient(
+      to bottom,
+      black var(--mask-stop),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black var(--mask-stop),
+      transparent 100%
+    );
   }
 
   .header-text,
@@ -210,7 +239,7 @@ const currentPath = Astro.url.pathname;
   }
 
   .lang-btn {
-    @apply text-white/70;
+    @apply text-white;
   }
 
   .lang-btn svg {
@@ -218,11 +247,17 @@ const currentPath = Astro.url.pathname;
   }
 
   /* Class-based fallback for older browsers */
+  /* Class-based fallback for older browsers */
   header.scrolled {
     @apply shadow-lg;
+    /* Note: background logic moved to ::before */
+  }
+
+  header.scrolled::before {
     background-color: rgba(229, 221, 210, 0.85); /* earth-200 */
     backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    --mask-stop: 100%; /* Hard edge */
   }
 
   header.scrolled .header-text {
@@ -236,7 +271,7 @@ const currentPath = Astro.url.pathname;
   }
 
   header.scrolled .lang-btn {
-    @apply text-branding-dark/60 hover:text-primary hover:bg-black/5;
+    @apply text-branding-dark hover:text-primary hover:bg-black/5;
     text-shadow: none;
   }
 
@@ -250,10 +285,15 @@ const currentPath = Astro.url.pathname;
 
   /* Scroll-driven animations for modern browsers */
   @supports (animation-timeline: scroll()) {
-    #main-header {
+    #main-header::before {
       animation: header-fade-bg linear both;
       animation-timeline: scroll(root);
       animation-range: 100px 500px;
+    }
+
+    /* Fallback/Reset for parent if needed, though ::before handles bg now */
+    #main-header {
+      animation: none;
     }
 
     .header-text,
@@ -283,13 +323,20 @@ const currentPath = Astro.url.pathname;
   }
 
   @keyframes header-fade-bg {
-    to {
-      background-color: rgba(229, 221, 210, 0.85); /* earth-200 */
+    0% {
+      background-color: transparent;
+      backdrop-filter: blur(0px) saturate(100%);
+      border-bottom: 1px solid transparent;
+      --mask-stop: 70%; /* Very soft edge initially */
+    }
+    100% {
+      background-color: rgba(229, 221, 210, 0.85);
       backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      box-shadow:
-        0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      /* box-shadow doesn't work well on pseudo with mask, applied to parent in .scrolled usually, 
+         but here we can simulate or leave shadow on parent if desired. 
+         Let's rely on parent shadow if any, or just border. */
+      --mask-stop: 100%; /* Hard edge at end */
     }
   }
 
@@ -317,11 +364,11 @@ const currentPath = Astro.url.pathname;
 
   @keyframes header-fade-lang {
     from {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 1);
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
     to {
-      color: rgba(20, 83, 45, 0.6);
+      color: rgba(20, 83, 45, 1);
       text-shadow: none;
     }
   }
