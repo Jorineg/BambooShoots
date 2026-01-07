@@ -45,7 +45,7 @@ const objectPosition = hotspot
 
 <section 
   id="start" 
-  class="hero-container relative flex items-center overflow-hidden min-h-[calc(100dvh-var(--header-height-mobile))] md:min-h-[calc(100dvh-var(--header-height-desktop))] bg-[#0d2a17]"
+  class="hero-container relative flex items-center overflow-hidden min-h-dvh bg-[#0d2a17]"
 >
   <!-- Background Image Layer -->
   <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -54,47 +54,48 @@ const objectPosition = hotspot
         id="hero-parallax-img"
         src={heroImage}
         alt=""
-        class="parallax-target absolute top-[-12%] left-0 w-full h-[120%] object-cover will-change-transform"
-        style={`object-position: ${objectPosition};`}
+        class="parallax-target absolute top-[-10%] left-0 w-full h-[120%] object-cover will-change-transform opacity-0 animate-fade-in"
+        style={`object-position: ${objectPosition}; animation-delay: 0.2s;`}
       />
     </div>
     
     <!-- Overlays -->
-    <div class="absolute inset-0 z-10 hidden md:block bg-[linear-gradient(to_right,rgba(13,42,23,0.95)_0%,rgba(13,42,23,0.85)_30%,rgba(13,42,23,0.1)_70%,transparent_100%)]"></div>
-    <div class="absolute inset-0 z-10 md:hidden bg-[linear-gradient(to_top,rgba(13,42,23,0.9)_0%,rgba(13,42,23,0.4)_100%)]"></div>
-    <div class="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,0.3)]"></div>
+    <div class="absolute inset-0 z-10 hidden md:block bg-[linear-gradient(to_right,rgba(13,42,23,0.95)_0%,rgba(13,42,23,0.85)_35%,rgba(13,42,23,0.2)_75%,transparent_100%)]"></div>
+    <div class="absolute inset-0 z-10 md:hidden bg-[linear-gradient(to_top,rgba(13,42,23,0.95)_0%,rgba(13,42,23,0.4)_100%)]"></div>
+    <div class="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_200px_rgba(0,0,0,0.4)]"></div>
   </div>
 
   <!-- Content Container -->
-  <div class="container-custom relative z-30 px-4 md:px-8 py-20 md:py-32">
-    <div class="max-w-4xl border-l-2 border-secondary/30 pl-8 md:pl-12">
-      <div class="w-12 h-1 bg-secondary mb-8 rounded-full animate-slide-up"></div>
+  <div class="container-custom relative z-30 px-4 md:px-8 py-20">
+    <div class="max-w-4xl border-l-[3px] border-secondary/40 pl-8 md:pl-16 py-8">
+      <!-- Animated Line Accent (Vertical) -->
+      <div class="w-16 h-[2px] bg-secondary mb-12 rounded-full animate-slide-left"></div>
 
-      <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white leading-[1.1] mb-6 animate-slide-up tracking-tight">
-        <span class="block">{titleMain}</span>
-        <span class="text-secondary block mt-1">{titleAccent}</span>
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-extrabold text-white leading-[1.05] mb-8 animate-reveal tracking-tighter">
+        <span class="block opacity-0 translate-y-8 animate-item-reveal">{titleMain}</span>
+        <span class="text-secondary block mt-2 opacity-0 translate-y-8 animate-item-reveal" style="animation-delay: 0.2s;">{titleAccent}</span>
       </h1>
 
-      <p class="text-xs md:text-sm uppercase tracking-[0.4em] font-semibold text-earth-100/50 mb-8 animate-slide-up delay-100 italic">
+      <p class="text-xs md:text-sm uppercase tracking-[0.5em] font-bold text-white/50 mb-10 opacity-0 animate-fade-in delay-500 italic">
         {subtitle}
       </p>
 
-      <p class="text-branding-light/90 text-lg md:text-xl max-w-2xl mb-12 animate-slide-up leading-relaxed font-light" style="animation-delay: 0.2s;">
+      <p class="text-white/80 text-lg md:text-2xl max-w-2xl mb-14 leading-relaxed font-light opacity-0 translate-y-6 animate-item-reveal" style="animation-delay: 0.4s;">
         {description}
       </p>
 
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 animate-slide-up" style="animation-delay: 0.3s;">
-        <a href="#spenden" class="btn-donate group px-10 py-4 text-lg rounded-xl">
+      <div class="flex flex-col sm:flex-row items-center gap-8 opacity-0 translate-y-6 animate-item-reveal" style="animation-delay: 0.6s;">
+        <a href="#spenden" class="btn-donate group px-10 py-5 text-lg rounded-2xl w-full sm:w-auto text-center">
           <span>{locale === 'de' ? 'Jetzt unterstützen' : locale === 'en' ? 'Support now' : 'គាំទ្រឥឡូវ'}</span>
-          <svg class="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </a>
-        <a href="#mission" class="group text-white/80 hover:text-white transition-all flex items-center gap-2 py-1">
-          <span class="font-medium tracking-wider border-b border-white/10 group-hover:border-white transition-all uppercase text-sm">
+        <a href="#mission" class="group text-white/70 hover:text-white transition-all flex items-center gap-3 py-2 px-4 rounded-xl hover:bg-white/5">
+          <span class="font-bold tracking-widest uppercase text-xs border-b border-transparent group-hover:border-secondary transition-all">
             {locale === 'de' ? 'Unsere Mission' : 'Our Mission'}
           </span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
@@ -102,19 +103,18 @@ const objectPosition = hotspot
     </div>
   </div>
 
-  <!-- Vertical Scroll Indicator on the Right -->
-  <div class="absolute bottom-16 right-16 z-40 hidden xl:block">
-    <div class="flex flex-col items-center gap-10 translate-y-4">
-      <span class="text-[9px] uppercase font-black tracking-[1em] text-white/70 [writing-mode:vertical-lr] whitespace-nowrap">{locale === 'de' ? 'Scrollen' : 'Scroll'}</span>
-      <div class="w-[1.5px] h-32 bg-white/10 relative overflow-hidden">
-        <div class="absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-secondary/40 to-transparent animate-flow-line"></div>
+  <!-- Vertical Scroll Indicator -->
+  <div class="absolute bottom-12 right-12 z-40 hidden xl:block opacity-0 animate-fade-in" style="animation-delay: 1.2s;">
+    <div class="flex flex-col items-center gap-12">
+      <span class="text-[10px] uppercase font-black tracking-[1.2em] text-white/30 [writing-mode:vertical-lr] whitespace-nowrap">{locale === 'de' ? 'Scrollen' : 'Scroll'}</span>
+      <div class="w-[1px] h-32 bg-white/10 relative overflow-hidden">
+        <div class="absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-secondary to-transparent animate-flow-line"></div>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* 2026 HYBRID PARALLAX STRATEGY */
   .hero-container {
     view-timeline: --hero-v block;
   }
@@ -124,7 +124,6 @@ const objectPosition = hotspot
     to { transform: translateY(20%); }
   }
 
-  /* 1. NATIVE CSS PARALLAX (Chrome/Safari) */
   @supports (animation-timeline: view()) {
     .parallax-target {
       animation: parallax-native linear both;
@@ -134,15 +133,23 @@ const objectPosition = hotspot
   }
 
   /* Entrance Animations */
-  @keyframes slideUp {
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes item-reveal {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .animate-slide-up {
-    animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @keyframes slide-left {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
   }
 
-  /* Scroll line animation - subtle and slow */
+  .animate-fade-in { animation: fade-in 1.5s ease-out forwards; }
+  .animate-item-reveal { animation: item-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-slide-left { animation: slide-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
   @keyframes flowLine {
     0% { transform: translateY(-100%); }
     100% { transform: translateY(300%); }
@@ -153,35 +160,27 @@ const objectPosition = hotspot
 </style>
 
 <script is:inline>
-  /**
-   * 2. JS FALLBACK (Firefox)
-   */
   (function() {
     if (CSS.supports('animation-timeline', 'view()') || CSS.supports('animation-timeline', 'scroll()')) {
       return;
     }
-
     const img = document.getElementById('hero-parallax-img');
     if (!img) return;
-    
     let ticking = false;
     const update = () => {
       const scrollY = window.pageYOffset;
       if (scrollY < window.innerHeight) {
-        // Strengthened factor for JS parallax (matches 20% CSS movement)
         const yPos = scrollY * 0.4;
         img.style.transform = `translate3d(0, ${yPos}px, 0)`;
       }
       ticking = false;
     };
-
     window.addEventListener('scroll', () => {
       if (!ticking) {
         window.requestAnimationFrame(update);
         ticking = true;
       }
     }, { passive: true });
-    
     update();
   })();
 </script>

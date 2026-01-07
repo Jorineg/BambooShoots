@@ -10,39 +10,59 @@ interface Props {
 const { locale, welcomeData, missionData } = Astro.props;
 ---
 
-<section id="mission" class="section bg-branding-bg">
-  <div class="container-custom">
-    <div class="max-w-4xl mx-auto">
+<section id="mission" class="section bg-branding-bg relative overflow-hidden py-32 md:py-48">
+  <!-- Subtle Glow -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <div class="container-custom relative z-10">
+    <div class="max-w-5xl mx-auto">
       <!-- Welcome Message -->
-      <div class="text-center mb-20">
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-branding-dark mb-10 leading-tight">
+      <div class="reveal mb-32 border-l-[3px] border-primary/20 pl-8 md:pl-16">
+        <h2 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60">
           {t(welcomeData?.greeting, locale) || (locale === 'de' ? 'Herzlich willkommen' : locale === 'en' ? 'Welcome' : 'សូមស្វាគមន៍')}
         </h2>
         
-        <p class="text-xl md:text-2xl text-branding-muted leading-relaxed max-w-3xl mx-auto italic font-light">
+        <p class="text-xl md:text-2xl lg:text-3xl font-heading font-extrabold text-branding-dark leading-[1.4] mb-8 tracking-tight max-w-4xl">
           {t(welcomeData?.text, locale)}
         </p>
       </div>
 
-      <!-- Separation (subtle line) -->
-      <div class="flex justify-center mb-20">
-        <div class="w-16 h-px bg-primary/20"></div>
-      </div>
-
       <!-- Mission Message -->
-      <div class="text-center">
-        <h3 class="text-sm md:text-base uppercase tracking-[0.2em] font-bold text-primary mb-6">
+      <div class="reveal reveal-delay-200 border-l-[3px] border-secondary/20 pl-8 md:pl-16 ml-auto max-w-3xl">
+        <h3 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-secondary mb-10 opacity-60">
           {t(missionData?.title, locale) || (locale === 'de' ? 'Unsere Mission' : locale === 'en' ? 'Our Mission' : 'បេសកកម្មរបស់យើង')}
         </h3>
         
-        <p class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gradient mb-10 leading-tight">
+        <p class="text-3xl md:text-5xl lg:text-6xl font-heading font-extrabold text-gradient mb-10 leading-[1.1] tracking-tighter">
           {locale === 'de' ? 'Bildung verändert Leben.' : locale === 'en' ? 'Education changes lives.' : 'ការអប់រំផ្លាស់ប្តូរជីវិត។'}
         </p>
         
-        <p class="text-lg md:text-xl text-branding-text leading-relaxed max-w-3xl mx-auto">
-          {t(missionData?.text, locale)}
-        </p>
+        <div class="space-y-6">
+            <p class="text-base md:text-lg text-branding-muted leading-relaxed font-light italic">
+                "{t(missionData?.quote, locale) || 'Bildung ist die mächtigste Waffe, die man verwenden kann, um die Welt zu verändern.'}"
+            </p>
+            <p class="text-lg md:text-xl text-branding-muted leading-relaxed font-light">
+                {t(missionData?.text, locale)}
+            </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

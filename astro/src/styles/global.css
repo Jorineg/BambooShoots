@@ -52,6 +52,8 @@
     @apply font-sans antialiased;
     background-color: rgb(var(--color-bg-page));
     color: rgb(var(--color-text-main));
+    font-weight: 300;
+    /* Lighter default font weight for premium feel */
   }
 
   /* Khmer font for Cambodian text */
@@ -65,7 +67,7 @@
   h4,
   h5,
   h6 {
-    @apply font-heading font-bold;
+    @apply font-heading font-extrabold tracking-tight;
   }
 }
 
@@ -81,9 +83,9 @@
     @apply max-w-6xl mx-auto w-full;
   }
 
-  /* Button styles using semantic variables */
+  /* Button styles - Removed hover-lift, added refined states */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0;
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-xl transition-all duration-300 ease-out shadow-sm hover:shadow-md active:scale-[0.98];
     background-color: rgb(var(--color-primary));
     color: white;
   }
@@ -92,12 +94,8 @@
     background-color: rgb(var(--color-primary-hover));
   }
 
-  .btn-primary:active {
-    background-color: rgb(var(--color-primary-active));
-  }
-
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg border-2 transition-all duration-300 ease-in-out hover:shadow-md hover:-translate-y-1 active:translate-y-0;
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-xl border-2 transition-all duration-300 ease-out active:scale-[0.98];
     background-color: white;
     color: rgb(var(--color-primary));
     border-color: rgb(var(--color-primary));
@@ -108,24 +106,20 @@
   }
 
   .btn-donate {
-    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0;
+    @apply inline-flex items-center justify-center px-6 py-3 font-bold rounded-xl transition-all duration-300 ease-out shadow-sm hover:shadow-lg active:scale-[0.98];
     background-color: rgb(var(--color-secondary));
     color: white;
   }
 
   .btn-donate:hover {
     background-color: rgb(var(--color-secondary-hover));
-  }
-
-  .btn-donate:active {
-    background-color: rgb(var(--color-secondary-active));
+    filter: brightness(1.05);
   }
 
   /* Card styles */
   .card {
-    @apply rounded-2xl shadow-lg p-6 md:p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+    @apply rounded-[2rem] shadow-sm p-6 md:p-8 hover:shadow-md transition-all duration-500 border border-black/5;
     background-color: rgb(var(--color-bg-page));
-    border: 1px solid rgb(var(--color-bg-accent));
   }
 
   /* Timeline item */
@@ -205,18 +199,48 @@
     background-image: linear-gradient(to right, rgb(var(--color-primary)), rgb(var(--color-primary-hover)));
   }
 
-  /* Glass effect */
+  /* Glass effect - Upgraded */
   .glass {
-    @apply bg-white/80 backdrop-blur-md transition-all duration-300;
+    @apply backdrop-blur-xl transition-all duration-500;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Reveal Framework */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-100 {
+    transition-delay: 100ms;
+  }
+
+  .reveal-delay-200 {
+    transition-delay: 200ms;
+  }
+
+  .reveal-delay-300 {
+    transition-delay: 300ms;
+  }
+
+  .reveal-delay-400 {
+    transition-delay: 400ms;
   }
 
   /* Utility Hover Patterns */
   .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl active:translate-y-0 active:shadow-lg;
+    @apply transition-all duration-500 hover:shadow-xl active:scale-[0.99];
   }
 
   .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105 active:scale-100;
+    @apply transition-transform duration-500 hover:scale-[1.02] active:scale-100;
   }
 
   .hover-zoom-container {
@@ -224,10 +248,24 @@
   }
 
   .hover-zoom-container img {
-    @apply transition-transform duration-500;
+    @apply transition-transform duration-700 ease-out;
   }
 
   .hover-zoom-container:hover img {
     @apply scale-110;
+  }
+
+  /* Glow Effects */
+  .glow-soft {
+    position: relative;
+  }
+
+  .glow-soft::before {
+    content: '';
+    position: absolute;
+    inset: -10%;
+    background: radial-gradient(circle, rgba(var(--color-primary), 0.05) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
   }
 }

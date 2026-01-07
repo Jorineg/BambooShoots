@@ -1,5 +1,6 @@
 ---
 import { t, localizedUrl, type Locale } from '../../lib/i18n';
+import { urlFor } from '../../lib/sanity';
 
 interface Props {
   locale: Locale;
@@ -7,37 +8,81 @@ interface Props {
 }
 
 const { locale, data } = Astro.props;
+
+// Use a default image if none provided
+const bgImage = data?.image 
+  ? urlFor(data.image).width(1920).url() 
+  : '/BambooShoots/images/cambodia_culture.png'; 
 ---
 
-<section class="section bg-branding-earth">
-  <div class="container-custom">
-    <div class="max-w-3xl mx-auto text-center">
+<section class="relative min-h-[60vh] flex items-center overflow-hidden bg-branding-dark py-24 md:py-32">
+  <!-- Parallax Background -->
+  <div class="absolute inset-0 z-0">
+    <div class="parallax-wrapper absolute inset-0 w-full h-full">
+      <img 
+        src={bgImage}
+        alt=""
+        class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover grayscale opacity-30 brightness-[0.3]"
+      />
+    </div>
+    <!-- Deep Green Tint Overlays -->
+    <div class="absolute inset-0 bg-[#0d2a17]/80"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark"></div>
+  </div>
+
+  <div class="container-custom relative z-10 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto border-l-[3px] border-secondary/40 pl-8 md:pl-16 py-12 reveal">
       <!-- Content -->
-      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-8">
+      <h2 class="text-xs md:text-sm uppercase tracking-[0.5em] font-bold text-white/40 mb-10 italic">
+          {locale === 'de' ? 'Hintergrund' : 'Context'}
+      </h2>
+
+      <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 leading-tight tracking-tighter">
         {t(data?.title, locale) || (locale === 'de' 
           ? 'Kambodscha: Wurzeln, Wandel und Hoffnung'
           : locale === 'en'
           ? 'Cambodia: Roots, Change, and Hope'
           : 'កម្ពុជា៖ ឫសគល់ ការផ្លាស់ប្តូរ និងសេចក្តីសង្ឃឹម')}
-      </h2>
+      </h3>
 
-      <p class="text-branding-text text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
-        {t(data?.text, locale) || (locale === 'de'
-          ? 'Um zu verstehen, woran wir heute arbeiten, muss man den Weg kennen, den dieses Land gegangen ist. Von den Schatten der Vergangenheit zum Mut der nächsten Generation.'
-          : locale === 'en'
-          ? 'To understand what we are working on today, one must know the path this country has taken. From the shadows of the past to the courage of the next generation.'
-          : 'ដើម្បីយល់ពីអ្វីដែលយើងកំពុងធ្វើនៅថ្ងៃនេះ គេត្រូវតែស្វែងយល់ពីផ្លូវដែលប្រទេសនេះបានដើរ។')}
-      </p>
-
-      <a 
-        href={localizedUrl('/history', locale)}
-        class="inline-flex items-center gap-2 text-primary font-bold hover:text-primary-hover transition-all duration-300 group text-lg"
-      >
-        <span>{t(data?.linkText, locale) || (locale === 'de' ? 'Unsere Geschichte entdecken' : locale === 'en' ? 'Discover our history' : 'ស្វែងយល់ពីប្រវត្តិរបស់យើង')}</span>
-        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-        </svg>
-      </a>
+      <div class="max-w-2xl">
+        <p class="text-white/70 text-lg md:text-2xl leading-relaxed mb-12 font-light">
+            {t(data?.text, locale) || (locale === 'de'
+              ? 'Um zu verstehen, woran wir heute arbeiten, muss man den Weg kennen, den dieses Land gegangen ist. Von den Schatten der Vergangenheit zum Mut der nächsten Generation.'
+              : locale === 'en'
+              ? 'To understand what we are working on today, one must know the path this country has taken. From the shadows of the past to the courage of the next generation.'
+              : 'ដើម្បីយល់ពីអ្វីដែលយើងកំពុងធ្វើនៅថ្ងៃនេះ គេត្រូវតែស្វែងយល់ពីផ្លូវដែលប្រទេសនេះបានដើរ។')}
+          </p>
+    
+          <a 
+            href={localizedUrl('/geschichte', locale)}
+            class="group inline-flex items-center gap-4 text-white font-bold hover:text-secondary transition-all duration-500"
+          >
+            <span class="text-sm uppercase tracking-[0.3em] border-b border-white/20 group-hover:border-secondary transition-all">
+                {t(data?.linkText, locale) || (locale === 'de' ? 'Unsere Geschichte entdecken' : locale === 'en' ? 'Discover our history' : 'ស្វែងយល់ពីប្រវត្តិរបស់យើង')}
+            </span>
+            <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-secondary group-hover:border-secondary transition-all duration-500">
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </div>
+          </a>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  @keyframes parallax-slow {
+    from { transform: translateY(0); }
+    to { transform: translateY(15%); }
+  }
+
+  @supports (animation-timeline: view()) {
+    .parallax-target-slow {
+      animation: parallax-slow linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+</style>

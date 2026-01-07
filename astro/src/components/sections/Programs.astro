@@ -12,7 +12,7 @@ const { locale, programs } = Astro.props;
 // Default programs if none from Sanity
 const defaultPrograms = [
   {
-    icon: '👶',
+    icon: 'preschool',
     title: { de: 'Vorschule & Bildung', en: 'Preschool & Education', kh: 'មត្តេយ្យ និងការអប់រំ' },
     description: { 
       de: 'Frühförderung ist der erste Schritt in eine bessere Zukunft. Wir betreiben Vorschulen in abgelegenen Dörfern rund um Siem Reap.',
@@ -27,7 +27,7 @@ const defaultPrograms = [
     ]
   },
   {
-    icon: '📚',
+    icon: 'afternoon',
     title: { de: 'Nachmittagsförderung', en: 'Afternoon Support', kh: 'ការគាំទ្រពេលរសៀល' },
     description: {
       de: 'Für Schulkinder bieten wir Nachmittagskurse in Khmer, Englisch und Mathematik an – für viele Kinder die einzige Möglichkeit, eine Fremdsprache zu lernen.',
@@ -41,7 +41,7 @@ const defaultPrograms = [
     ]
   },
   {
-    icon: '📖',
+    icon: 'library',
     title: { de: 'Bibliothek', en: 'Library', kh: 'បណ្ណាល័យ' },
     description: {
       de: 'Die Bibliothek ist mehr als ein Lernort: Sie ist ein Treffpunkt, Leseraum und ein sicherer Ort zum Wachsen.',
@@ -55,7 +55,7 @@ const defaultPrograms = [
     ]
   },
   {
-    icon: '🧡',
+    icon: 'community',
     title: { de: 'Hilfe für die Gemeinschaft', en: 'Community Support', kh: 'ការគាំទ្រសហគមន៍' },
     description: {
       de: 'Wir unterstützen die Familien auch in Notsituationen. Hilfe zur Selbsthilfe.',
@@ -72,66 +72,82 @@ const defaultPrograms = [
 ];
 
 const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
+
+const getIcon = (key: string) => {
+  switch(key) {
+    case 'baby': case 'preschool': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 6v12M6 12h12"/></svg>';
+    case 'book': case 'afternoon': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V5A2.5 2.5 0 0 1 6.5 2.5H20v14.5"/></svg>';
+    case 'library': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 17H2M2 22h20M7 17V3M17 17V3M2 3h20"/></svg>';
+    case 'community': return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+    default: return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
+  }
+};
 ---
 
-<section id="programme" class="section bg-branding-accent">
-  <div class="container-custom">
+<section id="programme" class="section bg-branding-accent relative overflow-hidden">
+  <div class="container-custom relative z-10">
     <!-- Section header -->
-    <div class="text-center mb-16 md:mb-24">
-      <h2 class="text-3xl md:text-5xl font-heading font-bold text-branding-dark mb-8">
-        {locale === 'de' ? 'Unsere Programme' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
-      </h2>
+    <div class="reveal mb-20 border-l-2 border-primary/30 pl-8 md:pl-12">
+        <h2 class="text-xs md:text-sm uppercase tracking-[0.4em] font-bold text-primary mb-6 opacity-60">
+            {locale === 'de' ? 'Unsere Arbeit' : 'Our Work'}
+        </h2>
+        <p class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark tracking-tighter">
+            {locale === 'de' ? 'Unsere Programme' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
+        </p>
     </div>
 
     <!-- Program cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
       {displayPrograms.map((program, index) => (
-        <div class="group flex flex-col h-full bg-branding-bg rounded-[2rem] overflow-hidden border border-branding-accent hover-lift" style={`animation-delay: ${index * 0.1}s`}>
+        <div class={`reveal reveal-delay-${(index % 2) * 200} group flex flex-col h-full bg-white rounded-[2.5rem] overflow-hidden border border-black/5 hover:shadow-2xl transition-all duration-700`}>
           <!-- Image Header -->
-          <div class="aspect-[16/9] overflow-hidden relative hover-zoom-container">
+          <div class="aspect-[16/10] overflow-hidden relative hover-zoom-container">
             {program.image ? (
               <img 
-                src={urlFor(program.image).width(800).height(450).url()} 
+                src={urlFor(program.image).width(800).height(500).url()} 
                 alt={t(program.title, locale)}
                 class="w-full h-full object-cover"
               />
             ) : (
-              <div class="w-full h-full bg-branding-accent flex items-center justify-center">
-                <span class="text-6xl group-hover:scale-110 transition-transform duration-300 opacity-20">{program.icon}</span>
+              <div class="w-full h-full bg-branding-dark/5 flex items-center justify-center">
+                 <div class="w-24 h-24 text-primary/20 group-hover:text-primary/40 transition-colors duration-500" set:html={getIcon(program.icon)} />
               </div>
             )}
-            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            <!-- Overlay Gradient -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.4)_0%,transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
 
-          <div class="p-8 md:p-10 flex flex-col flex-grow">
-            <!-- Icon & Title (Fixed Gap) -->
-            <div class="flex items-center gap-3 mb-6">
-              <span class="text-2xl group-hover:scale-110 transition-transform duration-300">{program.icon}</span>
-              <h3 class="text-2xl md:text-3xl font-heading font-bold text-branding-dark leading-tight">
-                {t(program.title, locale)}
-              </h3>
+          <div class="p-8 md:p-12 flex flex-col flex-grow">
+            <!-- Title Row -->
+            <div class="flex items-start justify-between mb-8">
+              <div class="flex-grow">
+                 <h3 class="text-2xl md:text-3xl font-heading font-extrabold text-branding-dark leading-tight tracking-tight group-hover:text-primary transition-colors duration-300">
+                    {t(program.title, locale)}
+                  </h3>
+              </div>
+              <div class="w-10 h-10 text-secondary opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 flex-shrink-0 ml-4" set:html={getIcon(program.icon)} />
             </div>
 
             <!-- Description -->
-            <p class="text-branding-muted text-lg mb-8 leading-relaxed">
+            <p class="text-branding-muted text-lg mb-10 leading-relaxed font-light">
               {t(program.description, locale)}
             </p>
 
             <!-- Features list -->
             {program.features && (
-              <ul class="space-y-4 mt-auto">
+              <ul class="space-y-4 mb-8">
                 {program.features.map((feature: any) => (
-                  <li class="flex items-start gap-3 text-branding-text">
-                    <div class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center">
-                      <svg class="w-3 h-3 text-secondary" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                      </svg>
-                    </div>
-                    <span class="text-sm font-medium">{t(feature, locale)}</span>
+                  <li class="flex items-center gap-4 text-branding-text group/item">
+                    <div class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-secondary group-hover/item:scale-150 transition-transform duration-300"></div>
+                    <span class="text-sm font-medium tracking-wide ">{t(feature, locale)}</span>
                   </li>
                 ))}
               </ul>
             )}
+            
+            <div class="mt-auto pt-4 border-t border-black/5 flex justify-end">
+                 <div class="w-8 h-px bg-primary/20 group-hover:w-16 transition-all duration-500"></div>
+            </div>
           </div>
         </div>
       ))}
