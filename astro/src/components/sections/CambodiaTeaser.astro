@@ -32,8 +32,9 @@ console.log('[CambodiaTeaser] Using bgImage:', bgImage);
       />
     </div>
     <!-- Clean, Cinematic Depth Overlays (Neutral) -->
-    <div class="absolute inset-0 bg-branding-dark/40"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"></div>
+    <!-- same color as here section -->
+    <div class="absolute inset-0 bg-[rgba(13,42,23,0.75)]"></div>
+    <!-- <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"></div> -->
   </div>
 
   <div class="container-custom relative z-10 px-4 md:px-8">
@@ -113,15 +114,11 @@ console.log('[CambodiaTeaser] Using bgImage:', bgImage);
       const rect = section.getBoundingClientRect();
       const viewHeight = window.innerHeight;
       
+      // Only animate if section is in or near view
       if (rect.top < viewHeight && rect.bottom > 0) {
-        // Calculate how much of the section has been scrolled through the viewport
-        const totalDist = viewHeight + rect.height;
-        const currentDist = viewHeight - rect.top;
-        const scrolled = currentDist / totalDist;
-        
-        // Match the 20% range of the CSS animation
-        const yPos = scrolled * 20; 
-        img.style.transform = `translate3d(0, ${yPos}%, 0)`;
+        const scrolled = (viewHeight - rect.top) / (viewHeight + rect.height);
+        const yPos = scrolled * 100; // Adjust for intensity
+        img.style.transform = `translate3d(0, ${yPos}px, 0)`;
       }
       ticking = false;
     };
