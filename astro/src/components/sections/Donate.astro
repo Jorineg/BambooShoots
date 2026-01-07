@@ -1,293 +1,450 @@
 ---
-import { t, type Locale } from '../../lib/i18n';
-import { urlFor } from '../../lib/sanity';
+import { t, type Locale } from "../../lib/i18n";
+import { urlFor } from "../../lib/sanity";
 
 interface Props {
-  locale: Locale;
-  tiers: any[];
-  settings: any;
+    locale: Locale;
+    tiers: any[];
+    settings: any;
 }
 
 const { locale, tiers, settings } = Astro.props;
 
 // Default donation tiers
 const defaultTiers = [
-  {
-    amount: 35,
-    title: { de: 'Vorschulplatz', en: 'Preschool Place', kh: 'កន្លែងមត្តេយ្យ' },
-    description: { 
-      de: '5x pro Woche für einen Vorschulplatz – inklusive Mahlzeit & Material',
-      en: '5x per week for a preschool place – including meal & materials',
-      kh: '5 ដង/សប្តាហ៍ សម្រាប់កន្លែងមត្តេយ្យ – រួមទាំងអាហារ និងសម្ភារៈ'
-    }
-  },
-  {
-    amount: 15,
-    title: { de: 'Nachmittagsförderung', en: 'Afternoon Support', kh: 'ការគាំទ្រពេលរសៀល' },
-    description: { 
-      de: '3x pro Woche an zwei Standorten + Englisch – inklusive Mahlzeit & Material',
-      en: '3x per week at two locations + English – including meal & materials',
-      kh: '3 ដង/សប្តាហ៍ នៅពីរទីតាំង + អង់គ្លេស – រួមទាំងអាហារ និងសម្ភារៈ'
-    }
-  },
-  {
-    amount: null,
-    title: { de: 'Krisenhilfe & Gemeindearbeit', en: 'Crisis Aid & Community Work', kh: 'ជំនួយវិបត្តិ និងការងារសហគមន៍' },
-    description: { 
-      de: 'Freier Betrag für beispielsweise Fahrräder, Reis- oder Hygienepakete',
-      en: 'Any amount for bicycles, rice or hygiene packages',
-      kh: 'ចំនួនណាមួយសម្រាប់កង់ អង្ករ ឬកញ្ចប់អនាម័យ'
-    }
-  }
+    {
+        amount: 35,
+        title: {
+            de: "Vorschulplatz",
+            en: "Preschool Place",
+            kh: "កន្លែងមត្តេយ្យ",
+        },
+        description: {
+            de: "5x pro Woche für einen Vorschulplatz – inklusive Mahlzeit & Material",
+            en: "5x per week for a preschool place – including meal & materials",
+            kh: "5 ដង/សប្តាហ៍ សម្រាប់កន្លែងមត្តេយ្យ – រួមទាំងអាហារ និងសម្ភារៈ",
+        },
+    },
+    {
+        amount: 15,
+        title: {
+            de: "Nachmittagsförderung",
+            en: "Afternoon Support",
+            kh: "ការគាំទ្រពេលរសៀល",
+        },
+        description: {
+            de: "3x pro Woche an zwei Standorten + Englisch – inklusive Mahlzeit & Material",
+            en: "3x per week at two locations + English – including meal & materials",
+            kh: "3 ដង/សប្តាហ៍ នៅពីរទីតាំង + អង់គ្លេស – រួមទាំងអាហារ និងសម្ភារៈ",
+        },
+    },
+    {
+        amount: null,
+        title: {
+            de: "Krisenhilfe & Gemeindearbeit",
+            en: "Crisis Aid & Community Work",
+            kh: "ជំនួយវិបត្តិ និងការងារសហគមន៍",
+        },
+        description: {
+            de: "Freier Betrag für beispielsweise Fahrräder, Reis- oder Hygienepakete",
+            en: "Any amount for bicycles, rice or hygiene packages",
+            kh: "ចំនួនណាមួយសម្រាប់កង់ អង្ករ ឬកញ្ចប់អនាម័យ",
+        },
+    },
 ];
 
 const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
 
 // Use a representative image from Sanity or fallback
-console.log('[Donate] settings:', JSON.stringify(settings, null, 2));
+console.log("[Donate] settings:", JSON.stringify(settings, null, 2));
 
-const hasSanityImage = !!(settings?.donationBgImage?.asset?._ref || settings?.donationBgImage?.asset?._id);
-const bgImage = hasSanityImage 
-  ? urlFor(settings.donationBgImage).width(1920).url() 
-  : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`; 
+const hasSanityImage = !!(
+    settings?.donationBgImage?.asset?._ref ||
+    settings?.donationBgImage?.asset?._id
+);
+const bgImage = hasSanityImage
+    ? urlFor(settings.donationBgImage).width(1920).url()
+    : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`;
 
-console.log('[Donate] Using bgImage:', bgImage);
+console.log("[Donate] Using bgImage:", bgImage);
 ---
 
-<section id="spenden" class="donate-container relative py-32 md:py-48 overflow-hidden bg-branding-dark text-white">
-  <!-- Parallax Background -->
-  <div class="absolute inset-0 z-0">
-    <div class="parallax-container absolute inset-0 w-full h-full animate-fade-in" style="animation-delay: 0.3s;">
-      <img 
-        id="donate-parallax-img"
-        src={bgImage}
-        alt=""
-        class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover opacity-100"
-      />
-    </div>
-    <!-- Cinematic Depth Overlays (Neutral) -->
-    <div class="absolute inset-0 bg-branding-dark/30"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"></div>
-  </div>
-
-  <div class="container-custom relative z-10">
-    <!-- Section header -->
-    <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/40 pl-8 md:pl-16">
-      <h2 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-white mb-10 opacity-60">
-        {locale === 'de' ? 'Unterstützung' : locale === 'en' ? 'Support' : 'ការគាំទ្រ'}
-      </h2>
-      <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 tracking-tighter">
-        {locale === 'de' ? 'Spenden & Mitmachen' : locale === 'en' ? 'Donate & Get Involved' : 'បរិច្ចាគ និងចូលរួម'}
-      </h3>
-      <p class="text-white/60 text-lg md:text-2xl max-w-2xl font-light leading-relaxed">
-        {locale === 'de' 
-          ? 'Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll.'
-          : locale === 'en'
-          ? 'Your support makes the difference. Donate purposefully – transparently and effectively.'
-          : 'ការគាំទ្ររបស់អ្នកបង្កើតភាពខុសគ្នា។ បរិច្ចាគដោយមានគោលបំណង។'}
-      </p>
-    </div>
-
-    <!-- Donation tiers -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
-      {displayTiers.map((tier, index) => {
-        const paypalUrl = settings?.donationLinks?.paypal && tier.amount 
-          ? `${settings.donationLinks.paypal}&amount=${tier.amount}`
-          : settings?.donationLinks?.paypal;
-
-        return (
-          <a 
-            href={paypalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class={`group relative bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] p-10 md:p-12 border border-white/5 hover:bg-white/[0.07] hover:border-white/10 transition-all duration-700 reveal`}
-            style={`transition-delay: ${index * 150}ms`}
-          >
-            {index === 0 && (
-              <div class="absolute top-8 right-8 bg-secondary text-white text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-full shadow-lg">
-                {locale === 'de' ? 'Vorschlag' : locale === 'en' ? 'Suggested' : 'សំណើ'}
-              </div>
-            )}
-            
-            <div class="text-4xl md:text-6xl font-heading font-extrabold mb-6 text-white group-hover:scale-105 transition-transform duration-700 origin-left tracking-tighter">
-              {tier.amount ? `${tier.amount} €` : (locale === 'de' ? 'Offen' : locale === 'en' ? 'Open' : 'បើកចំហ')}
-            </div>
-            
-            <h4 class="text-xl font-bold mb-6 text-white group-hover:text-secondary transition-colors duration-500">
-              {t(tier.title, locale)}
-            </h4>
-            
-            <p class="text-white/50 text-base leading-relaxed mb-10 font-light italic">
-              {t(tier.description, locale)}
-            </p>
-
-            <div class="flex items-center gap-3 text-secondary font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform duration-500">
-              <span>{locale === 'de' ? 'Jetzt spenden' : locale === 'en' ? 'Donate now' : 'បរិច្ចាគឥឡូវ'}</span>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </div>
-          </a>
-        );
-      })}
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch reveal">
-      <!-- Digital Donation -->
-      <div class="bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 border border-white/5 flex flex-col hover:bg-white/[0.05] transition-all duration-700">
-        <h3 class="text-white font-heading font-extrabold text-3xl mb-12 flex items-center gap-6">
-          <div class="w-12 h-12 rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary">
-             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-              </svg>
-          </div>
-          {locale === 'de' ? 'Online spenden' : locale === 'en' ? 'Donate Online' : 'បរិច្ចាគអនឡាញ'}
-        </h3>
-        
-        <div class="flex flex-col gap-6">
-          {settings?.donationLinks?.betterplace && (
-            <a 
-              href={settings.donationLinks.betterplace}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center justify-between group p-8 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
-            >
-              <span class="text-white font-bold uppercase tracking-widest text-sm">betterplace.org</span>
-              <svg class="w-6 h-6 text-white/20 group-hover:text-secondary group-hover:translate-x-2 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </a>
-          )}
-          
-          {settings?.donationLinks?.paypal && (
-            <a 
-              href={settings.donationLinks.paypal}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center justify-between group p-8 bg-[#0070ba]/20 rounded-2xl border border-[#0070ba]/30 hover:bg-[#0070ba]/40 transition-all duration-500"
-            >
-              <div class="flex items-center gap-2 text-white">
-                <span class="font-extrabold italic text-xl">PayPal</span>
-              </div>
-              <svg class="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </a>
-          )}
+<section
+    id="spenden"
+    class="donate-container relative py-32 md:py-48 overflow-hidden bg-branding-dark text-white"
+>
+    <!-- Parallax Background -->
+    <div class="absolute inset-0 z-0">
+        <div
+            class="parallax-container absolute inset-0 w-full h-full animate-fade-in"
+            style="animation-delay: 0.3s;"
+        >
+            <img
+                id="donate-parallax-img"
+                src={bgImage}
+                alt=""
+                class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover opacity-100"
+            />
         </div>
-      </div>
-
-      <!-- Bank Transfer Details -->
-      <div class="bg-[#0e2a18]/40 backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 border border-primary/20 hover:border-primary/40 transition-all duration-700">
-        <h3 class="text-white font-heading font-extrabold text-3xl mb-12 flex items-center gap-6">
-          <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-              </svg>
-          </div>
-          {locale === 'de' ? 'Überweisung' : locale === 'en' ? 'Bank Transfer' : 'ផ្ទេរប្រាក់តាមធនាគារ'}
-        </h3>
-        <div class="space-y-8">
-          {settings?.bankAccount?.[locale] ? (
-            <div class="space-y-6">
-              <div>
-                <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">Empfänger</p>
-                <p class="font-bold text-white text-xl">{settings.bankAccount[locale].name}</p>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">Kreditinstitut</p>
-                  <p class="text-white/80">{settings.bankAccount[locale].bank}</p>
-                </div>
-                <div>
-                  <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">BIC</p>
-                  <p class="text-white font-mono uppercase tracking-widest">{settings.bankAccount[locale].bic}</p>
-                </div>
-              </div>
-              <div>
-                <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">IBAN</p>
-                <p class="font-mono text-xl text-secondary break-all tracking-wider">{settings.bankAccount[locale].iban}</p>
-              </div>
-            </div>
-          ) : (
-            <p class="italic text-white/30 py-8">
-              {locale === 'de' ? 'Details folgen.' : locale === 'en' ? 'Details coming soon.' : 'ព័ត៌មានធនាគារនឹងមកដល់ក្នុងពេលឆាប់ៗនេះ។'}
-            </p>
-          )}
+        <!-- Cinematic Depth Overlays (Neutral) -->
+        <div class="absolute inset-0 bg-branding-dark/30"></div>
+        <div
+            class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"
+        >
         </div>
-      </div>
     </div>
 
-    <!-- Footer info -->
-    <div class="mt-24 pt-12 border-t border-white/10 text-center max-w-3xl mx-auto space-y-6 reveal">
-      <p class="text-white/80 font-medium text-lg leading-relaxed italic">
-        "{t(settings?.donationFooterInfo, locale) || (locale === 'de'
-          ? 'Bildung ist kein Privileg, sondern ein Menschenrecht. Wir danken Ihnen für Ihre treue Unterstützung.'
-          : locale === 'en'
-          ? 'Education is not a privilege, but a human right. We thank you for your loyal support.'
-          : 'ការអប់រំមិនមែនជាឯកសិទ្ធិទេ ប៉ុន្តែជាសិទ្ធិមនុស្ស។')}"
-      </p>
-      <p class="text-white/30 text-xs uppercase tracking-[0.3em] font-bold">
-        {locale === 'de' 
-          ? 'Ehrenamtlich geführtes Team • 100% Direktförderung' 
-          : locale === 'en' 
-          ? 'Volunteer Team • 100% Direct Impact' 
-          : 'ក្រុមការងារស្ម័គ្រចិត្ត'}
-      </p>
+    <div class="container-custom relative z-10">
+        <!-- Section header -->
+        <div
+            class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/40 pl-8 md:pl-16"
+        >
+            <h2
+                class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-white mb-10 opacity-60"
+            >
+                {
+                    locale === "de"
+                        ? "Unterstützung"
+                        : locale === "en"
+                          ? "Support"
+                          : "ការគាំទ្រ"
+                }
+            </h2>
+            <h3
+                class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 tracking-tighter"
+            >
+                {
+                    locale === "de"
+                        ? "Spenden & Mitmachen"
+                        : locale === "en"
+                          ? "Donate & Get Involved"
+                          : "បរិច្ចាគ និងចូលរួម"
+                }
+            </h3>
+            <p
+                class="text-white/60 text-lg md:text-2xl max-w-2xl font-light leading-relaxed"
+            >
+                {
+                    locale === "de"
+                        ? "Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll."
+                        : locale === "en"
+                          ? "Your support makes the difference. Donate purposefully – transparently and effectively."
+                          : "ការគាំទ្ររបស់អ្នកបង្កើតភាពខុសគ្នា។ បរិច្ចាគដោយមានគោលបំណង។"
+                }
+            </p>
+        </div>
+
+        <!-- Donation tiers -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+            {
+                displayTiers.map((tier, index) => {
+                    const paypalUrl =
+                        settings?.donationLinks?.paypal && tier.amount
+                            ? `${settings.donationLinks.paypal}&amount=${tier.amount}`
+                            : settings?.donationLinks?.paypal;
+
+                    return (
+                        <a
+                            href={paypalUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class={`group relative bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] p-10 md:p-12 border border-white/5 hover:bg-white/[0.07] hover:border-white/10 transition-all duration-700 reveal`}
+                            style={`transition-delay: ${index * 150}ms`}
+                        >
+                            {index === 0 && (
+                                <div class="absolute top-8 right-8 bg-secondary text-white text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-full shadow-lg">
+                                    {locale === "de"
+                                        ? "Vorschlag"
+                                        : locale === "en"
+                                          ? "Suggested"
+                                          : "សំណើ"}
+                                </div>
+                            )}
+
+                            <div class="text-4xl md:text-6xl font-heading font-extrabold mb-6 text-white group-hover:scale-105 transition-transform duration-700 origin-left tracking-tighter">
+                                {tier.amount
+                                    ? `${tier.amount} €`
+                                    : locale === "de"
+                                      ? "Offen"
+                                      : locale === "en"
+                                        ? "Open"
+                                        : "បើកចំហ"}
+                            </div>
+
+                            <h4 class="text-xl font-bold mb-6 text-white group-hover:text-secondary transition-colors duration-500">
+                                {t(tier.title, locale)}
+                            </h4>
+
+                            <p class="text-white/50 text-base leading-relaxed mb-10 font-light italic">
+                                {t(tier.description, locale)}
+                            </p>
+
+                            <div class="flex items-center gap-3 text-secondary font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform duration-500">
+                                <span>
+                                    {locale === "de"
+                                        ? "Jetzt spenden"
+                                        : locale === "en"
+                                          ? "Donate now"
+                                          : "បរិច្ចាគឥឡូវ"}
+                                </span>
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                    />
+                                </svg>
+                            </div>
+                        </a>
+                    );
+                })
+            }
+        </div>
+
+        <div
+            class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch reveal"
+        >
+            <!-- Digital Donation -->
+            <div
+                class="bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 border border-white/5 flex flex-col hover:bg-white/[0.05] transition-all duration-700"
+            >
+                <h3
+                    class="text-white font-heading font-extrabold text-3xl mb-12"
+                >
+                    {
+                        locale === "de"
+                            ? "Online spenden"
+                            : locale === "en"
+                              ? "Donate Online"
+                              : "បរិច្ចាគអនឡាញ"
+                    }
+                </h3>
+
+                <div class="flex flex-col gap-6">
+                    {
+                        settings?.donationLinks?.betterplace && (
+                            <a
+                                href={settings.donationLinks.betterplace}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex items-center justify-between group p-8 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
+                            >
+                                <span class="text-white font-bold uppercase tracking-widest text-sm">
+                                    betterplace.org
+                                </span>
+                                <svg
+                                    class="w-6 h-6 text-white/20 group-hover:text-secondary group-hover:translate-x-2 transition-all duration-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                    />
+                                </svg>
+                            </a>
+                        )
+                    }
+
+                    {
+                        settings?.donationLinks?.paypal && (
+                            <a
+                                href={settings.donationLinks.paypal}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex items-center justify-between group p-8 bg-[#0070ba]/20 rounded-2xl border border-[#0070ba]/30 hover:bg-[#0070ba]/40 transition-all duration-500"
+                            >
+                                <div class="flex items-center gap-2 text-white">
+                                    <span class="font-extrabold italic text-xl">
+                                        PayPal
+                                    </span>
+                                </div>
+                                <svg
+                                    class="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all duration-500"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                    />
+                                </svg>
+                            </a>
+                        )
+                    }
+                </div>
+            </div>
+
+            <!-- Bank Transfer Details -->
+            <div
+                class="bg-[#0e2a18]/40 backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 border border-primary/20 hover:border-primary/40 transition-all duration-700"
+            >
+                <h3
+                    class="text-white font-heading font-extrabold text-3xl mb-12"
+                >
+                    {
+                        locale === "de"
+                            ? "Überweisung"
+                            : locale === "en"
+                              ? "Bank Transfer"
+                              : "ផ្ទេរប្រាក់តាមធនាគារ"
+                    }
+                </h3>
+                <div class="space-y-8">
+                    {
+                        settings?.bankAccount?.[locale] ? (
+                            <div class="space-y-6">
+                                <div>
+                                    <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
+                                        Empfänger
+                                    </p>
+                                    <p class="font-bold text-white text-xl">
+                                        {settings.bankAccount[locale].name}
+                                    </p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
+                                            Kreditinstitut
+                                        </p>
+                                        <p class="text-white/80">
+                                            {settings.bankAccount[locale].bank}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
+                                            BIC
+                                        </p>
+                                        <p class="text-white font-mono uppercase tracking-widest">
+                                            {settings.bankAccount[locale].bic}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
+                                        IBAN
+                                    </p>
+                                    <p class="font-mono text-xl text-secondary break-all tracking-wider">
+                                        {settings.bankAccount[locale].iban}
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            <p class="italic text-white/30 py-8">
+                                {locale === "de"
+                                    ? "Details folgen."
+                                    : locale === "en"
+                                      ? "Details coming soon."
+                                      : "ព័ត៌មានធនាគារនឹងមកដល់ក្នុងពេលឆាប់ៗនេះ។"}
+                            </p>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer info -->
+        <div
+            class="mt-24 pt-12 border-t border-white/10 text-center max-w-3xl mx-auto space-y-6 reveal"
+        >
+            <p class="text-white/80 font-medium text-lg leading-relaxed italic">
+                "{
+                    t(settings?.donationFooterInfo, locale) ||
+                        (locale === "de"
+                            ? "Bildung ist kein Privileg, sondern ein Menschenrecht. Wir danken Ihnen für Ihre treue Unterstützung."
+                            : locale === "en"
+                              ? "Education is not a privilege, but a human right. We thank you for your loyal support."
+                              : "ការអប់រំមិនមែនជាឯកសិទ្ធិទេ ប៉ុន្តែជាសិទ្ធិមនុស្ស។")
+                }"
+            </p>
+            <p
+                class="text-white/30 text-xs uppercase tracking-[0.3em] font-bold"
+            >
+                {
+                    locale === "de"
+                        ? "Ehrenamtlich geführtes Team • 100% Direktförderung"
+                        : locale === "en"
+                          ? "Volunteer Team • 100% Direct Impact"
+                          : "ក្រុមការងារស្ម័គ្រចិត្ត"
+                }
+            </p>
+        </div>
     </div>
-  </div>
 </section>
 
 <style>
-  .donate-container {
-    view-timeline: --donate-v block;
-  }
-
-  @keyframes parallax-slow {
-    from { transform: translateY(0); }
-    to { transform: translateY(15%); }
-  }
-
-  @supports (animation-timeline: view()) {
-    .parallax-target-slow {
-      animation: parallax-slow linear both;
-      animation-timeline: --donate-v;
-      animation-range: entry 0% exit 100%;
+    .donate-container {
+        view-timeline: --donate-v block;
     }
-  }
+
+    @keyframes parallax-slow {
+        from {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(15%);
+        }
+    }
+
+    @supports (animation-timeline: view()) {
+        .parallax-target-slow {
+            animation: parallax-slow linear both;
+            animation-timeline: --donate-v;
+            animation-range: entry 0% exit 100%;
+        }
+    }
 </style>
 
 <script is:inline>
-  (function() {
-    if (CSS.supports('animation-timeline', 'view()') || CSS.supports('animation-timeline', 'scroll()')) {
-      return;
-    }
-    
-    const img = document.getElementById('donate-parallax-img');
-    const section = img?.closest('section');
-    if (!img || !section) return;
+    (function () {
+        if (
+            CSS.supports("animation-timeline", "view()") ||
+            CSS.supports("animation-timeline", "scroll()")
+        ) {
+            return;
+        }
 
-    let ticking = false;
-    const update = () => {
-      const rect = section.getBoundingClientRect();
-      const viewHeight = window.innerHeight;
-      
-      if (rect.top < viewHeight && rect.bottom > 0) {
-        const scrolled = (viewHeight - rect.top) / (viewHeight + rect.height);
-        const yPos = scrolled * 100;
-        img.style.transform = `translate3d(0, ${yPos}px, 0)`;
-      }
-      ticking = false;
-    };
+        const img = document.getElementById("donate-parallax-img");
+        const section = img?.closest("section");
+        if (!img || !section) return;
 
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
-    
-    update();
-  })();
+        let ticking = false;
+        const update = () => {
+            const rect = section.getBoundingClientRect();
+            const viewHeight = window.innerHeight;
+
+            if (rect.top < viewHeight && rect.bottom > 0) {
+                const scrolled =
+                    (viewHeight - rect.top) / (viewHeight + rect.height);
+                const yPos = scrolled * 100;
+                img.style.transform = `translate3d(0, ${yPos}px, 0)`;
+            }
+            ticking = false;
+        };
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(update);
+                    ticking = true;
+                }
+            },
+            { passive: true },
+        );
+
+        update();
+    })();
 </script>

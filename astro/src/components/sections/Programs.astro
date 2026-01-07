@@ -139,11 +139,8 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
                 {program.features && (
                   <ul class="space-y-4 border-l-2 border-primary/10 pl-8">
                     {program.features.map((feature: any) => (
-                      <li class="flex items-start gap-3 group/item">
-                        <svg class="w-5 h-5 text-secondary mt-1 group-hover/item:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <circle cx="12" cy="12" r="10" stroke-width="2" class="opacity-20"></circle>
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
-                        </svg>
+                      <li class="flex items-start gap-4 group/item">
+                        <div class="w-1.5 h-1.5 rounded-full bg-secondary mt-2.5 shrink-0 group-hover/item:scale-150 transition-transform duration-300"></div>
                         <span class="text-branding-muted font-medium">
                           {typeof feature === 'string' ? feature : t(feature, locale)}
                         </span>

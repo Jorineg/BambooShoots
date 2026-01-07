@@ -1,169 +1,323 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { getLocale, t, localizedUrl, defaultLocale } from '../../lib/i18n';
-import { getHistoryPage, getTimelineEvents } from '../../lib/sanity';
+import Layout from "../../layouts/Layout.astro";
+import { getLocale, t, localizedUrl, defaultLocale } from "../../lib/i18n";
+import { getHistoryPage, getTimelineEvents } from "../../lib/sanity";
 
 export async function getStaticPaths() {
   return [
     { params: { lang: undefined } },
-    { params: { lang: 'en' } },
-    { params: { lang: 'kh' } },
+    { params: { lang: "en" } },
+    { params: { lang: "kh" } },
   ];
 }
 
 const { lang } = Astro.params;
-const locale = lang as any || defaultLocale;
+const locale = (lang as any) || defaultLocale;
 
 const historyPage = await getHistoryPage();
 const timelineEvents = await getTimelineEvents();
 
-const pageTitle = locale === 'de' 
-  ? 'Geschichte' 
-  : locale === 'en' 
-  ? 'History' 
-  : 'ប្រវត្តិ';
+const pageTitle =
+  locale === "de" ? "Geschichte" : locale === "en" ? "History" : "ប្រវត្តិ";
 
 // Default timeline events
 const defaultEvents = [
-  { year: '2003', title: { de: 'Erste Vorschule & Kids Club in Kok Kryll', en: 'First preschool & kids club in Kok Kryll', kh: 'មត្តេយ្យដំបូង និងក្លិបកុមារនៅ Kok Kryll' }},
-  { year: '2005', title: { de: 'Ausbau & Erweiterung: Weiterer Standort Liang Dai', en: 'Expansion: Additional location Liang Dai', kh: 'ពង្រីក៖ ទីតាំងបន្ថែម Liang Dai' }},
-  { year: '2006', title: { de: 'Offizielle NGO-Gründung Bamboo Shoots – Time to Grow', en: 'Official NGO founding of Bamboo Shoots', kh: 'ការបង្កើតផ្លូវការរបស់ Bamboo Shoots' }},
-  { year: '2008', title: { de: 'Bibliothek eröffnet in Phum Prasat', en: 'Library opens in Phum Prasat', kh: 'បណ្ណាល័យបើកនៅ Phum Prasat' }},
-  { year: '2009', title: { de: '3. Vorschule gebaut in Rokar Yea', en: '3rd preschool built in Rokar Yea', kh: 'មត្តេយ្យទី 3 សាងសង់នៅ Rokar Yea' }},
-  { year: locale === 'de' ? 'Heute' : locale === 'en' ? 'Today' : 'ថ្ងៃនេះ', title: { de: 'Mehr als 250 Kinder werden regelmäßig betreut', en: 'More than 250 children are regularly cared for', kh: 'កុមារជាង 250 នាក់ត្រូវបានថែរក្សាជាទៀងទាត់' }}
+  {
+    year: "2003",
+    title: {
+      de: "Erste Vorschule & Kids Club in Kok Kryll",
+      en: "First preschool & kids club in Kok Kryll",
+      kh: "មត្តេយ្យដំបូង និងក្លិបកុមារនៅ Kok Kryll",
+    },
+  },
+  {
+    year: "2005",
+    title: {
+      de: "Ausbau & Erweiterung: Weiterer Standort Liang Dai",
+      en: "Expansion: Additional location Liang Dai",
+      kh: "ពង្រីក៖ ទីតាំងបន្ថែម Liang Dai",
+    },
+  },
+  {
+    year: "2006",
+    title: {
+      de: "Offizielle NGO-Gründung Bamboo Shoots – Time to Grow",
+      en: "Official NGO founding of Bamboo Shoots",
+      kh: "ការបង្កើតផ្លូវការរបស់ Bamboo Shoots",
+    },
+  },
+  {
+    year: "2008",
+    title: {
+      de: "Bibliothek eröffnet in Phum Prasat",
+      en: "Library opens in Phum Prasat",
+      kh: "បណ្ណាល័យបើកនៅ Phum Prasat",
+    },
+  },
+  {
+    year: "2009",
+    title: {
+      de: "3. Vorschule gebaut in Rokar Yea",
+      en: "3rd preschool built in Rokar Yea",
+      kh: "មត្តេយ្យទី 3 សាងសង់នៅ Rokar Yea",
+    },
+  },
+  {
+    year: locale === "de" ? "Heute" : locale === "en" ? "Today" : "ថ្ងៃនេះ",
+    title: {
+      de: "Mehr als 250 Kinder werden regelmäßig betreut",
+      en: "More than 250 children are regularly cared for",
+      kh: "កុមារជាង 250 នាក់ត្រូវបានថែរក្សាជាទៀងទាត់",
+    },
+  },
 ];
 
-const displayEvents = timelineEvents?.length > 0 ? timelineEvents : defaultEvents;
+const displayEvents =
+  timelineEvents?.length > 0 ? timelineEvents : defaultEvents;
 ---
 
 <Layout title={pageTitle} locale={locale}>
   <!-- Hero -->
-  <section class="bg-branding-dark text-white py-20 md:py-28">
-    <div class="container-custom px-4 md:px-8">
-      <div class="max-w-3xl">
-        <a href={localizedUrl('/', locale)} class="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-all duration-300 hover:-translate-x-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-          {locale === 'de' ? 'Zurück zur Startseite' : locale === 'en' ? 'Back to home' : 'ត្រឡប់ទៅទំព័រដើម'}
+  <!-- Hero -->
+  <section
+    class="bg-branding-dark text-white pt-32 pb-20 md:pt-48 md:pb-32 relative overflow-hidden"
+  >
+    <!-- Subtle Gradient Background -->
+    <div
+      class="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent"
+    >
+    </div>
+
+    <div class="container-custom px-4 md:px-8 relative z-10">
+      <div
+        class="max-w-4xl border-l-[3px] border-secondary/40 pl-8 md:pl-16 reveal"
+      >
+        <a
+          href={localizedUrl("/", locale)}
+          class="group inline-flex items-center gap-3 text-white/40 hover:text-white mb-10 transition-all duration-300"
+        >
+          <div
+            class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-300"
+          >
+            <svg
+              class="w-4 h-4 text-white group-hover:text-branding-dark transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </div>
+          <span class="text-xs uppercase tracking-[0.3em] font-bold"
+            >{
+              locale === "de"
+                ? "Zurück"
+                : locale === "en"
+                  ? "Back"
+                  : "ត្រឡប់ក្រោយ"
+            }</span
+          >
         </a>
-        <h1 class="text-4xl md:text-5xl font-heading font-bold mb-4">
-          {t(historyPage?.pageTitle, locale) || (locale === 'de' 
-            ? 'Kambodscha – Ein Land mit Vergangenheit und Zukunft' 
-            : locale === 'en'
-            ? 'Cambodia – A Country with Past and Future'
-            : 'កម្ពុជា – ប្រទេសមួយដែលមានអតីតកាល និងអនាគត')}
+
+        <h1
+          class="text-xs md:text-sm uppercase tracking-[0.5em] font-bold text-secondary mb-6 italic opacity-80"
+        >
+          {
+            locale === "de"
+              ? "Hintergrund"
+              : locale === "en"
+                ? "Background"
+                : "ប្រវត្តិ"
+          }
         </h1>
-        <div class="w-20 h-1 bg-secondary rounded-full"></div>
+
+        <h2
+          class="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold mb-4 tracking-tighter leading-tight max-w-3xl"
+        >
+          {
+            t(historyPage?.pageTitle, locale) ||
+              (locale === "de"
+                ? "Kambodscha – Ein Land mit Vergangenheit und Zukunft"
+                : locale === "en"
+                  ? "Cambodia – A Country with Past and Future"
+                  : "កម្ពុជា – ប្រទេសមួយដែលមានអតីតកាល និងអនាគត")
+          }
+        </h2>
       </div>
     </div>
   </section>
 
   <!-- Cambodia Background -->
   <section class="section bg-branding-bg">
-    <div class="container-custom">
-      <div class="max-w-4xl mx-auto prose prose-lg prose-bamboo">
-        
+    <div class="container-custom px-4 md:px-8">
+      <div class="max-w-4xl mx-auto space-y-24 md:space-y-32">
         <!-- Geography -->
-        <div class="mb-12">
-          <h2 class="text-2xl md:text-3xl font-heading font-bold text-branding-dark mb-6 flex items-center gap-3">
-            <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            {locale === 'de' ? 'Land & Lage' : locale === 'en' ? 'Location' : 'ទីតាំង'}
+        <div class="reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
+          <h2
+            class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter"
+          >
+            {
+              locale === "de"
+                ? "Land & Lage"
+                : locale === "en"
+                  ? "Location"
+                  : "ទីតាំង"
+            }
           </h2>
-          <p class="text-branding-text leading-relaxed">
-            {t(historyPage?.cambodiaBackground?.geography, locale) || (locale === 'de'
-              ? 'Kambodscha liegt im Herzen Südostasiens, eingebettet zwischen Thailand, Laos und Vietnam. Mehr als 17 Millionen Menschen leben heute im Land, davon etwa 2,4 Millionen in der Hauptstadt Phnom Penh.'
-              : locale === 'en'
-              ? 'Cambodia lies in the heart of Southeast Asia, nestled between Thailand, Laos and Vietnam. More than 17 million people live in the country today, about 2.4 million of them in the capital Phnom Penh.'
-              : 'កម្ពុជាស្ថិតនៅចំកណ្តាលអាស៊ីអាគ្នេយ៍ រវាងថៃ ឡាវ និងវៀតណាម។ មនុស្សជាង 17 លាននាក់រស់នៅក្នុងប្រទេសនេះ។')}
+          <p
+            class="text-branding-text text-lg md:text-xl leading-relaxed font-light max-w-2xl"
+          >
+            {
+              t(historyPage?.cambodiaBackground?.geography, locale) ||
+                (locale === "de"
+                  ? "Kambodscha liegt im Herzen Südostasiens, eingebettet zwischen Thailand, Laos und Vietnam. Mehr als 17 Millionen Menschen leben heute im Land, davon etwa 2,4 Millionen in der Hauptstadt Phnom Penh."
+                  : locale === "en"
+                    ? "Cambodia lies in the heart of Southeast Asia, nestled between Thailand, Laos and Vietnam. More than 17 million people live in the country today, about 2.4 million of them in the capital Phnom Penh."
+                    : "កម្ពុជាស្ថិតនៅចំកណ្តាលអាស៊ីអាគ្នេយ៍ រវាងថៃ ឡាវ និងវៀតណាម។ មនុស្សជាង 17 លាននាក់រស់នៅក្នុងប្រទេសនេះ។")
+            }
           </p>
         </div>
 
         <!-- History -->
-        <div class="mb-12">
-          <h2 class="text-2xl md:text-3xl font-heading font-bold text-branding-dark mb-6 flex items-center gap-3">
-            <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            {locale === 'de' ? 'Ein Land mit schwerer Geschichte' : locale === 'en' ? 'A Difficult History' : 'ប្រវត្តិសាស្រ្តលំបាក'}
+        <div class="reveal border-l-[3px] border-secondary/20 pl-8 md:pl-16">
+          <h2
+            class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter"
+          >
+            {
+              locale === "de"
+                ? "Ein Land mit schwerer Geschichte"
+                : locale === "en"
+                  ? "A Difficult History"
+                  : "ប្រវត្តិសាស្រ្តលំបាក"
+            }
           </h2>
-          <p class="text-branding-text leading-relaxed mb-4">
-            {t(historyPage?.cambodiaBackground?.history, locale) || (locale === 'de'
-              ? 'Die Narben der Vergangenheit sind in Kambodscha bis heute spürbar. Zwischen 1975 und 1979 herrschte das Terrorregime der Roten Khmer unter Pol Pot. Schätzungen zufolge kamen dabei bis zu 2 Millionen Menschen ums Leben.'
-              : locale === 'en'
-              ? 'The scars of the past are still visible in Cambodia today. Between 1975 and 1979, the terror regime of the Khmer Rouge under Pol Pot ruled. An estimated 2 million people lost their lives.'
-              : 'ស្នាមរបួសអតីតកាលនៅតែមើលឃើញនៅកម្ពុជាថ្ងៃនេះ។ រវាងឆ្នាំ 1975 និង 1979 របបភ័យរន្ធត់ខ្មែរក្រហមក្រោមប៉ុល ពតបានកាន់អំណាច។')}
-          </p>
-          <p class="text-branding-text leading-relaxed">
-            {locale === 'de'
-              ? 'Schulen und Krankenhäuser wurden zerstört, große Teile der gebildeten Bevölkerung ausgelöscht – etwa ein Viertel der damaligen Bevölkerung. Auch heute noch sind many Landregionen von den Folgen dieser Zeit geprägt.'
-              : locale === 'en'
-              ? 'Schools and hospitals were destroyed, large parts of the educated population were wiped out – about a quarter of the population at that time. Many rural areas are still affected by the consequences of this period today.'
-              : 'សាលារៀន និងមន្ទីរពេទ្យត្រូវបានបំផ្លាញ។ ប្រជាជនមានការអប់រំមួយភាគធំត្រូវបានលុបបំបាត់។'}
-          </p>
+          <div class="space-y-6 max-w-2xl">
+            <p
+              class="text-branding-text text-lg md:text-xl leading-relaxed font-light"
+            >
+              {
+                t(historyPage?.cambodiaBackground?.history, locale) ||
+                  (locale === "de"
+                    ? "Die Narben der Vergangenheit sind in Kambodscha bis heute spürbar. Zwischen 1975 und 1979 herrschte das Terrorregime der Roten Khmer unter Pol Pot. Schätzungen zufolge kamen dabei bis zu 2 Millionen Menschen ums Leben."
+                    : locale === "en"
+                      ? "The scars of the past are still visible in Cambodia today. Between 1975 and 1979, the terror regime of the Khmer Rouge under Pol Pot ruled. An estimated 2 million people lost their lives."
+                      : "ស្នាមរបួសអតីតកាលនៅតែមើលឃើញនៅកម្ពុជាថ្ងៃនេះ។ រវាងឆ្នាំ 1975 និង 1979 របបភ័យរន្ធត់ខ្មែរក្រហមក្រោមប៉ុល ពតបានកាន់អំណាច។")
+              }
+            </p>
+            <p
+              class="text-branding-text text-lg md:text-xl leading-relaxed font-light"
+            >
+              {
+                locale === "de"
+                  ? "Schulen und Krankenhäuser wurden zerstört, große Teile der gebildeten Bevölkerung ausgelöscht – etwa ein Viertel der damaligen Bevölkerung. Auch heute noch sind many Landregionen von den Folgen dieser Zeit geprägt."
+                  : locale === "en"
+                    ? "Schools and hospitals were destroyed, large parts of the educated population were wiped out – about a quarter of the population at that time. Many rural areas are still affected by the consequences of this period today."
+                    : "សាលារៀន និងមន្ទីរពេទ្យត្រូវបានបំផ្លាញ។ ប្រជាជនមានការអប់រំមួយភាគធំត្រូវបានលុបបំបាត់។"
+              }
+            </p>
+          </div>
         </div>
 
         <!-- Economy -->
-        <div class="mb-12">
-          <h2 class="text-2xl md:text-3xl font-heading font-bold text-branding-dark mb-6 flex items-center gap-3">
-            <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-            {locale === 'de' ? 'Zwischen Aufbruch und Armut' : locale === 'en' ? 'Between Progress and Poverty' : 'រវាងវឌ្ឍនភាព និងភាពក្រីក្រ'}
+        <div class="reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
+          <h2
+            class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter"
+          >
+            {
+              locale === "de"
+                ? "Zwischen Aufbruch und Armut"
+                : locale === "en"
+                  ? "Between Progress and Poverty"
+                  : "រវាងវឌ្ឍនភាព និងភាពក្រីក្រ"
+            }
           </h2>
-          <p class="text-branding-text leading-relaxed">
-            {t(historyPage?.cambodiaBackground?.economy, locale) || (locale === 'de'
-              ? 'In den letzten zwei Jahrzehnten hat Kambodscha wirtschaftlich aufgeholt – vor allem durch Textilindustrie, Bauwirtschaft und Tourismus zu den weltberühmten Tempeln von Angkor Wat bei Siem Reap. Doch die Corona-Pandemie hat das Land wirtschaftlich stark getroffen.'
-              : locale === 'en'
-              ? 'In the last two decades, Cambodia has caught up economically – mainly through the textile industry, construction and tourism to the world-famous temples of Angkor Wat near Siem Reap. However, the Corona pandemic hit the country hard economically.'
-              : 'ក្នុងរយៈពេលពីរទសវត្សរ៍កន្លងមក កម្ពុជាបានរីកចម្រើនផ្នែកសេដ្ឋកិច្ច។ ប៉ុន្តែជំងឺរាតត្បាតកូរ៉ូណាបានប៉ះពាល់ប្រទេសយ៉ាងខ្លាំង។')}
+          <p
+            class="text-branding-text text-lg md:text-xl leading-relaxed font-light max-w-2xl"
+          >
+            {
+              t(historyPage?.cambodiaBackground?.economy, locale) ||
+                (locale === "de"
+                  ? "In den letzten zwei Jahrzehnten hat Kambodscha wirtschaftlich aufgeholt – vor allem durch Textilindustrie, Bauwirtschaft und Tourismus zu den weltberühmten Tempeln von Angkor Wat bei Siem Reap. Doch die Corona-Pandemie hat das Land wirtschaftlich stark getroffen."
+                  : locale === "en"
+                    ? "In the last two decades, Cambodia has caught up economically – mainly through the textile industry, construction and tourism to the world-famous temples of Angkor Wat near Siem Reap. However, the Corona pandemic hit the country hard economically."
+                    : "ក្នុងរយៈពេលពីរទសវត្សរ៍កន្លងមក កម្ពុជាបានរីកចម្រើនផ្នែកសេដ្ឋកិច្ច។ ប៉ុន្តែជំងឺរាតត្បាតកូរ៉ូណាបានប៉ះពាល់ប្រទេសយ៉ាងខ្លាំង។")
+            }
           </p>
         </div>
 
         <!-- Education -->
-        <div class="mb-12 bg-branding-accent rounded-2xl p-8 border border-primary/10">
-          <h2 class="text-2xl md:text-3xl font-heading font-bold text-branding-dark mb-6 flex items-center gap-3">
-            <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-              <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
-            </svg>
-            {locale === 'de' ? 'Bildung ist keine Selbstverständlichkeit' : locale === 'en' ? 'Education is Not a Given' : 'ការអប់រំមិនមែនជារឿងធម្មតាទេ'}
+        <div
+          class="reveal bg-branding-accent rounded-[2.5rem] p-10 md:p-16 border border-black/5 shadow-sm"
+        >
+          <h2
+            class="text-3xl md:text-4xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter"
+          >
+            {
+              locale === "de"
+                ? "Bildung ist keine Selbstverständlichkeit"
+                : locale === "en"
+                  ? "Education is Not a Given"
+                  : "ការអប់រំមិនមែនជារឿងធម្មតាទេ"
+            }
           </h2>
-          <p class="text-branding-text leading-relaxed mb-4">
-            {t(historyPage?.cambodiaBackground?.education, locale) || (locale === 'de'
-              ? 'Obwohl Kambodscha ein staatliches Bildungssystem anbietet, ist Bildung gerade auf dem Land für viele Kinder nicht erreichbar oder nicht finanzierbar.'
-              : locale === 'en'
-              ? 'Although Cambodia offers a public education system, education is often not accessible or affordable for many children, especially in rural areas.'
-              : 'ទោះបីជាកម្ពុជាផ្តល់ប្រព័ន្ធអប់រំសាធារណៈ ការអប់រំជារឿយៗមិនអាចទទួលបានសម្រាប់កុមារជាច្រើន ជាពិសេសនៅតំបន់ជនបទ។')}
-          </p>
-          <ul class="space-y-2 text-branding-text">
-            <li class="flex items-start gap-2">
-              <span class="text-secondary">•</span>
-              {locale === 'de' ? 'Viele Kinder müssen früh zum Lebensunterhalt der Familie beitragen' : locale === 'en' ? 'Many children must contribute to the family income early on' : 'កុមារជាច្រើនត្រូវរួមចំណែកក្នុងប្រាក់ចំណូលគ្រួសារពីដំបូង'}
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-secondary">•</span>
-              {locale === 'de' ? 'Oder auf kleinere Geschwister aufpassen' : locale === 'en' ? 'Or look after younger siblings' : 'ឬមើលថែប្អូនៗ'}
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-secondary">•</span>
-              {locale === 'de' ? 'Lange Schulwege ohne Transportmittel erschweren den Schulbesuch' : locale === 'en' ? 'Long school routes without transportation make school attendance difficult' : 'ផ្លូវទៅសាលារៀនវែងដោយគ្មានការដឹកជញ្ជូន'}
-            </li>
-          </ul>
-          <div class="mt-6 p-4 bg-secondary/5 border-l-4 border-secondary rounded-r-lg flex gap-3">
-            <svg class="w-5 h-5 text-secondary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <p class="text-branding-dark font-medium">
-              {locale === 'de' 
-                ? 'Besonders betroffen sind die Dörfer rund um Siem Reap – dort leben über 50% der Bevölkerung unter der Armutsgrenze von rund 2$ am Tag.'
-                : locale === 'en'
-                ? 'Villages around Siem Reap are particularly affected – over 50% of the population there lives below the poverty line of about $2 a day.'
-                : 'ភូមិជុំវិញសៀមរាបត្រូវបានប៉ះពាល់ជាពិសេស – ប្រជាជនជាង 50% រស់នៅក្រោមបន្ទាត់ភាពក្រីក្រ។'}
-            </p>
+          <div class="grid md:grid-cols-2 gap-12">
+            <div class="space-y-6">
+              <p class="text-branding-text text-lg leading-relaxed font-light">
+                {
+                  t(historyPage?.cambodiaBackground?.education, locale) ||
+                    (locale === "de"
+                      ? "Obwohl Kambodscha ein staatliches Bildungssystem anbietet, ist Bildung gerade auf dem Land für viele Kinder nicht erreichbar oder nicht finanzierbar."
+                      : locale === "en"
+                        ? "Although Cambodia offers a public education system, education is often not accessible or affordable for many children, especially in rural areas."
+                        : "ទោះបីជាកម្ពុជាផ្តល់ប្រព័ន្ធអប់រំសាធារណៈ ការអប់រំជារឿយៗមិនអាចទទួលបានសម្រាប់កុមារជាច្រើន ជាពិសេសនៅតំបន់ជនបទ។")
+                }
+              </p>
+              <div
+                class="p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-white/40"
+              >
+                <p class="text-branding-dark font-medium italic">
+                  {
+                    locale === "de"
+                      ? "Besonders betroffen sind die Dörfer rund um Siem Reap – dort leben über 50% der Bevölkerung unter der Armutsgrenze von rund 2$ am Tag."
+                      : locale === "en"
+                        ? "Villages around Siem Reap are particularly affected – over 50% of the population there lives below the poverty line of about $2 a day."
+                        : "ភូមិជុំវិញសៀមរាបត្រូវបានប៉ះពាល់ជាពិសេស – ប្រជាជនជាង 50% រស់នៅក្រោមបន្ទាត់ភាពក្រីក្រ។"
+                  }
+                </p>
+              </div>
+            </div>
+            <ul class="space-y-6">
+              {
+                [
+                  {
+                    de: "Viele Kinder müssen früh zum Lebensunterhalt der Familie beitragen",
+                    en: "Many children must contribute to the family income early on",
+                    kh: "កុមារជាច្រើនត្រូវរួមចំណែកក្នុងប្រាក់ចំណូលគ្រួសារពីដំបូង",
+                  },
+                  {
+                    de: "Oder auf kleinere Geschwister aufpassen",
+                    en: "Or look after younger siblings",
+                    kh: "ឬមើលថែប្អូនៗ",
+                  },
+                  {
+                    de: "Lange Schulwege ohne Transportmittel erschweren den Schulbesuch",
+                    en: "Long school routes without transportation make school attendance difficult",
+                    kh: "ផ្លូវទៅសាលារៀនវែងដោយគ្មានការដឹកជញ្ជូន",
+                  },
+                ].map((item) => (
+                  <li class="flex items-start gap-4">
+                    <div class="w-1.5 h-1.5 rounded-full bg-secondary mt-2.5 shrink-0" />
+                    <span class="text-branding-text text-lg font-light leading-snug">
+                      {item[locale as keyof typeof item] || item.de}
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
           </div>
         </div>
       </div>
@@ -171,51 +325,107 @@ const displayEvents = timelineEvents?.length > 0 ? timelineEvents : defaultEvent
   </section>
 
   <!-- Bamboo Shoots Timeline -->
-  <section class="section bg-branding-accent">
-    <div class="container-custom">
+  <section class="section bg-branding-accent relative overflow-hidden">
+    <div class="container-custom px-4 md:px-8">
       <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-heading font-bold text-branding-dark mb-4 flex items-center justify-center gap-3">
-            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-            </svg>
-            {locale === 'de' ? 'Unsere Geschichte' : locale === 'en' ? 'Our History' : 'ប្រវត្តិរបស់យើង'}
+        <div
+          class="mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16"
+        >
+          <h1
+            class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60"
+          >
+            {
+              locale === "de"
+                ? "Meilensteine"
+                : locale === "en"
+                  ? "Milestones"
+                  : "ព្រឹត្តិការណ៍សំខាន់ៗ"
+            }
+          </h1>
+          <h2
+            class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter"
+          >
+            {
+              locale === "de"
+                ? "Unsere Geschichte"
+                : locale === "en"
+                  ? "Our History"
+                  : "ប្រវត្តិរបស់យើង"
+            }
           </h2>
-          <p class="text-branding-muted">
-            {locale === 'de' 
-              ? 'Bamboo Shoots – Eine wachsende Vision seit 2003'
-              : locale === 'en'
-              ? 'Bamboo Shoots – A growing vision since 2003'
-              : 'Bamboo Shoots – ចក្ខុវិស័យដែលកំពុងរីកចម្រើនចាប់តាំងពីឆ្នាំ 2003'}
+          <p
+            class="text-branding-muted text-lg md:text-2xl font-light leading-relaxed max-w-2xl"
+          >
+            {
+              locale === "de"
+                ? "Bamboo Shoots – Eine wachsende Vision seit 2003"
+                : locale === "en"
+                  ? "Bamboo Shoots – A growing vision since 2003"
+                  : "Bamboo Shoots – ចក្ខុវិស័យដែលកំពុងរីកចម្រើនចាប់តាំងពីឆ្នាំ 2003"
+            }
           </p>
         </div>
 
         <!-- Timeline -->
-        <div class="relative">
-          {displayEvents.map((event, index) => (
-            <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="bg-branding-bg rounded-xl p-6 shadow-sm border border-black/5 hover-lift">
-                <span class="inline-block bg-primary/10 text-primary font-bold px-3 py-1 rounded-full text-sm mb-2">
-                  {event.year}
-                </span>
-                <h3 class="text-lg font-heading font-semibold text-branding-dark">
-                  {t(event.title, locale)}
-                </h3>
-                {event.description && (
-                  <p class="text-branding-muted mt-2 text-sm">
-                    {t(event.description, locale)}
-                  </p>
-                )}
+        <div class="relative space-y-12 mb-24">
+          {
+            displayEvents.map((event, index) => (
+              <div
+                class="timeline-item reveal"
+                style={`transition-delay: ${index * 100}ms`}
+              >
+                <div class="timeline-dot" />
+                <div class="bg-branding-bg rounded-[2rem] p-8 md:p-10 shadow-sm border border-black/5 hover-lift transition-all duration-500">
+                  <span class="inline-block bg-primary/10 text-primary font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-6">
+                    {event.year}
+                  </span>
+                  <h3 class="text-xl md:text-2xl font-heading font-extrabold text-branding-dark tracking-tight">
+                    {t(event.title, locale)}
+                  </h3>
+                  {event.description && (
+                    <p class="text-branding-muted mt-4 text-lg font-light leading-relaxed">
+                      {t(event.description, locale)}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          }
         </div>
 
         <!-- Back to home -->
-        <div class="text-center mt-12">
-          <a href={localizedUrl('/', locale)} class="btn-primary">
-            {locale === 'de' ? '← Zurück zur Startseite' : locale === 'en' ? '← Back to Home' : '← ត្រឡប់ទៅទំព័រដើម'}
+        <div class="text-center reveal">
+          <a
+            href={localizedUrl("/", locale)}
+            class="group inline-flex items-center gap-4 text-branding-dark font-extrabold hover:text-primary transition-all duration-500"
+          >
+            <div
+              class="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all duration-500"
+            >
+              <svg
+                class="w-5 h-5 group-hover:-translate-x-1 group-hover:text-white transition-all duration-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+              </svg>
+            </div>
+            <span
+              class="text-sm uppercase tracking-[0.3em] border-b border-black/10 group-hover:border-primary transition-all"
+            >
+              {
+                locale === "de"
+                  ? "Zur Startseite"
+                  : locale === "en"
+                    ? "Back to Home"
+                    : "ត្រឡប់ទៅទំព័រដើម"
+              }
+            </span>
           </a>
         </div>
       </div>
