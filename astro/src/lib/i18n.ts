@@ -57,7 +57,7 @@ export function localizedUrl(path: string, locale: Locale): string {
     }
     const cleanPath = '/' + segments.join('/');
 
-    const localePrefix = `/${locale}`;
+    const localePrefix = locale === defaultLocale ? '' : `/${locale}`;
     let result = `${base}${localePrefix}${cleanPath === '/' ? '' : cleanPath}`;
 
     // Ensure trailing slash for directory paths (not for anchor-only paths)

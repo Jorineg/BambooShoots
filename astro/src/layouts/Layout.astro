@@ -90,8 +90,23 @@ const settings = await getSiteSettings();
         }, 300);
       };
 
+      const handleRedirect = () => {
+        const path = window.location.pathname;
+        const base = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
+
+        // Only consider redirect if we are EXACTLY at the root
+        const isRoot = path === base + "/" || path === base;
+        if (!isRoot) return;
+
+        const lang = localStorage.getItem("preferred-language");
+        if (lang && lang !== "de") {
+          window.location.replace(base + "/" + lang + "/");
+        }
+      };
+
       document.addEventListener("astro:page-load", () => {
         initChoreography();
+        handleRedirect();
       });
     </script>
   </body>
