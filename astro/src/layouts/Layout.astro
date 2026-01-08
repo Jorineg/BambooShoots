@@ -94,13 +94,29 @@ const settings = await getSiteSettings();
         const path = window.location.pathname;
         const base = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
 
-        // Only consider redirect if we are EXACTLY at the root
+        // Only redirect if we are EXACTLY at the root
         const isRoot = path === base + "/" || path === base;
         if (!isRoot) return;
 
         const lang = localStorage.getItem("preferred-language");
-        if (lang && lang !== "de") {
-          window.location.replace(base + "/" + lang + "/");
+        if (lang) {
+          // If preference exists and is not German, redirect
+          if (lang !== "de") {
+            window.location.replace(base + "/" + lang + "/");
+          }
+          return;
+        }
+
+        // First visit: Detect browser language
+        const browserLang = navigator.language.split("-")[0];
+        const supportedNonDefault = ["en", "kh"];
+
+        if (supportedNonDefault.includes(browserLang)) {
+          localStorage.setItem("preferred-language", browserLang);
+          window.location.replace(base + "/" + browserLang + "/");
+        } else {
+          // It's German or an unsupported language -> stay here and mark as German
+          localStorage.setItem("preferred-language", "de");
         }
       };
 
