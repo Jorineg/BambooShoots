@@ -58,7 +58,7 @@ const objectPosition = hotspot
   <!-- Background Image Layer -->
   <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
     <div
-      class="parallax-wrapper absolute inset-0 w-full h-full animate-fade-in"
+      class="parallax-wrapper absolute inset-0 w-full h-full animate-fade-in opacity-0"
       style="animation-delay: 0.2s;"
     >
       <img
@@ -92,7 +92,7 @@ const objectPosition = hotspot
       <!-- <div class="w-16 h-[2px] bg-secondary mb-12 rounded-full animate-slide-left"></div> -->
 
       <h1
-        class="text-5xl md:text-7xl lg:text-8xl font-heading font-extrabold text-white leading-[1.05] mb-8 animate-reveal tracking-tighter"
+        class="text-5xl md:text-7xl lg:text-8xl font-heading font-extrabold text-white leading-[1.05] mb-8 tracking-tighter"
       >
         <span class="block opacity-0 translate-y-8 animate-item-reveal"
           >{titleMain}</span
@@ -104,7 +104,8 @@ const objectPosition = hotspot
       </h1>
 
       <p
-        class="text-xs md:text-sm uppercase tracking-[0.5em] font-bold text-white/50 mb-10 opacity-0 animate-fade-in delay-500 italic"
+        class="text-xs md:text-sm uppercase tracking-[0.5em] font-bold text-white/50 mb-10 opacity-0 animate-fade-in italic"
+        style="animation-delay: 0.5s;"
       >
         {subtitle}
       </p>
@@ -231,13 +232,16 @@ const objectPosition = hotspot
   }
 
   .animate-fade-in {
-    animation: fade-in 1.5s ease-out forwards;
+    opacity: 0;
+    animation: fade-in 1.5s ease-out both;
   }
   .animate-item-reveal {
-    animation: item-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    animation: item-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .animate-slide-left {
-    animation: slide-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    animation: slide-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes flowLine {
