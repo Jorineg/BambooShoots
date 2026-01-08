@@ -37,6 +37,7 @@ const navLabels: Record<string, any> = {
 
 <header
   id="main-header"
+  data-base={(import.meta.env.BASE_URL || "").replace(/\/$/, "")}
   class:list={[
     "fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent w-full",
     { scrolled: isStaticHeader, "is-static": isStaticHeader },
@@ -79,20 +80,32 @@ const navLabels: Record<string, any> = {
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden lg:flex items-center gap-10">
+      <div class="hidden lg:flex items-center gap-8 xl:gap-10 relative nav-container">
         {
           navItems.map((item) => (
-            <a
-              href={localizedUrl(item.href, locale)}
-              class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
-            >
-              <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
-                {t(navLabels[item.href], locale) || item.label}
-              </span>
-              <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300" />
-            </a>
+            <>
+              {(item.href === "/history" || item.href === "/galerie") && (
+                <div class="nav-separator w-[1px] h-3 bg-transparent self-center transition-colors duration-500 mx-[-1rem] xl:mx-[-1.25rem]" />
+              )}
+              <a
+                href={localizedUrl(item.href, locale)}
+                class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
+                data-nav-id={item.href}
+              >
+                <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
+                  {t(navLabels[item.href], locale) || item.label}
+                </span>
+                <!-- Old underlines removed for the liquid one -->
+              </a>
+            </>
           ))
         }
+        <!-- Liquid Indicator -->
+        <div 
+          id="nav-indicator-liquid" 
+          class="absolute bottom-0 h-0.5 bg-secondary pointer-events-none opacity-0 transition-opacity duration-300"
+          style="border-radius: 2px;"
+        ></div>
       </div>
 
       <!-- Language Toggle & Donate Button -->
@@ -200,8 +213,33 @@ const navLabels: Record<string, any> = {
 </header>
 
 <style>
-  .nav-link-dynamic:hover .nav-underline {
-    @apply w-full;
+  /* New Liquid Nav Styles */
+  .nav-container {
+    --indicator-left: 0px;
+    --indicator-width: 0px;
+    --indicator-scale-y: 1;
+    --indicator-elastic: 1;
+  }
+
+  #nav-indicator-liquid {
+    left: var(--indicator-left);
+    width: var(--indicator-width);
+    transform: scaleX(var(--indicator-elastic)) scaleY(var(--indicator-scale-y));
+    border-radius: 99px; /* Seamless pill/circle transition */
+    transition: 
+      left var(--nav-speed, 0.4s) cubic-bezier(0.2, 1, 0.3, 1),
+      width var(--nav-speed, 0.4s) cubic-bezier(0.2, 1, 0.3, 1),
+      transform var(--nav-speed, 0.4s) cubic-bezier(0.2, 1, 0.3, 1),
+      opacity 0.3s ease;
+  }
+
+  /* When the user is actively scrolling, we can speed up or bypass the transition for tighter link */
+  .is-scrolling-active #nav-indicator-liquid {
+    --nav-speed: 0.1s;
+  }
+
+  .nav-link-dynamic {
+    @apply text-white/90 transition-colors duration-300;
   }
 
   /* Define custom property for mask animation - Supported in modern browsers */
@@ -306,6 +344,10 @@ const navLabels: Record<string, any> = {
     @apply text-branding-dark;
   }
 
+  header.scrolled .nav-separator {
+    @apply bg-branding-dark/10;
+  }
+
   /* Scroll-driven animations for modern browsers */
   @supports (animation-timeline: scroll()) {
     #main-header::before {
@@ -330,6 +372,12 @@ const navLabels: Record<string, any> = {
       animation: header-fade-link linear both;
       animation-timeline: scroll(root);
       animation-range: 0 100px;
+    }
+
+    .nav-separator {
+      animation: header-fade-separator linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 300px;
     }
 
     .lang-btn {
@@ -402,14 +450,28 @@ const navLabels: Record<string, any> = {
     }
   }
 
+  @keyframes header-fade-separator {
+    from {
+      background-color: transparent;
+    }
+    to {
+      background-color: rgba(20, 83, 45, 0.1);
+    }
+  }
+
   /* Disable animations on static pages */
   header.is-static::before,
   header.is-static .header-text,
   header.is-static .nav-link-dynamic,
   header.is-static .lang-btn,
   header.is-static .lang-btn svg,
-  header.is-static #mobile-menu-btn {
+  header.is-static #mobile-menu-btn,
+  header.is-static .nav-separator {
     animation: none !important;
+  }
+
+  header.is-static .nav-separator {
+    background-color: rgba(20, 83, 45, 0.1) !important;
   }
 </style>
 
@@ -418,16 +480,17 @@ const navLabels: Record<string, any> = {
     const header = document.getElementById("main-header");
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
+    const navContainer = document.querySelector(".nav-container");
+    const indicator = document.getElementById("nav-indicator-liquid");
+    const navLinks = document.querySelectorAll(".nav-link-dynamic");
+    const base = header?.getAttribute('data-base') || '';
 
+    // --- Basic Header Scroll Logic ---
     const handleScroll = () => {
-      // Skip scroll class management if CSS animation-timeline is supported
       if (window.CSS && CSS.supports("animation-timeline", "scroll()")) {
         return;
       }
-
-      // If this is a static header, we don't want to toggle the scrolled class
       if (header?.classList.contains("is-static")) return;
-
       if (window.scrollY > 50) {
         header?.classList.add("scrolled");
       } else {
@@ -436,17 +499,178 @@ const navLabels: Record<string, any> = {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
 
     mobileMenuBtn?.addEventListener("click", () => {
       mobileMenu?.classList.toggle("hidden");
-      // If opening on hero, maybe force a background
       if (!mobileMenu?.classList.contains("hidden") && window.scrollY <= 50) {
         header?.classList.add("scrolled");
       } else if (window.scrollY <= 50) {
         header?.classList.remove("scrolled");
       }
     });
+
+    // --- Liquid Navigation Logic ---
+    const container = navContainer as HTMLElement;
+    const bar = indicator as HTMLElement;
+    if (!container || !bar) return;
+
+    let isHovering = false;
+    
+    // Predetermine which links are anchors and what they point to
+    const anchors = Array.from(navLinks).map((link, index) => {
+      const id = link.getAttribute('data-nav-id');
+      const target = (id?.startsWith('#') && id.length > 1) ? document.querySelector(id) : null;
+      return { link, target, index };
+    }).filter(item => item.target !== null);
+
+    let lastActiveIdx = -1;
+
+    function updateIndicator(targetEl: Element | null, liquidEffect = true, elastic = 1) {
+      if (!(targetEl instanceof HTMLElement) || !container || !bar) return;
+      
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      
+      const left = targetRect.left - containerRect.left;
+      const width = targetRect.width;
+
+      container.style.setProperty('--indicator-left', `${left}px`);
+      container.style.setProperty('--indicator-width', `${width}px`);
+      container.style.setProperty('--indicator-elastic', elastic.toString());
+      
+      if (liquidEffect) {
+        container.style.setProperty('--indicator-scale-y', '1.1');
+      } else {
+        container.style.setProperty('--indicator-scale-y', '1');
+      }
+      
+      bar.classList.remove('opacity-0');
+    }
+
+    // Magnetic Hover
+    navLinks.forEach((link) => {
+      link.addEventListener('mouseenter', () => {
+        isHovering = true;
+        container.style.setProperty('--nav-speed', '0.4s');
+        updateIndicator(link);
+      });
+
+      link.addEventListener('mouseleave', () => {
+        isHovering = false;
+        syncWithScroll();
+      });
+      
+      link.addEventListener('click', () => {
+        container.style.setProperty('--nav-speed', '0.6s');
+      });
+    });
+
+    function syncWithScroll() {
+      if (isHovering || !container || !bar) return;
+
+      const scrollY = window.scrollY;
+      const path = window.location.pathname.replace(/\/$/, ''); // Normalize: remove trailing slash
+      
+      // Robust home check: if we have scroll-anchors on this page, treat it as home-style scroll sync
+      const isHome = anchors.length > 0;
+
+      if (isHome) {
+        let activeIdx = 0;
+        let progress = 0;
+        const trigger = 120; // Slightly larger trigger for better feel
+        const transitionZone = 200;
+
+        // Find the active anchor based on targets
+        for (let i = 0; i < anchors.length; i++) {
+          const target = anchors[i].target as HTMLElement;
+          const rect = target.getBoundingClientRect();
+          
+          if (rect.top <= trigger) {
+             activeIdx = i;
+          }
+        }
+
+        // Check if we are transitioning to the NEXT anchor
+        if (activeIdx < anchors.length - 1) {
+          const nextTarget = anchors[activeIdx + 1].target as HTMLElement;
+          const nextRect = nextTarget.getBoundingClientRect();
+          
+          if (nextRect.top <= trigger + transitionZone) {
+            progress = 1 - (Math.max(0, nextRect.top - trigger) / transitionZone);
+          }
+        }
+
+        const currentLink = anchors[activeIdx].link;
+        if (progress > 0 && activeIdx < anchors.length - 1) {
+          const nextLink = anchors[activeIdx + 1].link;
+          
+          if (currentLink instanceof HTMLElement && nextLink instanceof HTMLElement) {
+            const containerRect = container.getBoundingClientRect();
+            const r1 = currentLink.getBoundingClientRect();
+            const r2 = nextLink.getBoundingClientRect();
+            
+            const x1 = r1.left - containerRect.left;
+            const w1 = r1.width;
+            const x2 = r2.left - containerRect.left;
+            const w2 = r2.width;
+
+            const easeProgress = progress < 0.5 
+              ? 2 * progress * progress 
+              : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            const currentLeft = x1 + (x2 - x1) * easeProgress;
+            const currentWidth = w1 + (w2 - w1) * easeProgress;
+            const liquidShrink = 1 - Math.sin(progress * Math.PI) * 0.6;
+            
+            container.style.setProperty('--indicator-left', `${currentLeft}px`);
+            container.style.setProperty('--indicator-width', `${currentWidth}px`);
+            container.style.setProperty('--indicator-elastic', liquidShrink.toString());
+            container.style.setProperty('--indicator-scale-y', (1 + Math.sin(progress * Math.PI) * 0.2).toString());
+            container.style.setProperty('--nav-speed', '0.05s');
+          }
+        } else {
+          container.style.setProperty('--nav-speed', '0.4s');
+          updateIndicator(currentLink, false, 1);
+        }
+        bar.classList.remove('opacity-0');
+      } else {
+        // Subpage logic
+        let found = false;
+        navLinks.forEach(link => {
+          const rawHref = link.getAttribute('href') || '';
+          // Remove hash and trailing slash for matching
+          const href = rawHref.split('#')[0].replace(/\/$/, '');
+          
+          // Match if path is exactly href, or if path starts with href (and href is not just root)
+          const isMatch = href && (path === href || (href.length > base.length && path.startsWith(href)));
+          
+          if (isMatch) {
+             updateIndicator(link, false, 1);
+             found = true;
+          }
+        });
+        if (!found) bar.classList.add('opacity-0');
+      }
+    }
+
+    // Throttled scroll
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          syncWithScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial syncs
+    setTimeout(syncWithScroll, 100);
+    setTimeout(syncWithScroll, 1000); // Back up for slow loads
+    
+    window.addEventListener('resize', syncWithScroll);
   }
 
   // Wrap in astro:page-load for ViewTransitions support
