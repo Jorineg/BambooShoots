@@ -99,17 +99,6 @@ console.log("[Donate] Using bgImage:", bgImage);
         <div
             class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/40 pl-8 md:pl-16"
         >
-            <h2
-                class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-white mb-10 opacity-60"
-            >
-                {
-                    locale === "de"
-                        ? "Unterstützung"
-                        : locale === "en"
-                          ? "Support"
-                          : "ការគាំទ្រ"
-                }
-            </h2>
             <h3
                 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 tracking-tighter"
             >
@@ -140,7 +129,7 @@ console.log("[Donate] Using bgImage:", bgImage);
                 displayTiers.map((tier, index) => {
                     const paypalUrl =
                         settings?.donationLinks?.paypal && tier.amount
-                            ? `${settings.donationLinks.paypal}&amount=${tier.amount}`
+                            ? `${settings.donationLinks.paypal.replace(/\/$/, "")}/${tier.amount}`
                             : settings?.donationLinks?.paypal;
 
                     return (
@@ -319,7 +308,7 @@ console.log("[Donate] Using bgImage:", bgImage);
                                         <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
                                             Kreditinstitut
                                         </p>
-                                        <p class="text-white/80">
+                                        <p class="text-white font-mono">
                                             {settings.bankAccount[locale].bank}
                                         </p>
                                     </div>

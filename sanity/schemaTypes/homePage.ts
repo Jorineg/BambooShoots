@@ -68,6 +68,7 @@ export default defineType({
         }),
 
         // Programs Section
+        localizedText('programsIntro', 'Programs Section Description'),
         defineField({
             name: 'programs',
             title: 'Programs',

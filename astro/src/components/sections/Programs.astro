@@ -5,9 +5,10 @@ import { urlFor } from '../../lib/sanity';
 interface Props {
   locale: Locale;
   programs: any[];
+  intro: any;
 }
 
-const { locale, programs } = Astro.props;
+const { locale, programs, intro } = Astro.props;
 
 // Icons mapping for fallback/placeholders
 const getIcon = (iconName: string) => {
@@ -88,12 +89,17 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
   <div class="container-custom">
     <!-- Section Header -->
     <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
-      <h2 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60">
-        {locale === 'de' ? 'Fokus' : locale === 'en' ? 'Focus' : 'ការផ្តោតអារម្មណ៍'}
-      </h2>
+
       <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
         {locale === 'de' ? 'Unsere Arbeit' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
       </h3>
+      <p class="text-branding-muted text-lg md:text-2xl font-light leading-relaxed max-w-2xl">
+        {t(intro, locale) || (locale === 'de' 
+          ? 'Wir unterstützen Kinder und Familien durch gezielte Bildungsprojekte und soziale Arbeit.' 
+          : locale === 'en'
+          ? 'We support children and families through targeted education projects and social work.'
+          : 'យើងគាំទ្រកុមារ និងគ្រួសារតាមរយៈគម្រោងអប់រំ និងការងារសង្គម។')}
+      </p>
     </div>
 
     <!-- Side-by-Side Portfolio Layout -->

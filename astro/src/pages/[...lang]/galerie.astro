@@ -35,12 +35,10 @@ const pageSubtitle = t(galleryPage?.description, locale) || (locale === 'de'
     <div class="container-custom">
       <!-- Header -->
       <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
-        <h1 class="text-[10px] md:text-xs uppercase tracking-[0.5em] font-bold text-primary mb-10 opacity-60">
-          {locale === 'de' ? 'Impressionen' : locale === 'en' ? 'Impressions' : 'ចំណាប់អារម្មណ៍'}
-        </h1>
-        <h2 class="text-5xl md:text-7xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
+
+        <h1 class="text-5xl md:text-7xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
           {pageTitle}
-        </h2>
+        </h1>
         <p class="text-branding-muted text-lg md:text-2xl font-light leading-relaxed max-w-2xl">
           {pageSubtitle}
         </p>

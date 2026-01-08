@@ -1,135 +1,178 @@
 ---
-import { t, localizedUrl, type Locale } from '../../lib/i18n';
-import { urlFor } from '../../lib/sanity';
+import { t, localizedUrl, type Locale } from "../../lib/i18n";
+import { urlFor } from "../../lib/sanity";
 
 interface Props {
-  locale: Locale;
-  data: any;
+    locale: Locale;
+    data: any;
 }
 
 const { locale, data } = Astro.props;
 
 // Debug log for data
-console.log('[CambodiaTeaser] data:', JSON.stringify(data, null, 2));
+console.log("[CambodiaTeaser] data:", JSON.stringify(data, null, 2));
 
 const hasSanityImage = !!(data?.image?.asset?._ref || data?.image?.asset?._id);
-const bgImage = hasSanityImage 
-  ? urlFor(data.image).width(1920).url() 
-  : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`; 
+const bgImage = hasSanityImage
+    ? urlFor(data.image).width(1920).url()
+    : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`;
 
-console.log('[CambodiaTeaser] Using bgImage:', bgImage);
+console.log("[CambodiaTeaser] Using bgImage:", bgImage);
 ---
 
-<section class="teaser-container relative min-h-[60vh] flex items-center overflow-hidden bg-branding-dark py-24 md:py-32">
-  <!-- Parallax Background -->
-  <div class="absolute inset-0 z-0">
-    <div class="parallax-wrapper absolute inset-0 w-full h-full">
-      <img 
-        id="cambodia-parallax-img"
-        src={bgImage}
-        alt=""
-        class="parallax-target-slow absolute top-[-15%] left-0 w-full h-[130%] object-cover opacity-100"
-      />
+<section
+    class="teaser-container relative min-h-[60vh] flex items-center overflow-hidden bg-branding-dark py-24 md:py-32"
+>
+    <!-- Parallax Background -->
+    <div class="absolute inset-0 z-0">
+        <div class="parallax-wrapper absolute inset-0 w-full h-full">
+            <img
+                id="cambodia-parallax-img"
+                src={bgImage}
+                alt=""
+                class="parallax-target-slow absolute top-[-15%] left-0 w-full h-[130%] object-cover opacity-100"
+            />
+        </div>
+        <!-- Clean, Cinematic Depth Overlays (Neutral) -->
+        <!-- same color as here section -->
+        <div class="absolute inset-0 bg-[rgba(13,42,23,0.75)]"></div>
+        <!-- <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"></div> -->
     </div>
-    <!-- Clean, Cinematic Depth Overlays (Neutral) -->
-    <!-- same color as here section -->
-    <div class="absolute inset-0 bg-[rgba(13,42,23,0.75)]"></div>
-    <!-- <div class="absolute inset-0 bg-gradient-to-t from-branding-dark via-transparent to-branding-dark/60"></div> -->
-  </div>
 
-  <div class="container-custom relative z-10 px-4 md:px-8">
-    <div class="max-w-4xl mx-auto border-l-[3px] border-secondary/40 pl-8 md:pl-16 py-12 reveal">
-      <!-- Content -->
-      <h2 class="text-xs md:text-sm uppercase tracking-[0.5em] font-bold text-white/40 mb-10 italic">
-          {locale === 'de' ? 'Hintergrund' : 'Context'}
-      </h2>
+    <div class="container-custom relative z-10 px-4 md:px-8">
+        <div
+            class="max-w-4xl mx-auto border-l-[3px] border-secondary/40 pl-8 md:pl-16 reveal"
+        >
+            <!-- Content -->
 
-      <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 leading-tight tracking-tighter">
-        {t(data?.title, locale) || (locale === 'de' 
-          ? 'Kambodscha: Wurzeln, Wandel und Hoffnung'
-          : locale === 'en'
-          ? 'Cambodia: Roots, Change, and Hope'
-          : 'កម្ពុជា៖ ឫសគល់ ការផ្លាស់ប្តូរ និងសេចក្តីសង្ឃឹម')}
-      </h3>
+            <h3
+                class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 leading-tight tracking-tighter"
+            >
+                {
+                    t(data?.title, locale) ||
+                        (locale === "de"
+                            ? "Kambodscha: Wurzeln, Wandel und Hoffnung"
+                            : locale === "en"
+                              ? "Cambodia: Roots, Change, and Hope"
+                              : "កម្ពុជា៖ ឫសគល់ ការផ្លាស់ប្តូរ និងសេចក្តីសង្ឃឹម")
+                }
+            </h3>
 
-      <div class="max-w-2xl">
-        <p class="text-white/70 text-lg md:text-2xl leading-relaxed mb-12 font-light">
-            {t(data?.text, locale) || (locale === 'de'
-              ? 'Um zu verstehen, woran wir heute arbeiten, muss man den Weg kennen, den dieses Land gegangen ist. Von den Schatten der Vergangenheit zum Mut der nächsten Generation.'
-              : locale === 'en'
-              ? 'To understand what we are working on today, one must know the path this country has taken. From the shadows of the past to the courage of the next generation.'
-              : 'ដើម្បីយល់ពីអ្វីដែលយើងកំពុងធ្វើនៅថ្ងៃនេះ គេត្រូវតែស្វែងយល់ពីផ្លូវដែលប្រទេសនេះបានដើរ។')}
-          </p>
-    
-          <a 
-            href={localizedUrl('/history', locale)}
-            class="group inline-flex items-center gap-4 text-white font-bold hover:text-secondary transition-all duration-500"
-          >
-            <span class="text-sm uppercase tracking-[0.3em] border-b border-white/20 group-hover:border-secondary transition-all">
-                {t(data?.linkText, locale) || (locale === 'de' ? 'Unsere Geschichte entdecken' : locale === 'en' ? 'Discover our history' : 'ស្វែងយល់ពីប្រវត្តិរបស់យើង')}
-            </span>
-            <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-secondary group-hover:border-secondary transition-all duration-500">
-                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                </svg>
+            <div class="max-w-2xl">
+                <p
+                    class="text-white/70 text-lg md:text-2xl leading-relaxed mb-12 font-light"
+                >
+                    {
+                        t(data?.text, locale) ||
+                            (locale === "de"
+                                ? "Um zu verstehen, woran wir heute arbeiten, muss man den Weg kennen, den dieses Land gegangen ist. Von den Schatten der Vergangenheit zum Mut der nächsten Generation."
+                                : locale === "en"
+                                  ? "To understand what we are working on today, one must know the path this country has taken. From the shadows of the past to the courage of the next generation."
+                                  : "ដើម្បីយល់ពីអ្វីដែលយើងកំពុងធ្វើនៅថ្ងៃនេះ គេត្រូវតែស្វែងយល់ពីផ្លូវដែលប្រទេសនេះបានដើរ។")
+                    }
+                </p>
+
+                <a
+                    href={localizedUrl("/history", locale)}
+                    class="group inline-flex items-center gap-4 text-white font-bold hover:text-secondary transition-all duration-500"
+                >
+                    <span
+                        class="text-sm uppercase tracking-[0.3em] border-b border-white/20 group-hover:border-secondary transition-all"
+                    >
+                        {
+                            t(data?.linkText, locale) ||
+                                (locale === "de"
+                                    ? "Unsere Geschichte entdecken"
+                                    : locale === "en"
+                                      ? "Discover our history"
+                                      : "ស្វែងយល់ពីប្រវត្តិរបស់យើង")
+                        }
+                    </span>
+                    <div
+                        class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-secondary group-hover:border-secondary transition-all duration-500"
+                    >
+                        <svg
+                            class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+                </a>
             </div>
-          </a>
-      </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <style>
-  .teaser-container {
-    view-timeline: --teaser-v block;
-  }
-
-  @keyframes parallax-slow {
-    from { transform: translateY(0); }
-    to { transform: translateY(15%); }
-  }
-
-  @supports (animation-timeline: view()) {
-    .parallax-target-slow {
-      animation: parallax-slow linear both;
-      animation-timeline: --teaser-v;
-      animation-range: entry 0% exit 100%;
+    .teaser-container {
+        view-timeline: --teaser-v block;
     }
-  }
+
+    @keyframes parallax-slow {
+        from {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(15%);
+        }
+    }
+
+    @supports (animation-timeline: view()) {
+        .parallax-target-slow {
+            animation: parallax-slow linear both;
+            animation-timeline: --teaser-v;
+            animation-range: entry 0% exit 100%;
+        }
+    }
 </style>
 
 <script is:inline>
-  (function() {
-    // Check for native support
-    if (CSS.supports('animation-timeline', 'view()') || CSS.supports('animation-timeline', 'scroll()')) {
-      return;
-    }
-    
-    const img = document.getElementById('cambodia-parallax-img');
-    const section = img?.closest('section');
-    if (!img || !section) return;
+    (function () {
+        // Check for native support
+        if (
+            CSS.supports("animation-timeline", "view()") ||
+            CSS.supports("animation-timeline", "scroll()")
+        ) {
+            return;
+        }
 
-    let ticking = false;
-    const update = () => {
-      const rect = section.getBoundingClientRect();
-      const viewHeight = window.innerHeight;
-      
-      // Only animate if section is in or near view
-      if (rect.top < viewHeight && rect.bottom > 0) {
-        const scrolled = (viewHeight - rect.top) / (viewHeight + rect.height);
-        const yPos = scrolled * 100; // Adjust for intensity
-        img.style.transform = `translate3d(0, ${yPos}px, 0)`;
-      }
-      ticking = false;
-    };
+        const img = document.getElementById("cambodia-parallax-img");
+        const section = img?.closest("section");
+        if (!img || !section) return;
 
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
-      }
-    }, { passive: true });
-    
-    update();
-  })();
+        let ticking = false;
+        const update = () => {
+            const rect = section.getBoundingClientRect();
+            const viewHeight = window.innerHeight;
+
+            // Only animate if section is in or near view
+            if (rect.top < viewHeight && rect.bottom > 0) {
+                const scrolled =
+                    (viewHeight - rect.top) / (viewHeight + rect.height);
+                const yPos = scrolled * 100; // Adjust for intensity
+                img.style.transform = `translate3d(0, ${yPos}px, 0)`;
+            }
+            ticking = false;
+        };
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(update);
+                    ticking = true;
+                }
+            },
+            { passive: true },
+        );
+
+        update();
+    })();
 </script>

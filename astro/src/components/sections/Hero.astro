@@ -67,9 +67,9 @@ const objectPosition = hotspot
 
   <!-- Content Container -->
   <div class="container-custom relative z-30 px-4 md:px-8 py-20">
-    <div class="max-w-4xl border-l-[3px] border-secondary/40 pl-8 md:pl-16 py-8">
+    <div class="max-w-4xl border-l-[3px] border-secondary/40 pl-8 md:pl-16">
       <!-- Animated Line Accent (Vertical) -->
-      <div class="w-16 h-[2px] bg-secondary mb-12 rounded-full animate-slide-left"></div>
+      <!-- <div class="w-16 h-[2px] bg-secondary mb-12 rounded-full animate-slide-left"></div> -->
 
       <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-extrabold text-white leading-[1.05] mb-8 animate-reveal tracking-tighter">
         <span class="block opacity-0 translate-y-8 animate-item-reveal">{titleMain}</span>
@@ -80,7 +80,7 @@ const objectPosition = hotspot
         {subtitle}
       </p>
 
-      <p class="text-white/80 text-lg md:text-2xl max-w-2xl mb-14 leading-relaxed font-light opacity-0 translate-y-6 animate-item-reveal" style="animation-delay: 0.4s;">
+      <p class="text-white/80 text-lg md:text-2xl max-w-md mb-14 leading-relaxed font-light opacity-0 translate-y-6 animate-item-reveal" style="animation-delay: 0.4s;">
         {description}
       </p>
 
@@ -106,8 +106,8 @@ const objectPosition = hotspot
   <!-- Vertical Scroll Indicator -->
   <div class="absolute bottom-12 right-12 z-40 hidden xl:block opacity-0 animate-fade-in" style="animation-delay: 1.2s;">
     <div class="flex flex-col items-center gap-12">
-      <span class="text-[10px] uppercase font-black tracking-[1.2em] text-white/30 [writing-mode:vertical-lr] whitespace-nowrap">{locale === 'de' ? 'Scrollen' : 'Scroll'}</span>
-      <div class="w-[1px] h-32 bg-white/10 relative overflow-hidden">
+      <span class="text-[10px] uppercase font-black tracking-[1.2em] text-white/50 [writing-mode:vertical-lr] whitespace-nowrap">{locale === 'de' ? 'Scrollen' : 'Scroll'}</span>
+      <div class="w-[1.5px] h-32 bg-white/10 relative overflow-hidden">
         <div class="absolute inset-x-0 h-16 bg-gradient-to-b from-transparent via-secondary to-transparent animate-flow-line"></div>
       </div>
     </div>
