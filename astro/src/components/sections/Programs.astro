@@ -86,10 +86,10 @@ const defaultPrograms = [
 const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
 ---
 
-<section id="programme" class="py-32 md:py-48 bg-branding-accent overflow-hidden">
+<section id="programme" class="py-16 md:py-48 bg-branding-accent overflow-hidden">
   <div class="container-custom">
     <!-- Section Header -->
-    <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
+    <div class="max-w-4xl mb-16 md:mb-32 reveal border-l-[3px] border-primary/20 pl-6 md:pl-16">
 
       <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
         {t(title, locale) || (locale === 'de' ? 'Unsere Arbeit' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង')}
@@ -104,13 +104,13 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
     </div>
 
     <!-- Side-by-Side Portfolio Layout -->
-    <div class="space-y-32 md:space-y-48">
+    <div class="space-y-24 md:space-y-48">
       {displayPrograms.map((program, index) => (
         <div class={`flex flex-col lg:flex-row items-center gap-12 md:gap-24 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
           <!-- Image Side -->
           <div class="w-full lg:w-1/2 reveal">
             <div class="relative group">
-              <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl bg-white">
+              <div class="aspect-[4/3] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl bg-white">
                 {program.image ? (
                   <img 
                     src={urlFor(program.image).width(1200).height(900).url()} 

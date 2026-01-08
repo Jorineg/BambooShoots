@@ -60,7 +60,7 @@ const useCarousel = images && images.length >= 5;
               ))}
             </div>
             
-            <div class="container-custom px-4 md:px-8 mt-12">
+            <div class="container-custom mt-12">
               <div class="flex justify-center items-center gap-8">
                 <button class="swiper-prev p-3 rounded-full border-2 border-branding-dark text-branding-dark hover:bg-branding-dark hover:text-white transition-colors duration-300 z-20" aria-label="Previous slide">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
@@ -74,7 +74,7 @@ const useCarousel = images && images.length >= 5;
           </div>
         </div>
       ) : (
-        <div class="container-custom px-4 md:px-8">
+        <div class="container-custom">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {images.map((image, index) => (
               <a 
@@ -101,7 +101,7 @@ const useCarousel = images && images.length >= 5;
       )}
     </div>
   ) : (
-    <div class="container-custom px-4 md:px-8">
+    <div class="container-custom">
       <div class="bg-branding-bg rounded-2xl p-12 text-center border border-branding-earth/50">
         <div class="w-16 h-16 bg-branding-earth rounded-full flex items-center justify-center mx-auto mb-4 text-branding-muted/50">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

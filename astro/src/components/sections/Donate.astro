@@ -71,7 +71,7 @@ console.log("[Donate] Using bgImage:", bgImage);
 
 <section
     id="spenden"
-    class="donate-container relative py-32 md:py-48 overflow-hidden bg-branding-dark text-white"
+    class="donate-container relative py-16 md:py-48 overflow-hidden bg-branding-dark text-white"
 >
     <!-- Parallax Background -->
     <div class="absolute inset-0 z-0">
@@ -97,7 +97,7 @@ console.log("[Donate] Using bgImage:", bgImage);
     <div class="container-custom relative z-10">
         <!-- Section header -->
         <div
-            class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/40 pl-8 md:pl-16"
+            class="max-w-4xl mb-16 md:mb-32 reveal border-l-[3px] border-primary/40 pl-6 md:pl-16"
         >
             <h3
                 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 tracking-tighter"
@@ -126,7 +126,7 @@ console.log("[Donate] Using bgImage:", bgImage);
         </div>
 
         <!-- Donation tiers -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 md:mb-32">
             {
                 displayTiers.map((tier, index) => {
                     const paypalUrl =
@@ -139,7 +139,7 @@ console.log("[Donate] Using bgImage:", bgImage);
                             href={paypalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class={`group relative bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] p-10 md:p-12 border border-white/5 hover:bg-white/[0.07] hover:border-white/10 transition-all duration-700 reveal`}
+                            class={`group relative bg-white/[0.03] backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-12 border border-white/5 hover:bg-white/[0.07] hover:border-white/10 transition-all duration-700 reveal`}
                             style={`transition-delay: ${index * 150}ms`}
                         >
                             {index === 0 && (
@@ -204,10 +204,10 @@ console.log("[Donate] Using bgImage:", bgImage);
         >
             <!-- Digital Donation -->
             <div
-                class="bg-white/[0.03] backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 border border-white/5 flex flex-col hover:bg-white/[0.05] transition-all duration-700"
+                class="bg-white/[0.03] backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 border border-white/5 flex flex-col hover:bg-white/[0.05] transition-all duration-700"
             >
                 <h3
-                    class="text-white font-heading font-extrabold text-3xl mb-12"
+                    class="text-white font-heading font-extrabold text-3xl mb-8 md:mb-12"
                 >
                     {
                         t(settings?.donateSection?.onlineDonate, locale) ||
@@ -219,14 +219,14 @@ console.log("[Donate] Using bgImage:", bgImage);
                     }
                 </h3>
 
-                <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-4 md:gap-6">
                     {
                         settings?.donationLinks?.betterplace && (
                             <a
                                 href={settings.donationLinks.betterplace}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="flex items-center justify-between group p-8 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
+                                class="flex items-center justify-between group p-6 md:p-8 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-500"
                             >
                                 <span class="text-white font-bold uppercase tracking-widest text-sm">
                                     betterplace.org
@@ -254,7 +254,7 @@ console.log("[Donate] Using bgImage:", bgImage);
                                 href={settings.donationLinks.paypal}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="flex items-center justify-between group p-8 bg-[#0070ba]/20 rounded-2xl border border-[#0070ba]/30 hover:bg-[#0070ba]/40 transition-all duration-500"
+                                class="flex items-center justify-between group p-6 md:p-8 bg-[#0070ba]/20 rounded-2xl border border-[#0070ba]/30 hover:bg-[#0070ba]/40 transition-all duration-500"
                             >
                                 <div class="flex items-center gap-2 text-white">
                                     <span class="font-extrabold italic text-xl">
@@ -282,7 +282,7 @@ console.log("[Donate] Using bgImage:", bgImage);
 
             <!-- Bank Transfer Details -->
             <div
-                class="bg-[#0e2a18]/40 backdrop-blur-xl rounded-[2.5rem] p-12 md:p-16 border border-primary/20 hover:border-primary/40 transition-all duration-700"
+                class="bg-[#0e2a18]/40 backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 border border-primary/20 hover:border-primary/40 transition-all duration-700"
             >
                 <h3
                     class="text-white font-heading font-extrabold text-3xl mb-12"
