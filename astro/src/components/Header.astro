@@ -29,15 +29,12 @@ const isStaticHeader = currentPath
 <header
   id="main-header"
   class:list={[
-    "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent w-full",
+    "fixed top-0 left-0 right-0 z-50 w-full transition-shadow duration-300",
     { scrolled: isStaticHeader },
   ]}
   transition:name="header"
 >
-  <div
-    class="header-bg-layer absolute inset-0 transition-all duration-300 pointer-events-none"
-  >
-  </div>
+  <div class="header-bg-layer absolute inset-0 pointer-events-none"></div>
 
   <div class="relative w-full px-6 md:px-12 lg:px-16 z-20">
     <nav
@@ -50,18 +47,16 @@ const isStaticHeader = currentPath
             <img
               src={urlFor(settings.logo).width(48).url()}
               alt="Bamboo Shoots Logo"
-              class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
+              class="header-logo w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl transition-all duration-500">
+            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl">
               <svg
                 class="w-6 h-6 md:w-8 md:h-8"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
@@ -69,7 +64,7 @@ const isStaticHeader = currentPath
           )
         }
         <span
-          class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-300 tracking-tight"
+          class="header-text text-lg md:text-xl font-heading font-extrabold sm:block hidden tracking-tight"
         >
           {t(settings?.siteTitle, locale) || "Bamboo Shoots"}
         </span>
@@ -82,7 +77,7 @@ const isStaticHeader = currentPath
             <a
               href={localizedUrl(item.href, locale)}
               data-nav-link
-              class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
+              class="nav-link-dynamic font-medium relative py-2"
             >
               <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
                 {item.label}
@@ -93,13 +88,11 @@ const isStaticHeader = currentPath
         }
       </div>
 
-      <!-- Language Toggle & Donate Button -->
+      <!-- Language & Donate -->
       <div class="flex items-center gap-2 md:gap-8">
-        <!-- Language Selector -->
         <div class="relative group">
           <button
-            class="lang-btn flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
-            aria-label="Select language"
+            class="lang-btn flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors duration-300"
           >
             <svg
               class="w-4 h-4 opacity-70"
@@ -107,30 +100,26 @@ const isStaticHeader = currentPath
               fill="none"
               stroke="currentColor"
               stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path
+              ><circle cx="12" cy="12" r="10"></circle><line
+                x1="2"
+                y1="12"
+                x2="22"
+                y2="12"></line><path
                 d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-              ></path>
-            </svg>
+              ></path></svg
+            >
             <span class="text-[10px] font-bold uppercase tracking-widest"
               >{localeNames[locale]}</span
             >
           </button>
-
-          <!-- Dropdown -->
           <div
-            class="absolute right-0 top-full mt-2 py-2 bg-branding-dark rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[140px] translate-y-2 group-hover:translate-y-0"
+            class="absolute right-0 top-full mt-2 py-2 bg-branding-dark rounded-xl shadow-2xl border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[140px] translate-y-2 group-hover:translate-y-0"
           >
             {
               locales.map((loc) => (
                 <a
                   href={localizedUrl(currentPath, loc)}
-                  class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? "text-secondary bg-white/5" : "text-white/60 hover:text-white"}`}
-                  onclick={`localStorage.setItem('preferred-language', '${loc}')`}
+                  class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 ${loc === locale ? "text-secondary" : "text-white/60"}`}
                 >
                   {localeNames[loc]}
                 </a>
@@ -139,32 +128,28 @@ const isStaticHeader = currentPath
           </div>
         </div>
 
-        <!-- Donate Button -->
         <a
           href={localizedUrl("#spenden", locale)}
-          class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl shadow-secondary/20"
+          class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl"
         >
           {t(settings?.labels?.navDonate, locale) || "Spenden"}
         </a>
 
-        <!-- Mobile Menu Button -->
         <button
           id="mobile-menu-btn"
-          class="lg:hidden p-2 text-white hover:text-secondary transition-colors"
-          aria-label="Toggle menu"
+          class="lg:hidden p-2 hover:text-secondary transition-colors"
         >
           <svg
             class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-          >
-            <path
+            ><path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
+              d="M4 6h16M4 12h16M4 18h16"></path></svg
+          >
         </button>
       </div>
     </nav>
@@ -188,120 +173,116 @@ const isStaticHeader = currentPath
       </div>
     </div>
   </div>
-
-  <!-- Scroll Progress Bar - Now at the bottom of the header for visibility -->
-  <div
-    id="scroll-progress"
-    class="absolute bottom-0 left-0 w-full h-[4px] bg-secondary/80 z-[60] origin-left scale-x-0 transition-transform duration-150 ease-out"
-  >
-  </div>
 </header>
-
 <style>
-  /* Dynamic underlining for hovered AND active links */
+  /* 1. LAYER STYLING */
+  .header-bg-layer {
+    background-color: transparent;
+    backdrop-filter: blur(0px) saturate(100%);
+    border-bottom: 0px solid transparent;
+    transition:
+      background-color 0.5s,
+      backdrop-filter 0.5s;
+  }
+
+  /* 2. CSS SCROLL TIMELINES (Modern Browsers) */
+  @supports (animation-timeline: scroll()) {
+    .header-bg-layer {
+      animation: header-bg-fade linear both;
+      animation-timeline: scroll();
+      animation-range: 100px 500px;
+    }
+
+    .header-text,
+    .nav-link-dynamic,
+    .lang-btn,
+    #mobile-menu-btn {
+      animation: header-text-fade linear both;
+      animation-timeline: scroll();
+      animation-range: 100px 300px;
+    }
+
+    .header-logo {
+      animation: header-logo-scale linear both;
+      animation-timeline: scroll();
+      animation-range: 100px 300px;
+    }
+  }
+
+  /* 3. KEYFRAMES */
+  @keyframes header-bg-fade {
+    from {
+      background-color: rgba(235, 230, 222, 0);
+      backdrop-filter: blur(0px) saturate(100%);
+      border-bottom-color: transparent;
+    }
+    to {
+      background-color: rgba(235, 230, 222, 0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  @keyframes header-text-fade {
+    from {
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    to {
+      color: #1a2b1f; /* branding-dark */
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+    }
+  }
+
+  @keyframes header-logo-scale {
+    from {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+    to {
+      filter: drop-shadow(0 0px 0px rgba(0, 0, 0, 0));
+    }
+  }
+
+  /* 4. FALLBACKS & STATIC PAGES */
+  header.scrolled .header-bg-layer,
+  header.scrolled-forced .header-bg-layer {
+    background-color: rgba(235, 230, 222, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  }
+
+  header.scrolled .header-text,
+  header.scrolled-forced .header-text,
+  header.scrolled .nav-link-dynamic,
+  header.scrolled-forced .nav-link-dynamic,
+  header.scrolled .lang-btn,
+  header.scrolled-forced .lang-btn,
+  header.scrolled #mobile-menu-btn {
+    color: #1a2b1f !important;
+    text-shadow: none !important;
+  }
+
+  /* Nav Highlighting */
   .nav-link-dynamic:hover .nav-underline,
   .nav-link-dynamic.active .nav-underline {
     width: 100%;
   }
-
-  /* Complex Elastic Bezier for the active line jump */
   .nav-underline {
     transition: width 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-  }
-
-  header:not(.scrolled) .nav-link-dynamic,
-  header:not(.scrolled) .header-text,
-  header:not(.scrolled) .lang-btn {
-    text-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(0, 0, 0, 0.2);
-  }
-
-  header:not(.scrolled) .lang-btn svg {
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
-  }
-
-  /* Scrolled State */
-  header.scrolled {
-    @apply shadow-lg border-b-black/5;
-  }
-
-  header.scrolled .header-bg-layer {
-    background-color: rgba(235, 230, 222, 0.95);
-    backdrop-filter: blur(20px) saturate(180%);
-  }
-
-  header.scrolled .header-text {
-    @apply text-branding-dark;
-  }
-
-  header.scrolled .nav-link-dynamic {
-    @apply text-branding-dark/80 hover:text-primary;
-    text-shadow: none;
-  }
-
-  header.scrolled .lang-btn {
-    @apply text-branding-dark/60 hover:text-primary hover:bg-black/5;
-    text-shadow: none;
-  }
-
-  header.scrolled #mobile-menu-btn {
-    @apply text-branding-dark;
   }
 </style>
 
 <script>
   function initHeader() {
     const header = document.getElementById("main-header");
+    const navLinks = document.querySelectorAll("[data-nav-link]");
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
-    const progressBar = document.getElementById("scroll-progress");
-    const navLinks = document.querySelectorAll("[data-nav-link]");
 
     if (!header) return;
 
-    // 1. ACTIVE LINK HIGHLIGHTING
-    // Maps sections to nav links
-    const sectionIds = ["mission", "programme", "team", "spenden", "besuchen"];
-    const observerOptions = {
-      rootMargin: "-150px 0px -70% 0px", // Trigger when section is in top half
-      threshold: 0,
-    };
-
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navLinks.forEach((link) => {
-            const href = link.getAttribute("href");
-            if (href && href.includes(`#${id}`)) {
-              link.classList.add("active");
-            } else {
-              link.classList.remove("active");
-            }
-          });
-        }
-      });
-    }, observerOptions);
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) sectionObserver.observe(el);
-    });
-
-    // 2. SCROLL LOGIC
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-
-      // Progress Bar
-      if (progressBar && docHeight > 0) {
-        const progress = scrollY / docHeight;
-        progressBar.style.transform = `scaleX(${progress})`;
-      }
-
-      // Translucency State
       const isStatic = window.location.pathname.match(
         /\/(history|galerie|datenschutz|impressum)/,
       );
@@ -311,33 +292,53 @@ const isStaticHeader = currentPath
       } else {
         header.classList.remove("scrolled");
       }
+
+      if (isStatic) {
+        header.classList.add("scrolled-forced");
+      } else {
+        header.classList.remove("scrolled-forced");
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    // 3. MOBILE MENU
+    const sectionIds = ["mission", "programme", "team", "spenden", "besuchen"];
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            navLinks.forEach((link) => {
+              const href = link.getAttribute("href");
+              if (href && href.includes(`#${id}`)) link.classList.add("active");
+              else link.classList.remove("active");
+            });
+          }
+        });
+      },
+      { rootMargin: "-150px 0px -70% 0px" },
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+
     mobileMenuBtn?.addEventListener("click", () => {
       mobileMenu?.classList.toggle("hidden");
-      if (!mobileMenu?.classList.contains("hidden") && window.scrollY <= 50) {
-        header.classList.add("scrolled");
-      } else if (
-        window.scrollY <= 50 &&
-        !window.location.pathname.match(
-          /\/(history|galerie|datenschutz|impressum)/,
-        )
-      ) {
-        header.classList.remove("scrolled");
+      if (!mobileMenu?.classList.contains("hidden")) {
+        header.classList.add("scrolled-forced");
+      } else {
+        handleScroll();
       }
     });
 
-    // Cleanup active states if we scroll all the way to top (Hero)
     window.addEventListener(
       "scroll",
       () => {
-        if (window.scrollY < 200) {
+        if (window.scrollY < 200)
           navLinks.forEach((l) => l.classList.remove("active"));
-        }
       },
       { passive: true },
     );
