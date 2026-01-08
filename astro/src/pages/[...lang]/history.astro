@@ -272,48 +272,44 @@ const educationHighlight =
       </div>
 
       <!-- Timeline History Entries -->
-      <div class="relative max-w-6xl mx-auto pl-8 md:pl-24">
+      <div class="relative max-w-6xl mx-auto pl-24 md:pl-48">
         <!-- Vertical Timeline Line -->
-        <div class="absolute left-4 md:left-12 top-0 bottom-0 w-[2px] bg-primary/20"></div>
+        <div class="absolute left-16 md:left-32 top-0 bottom-0 w-[2px] bg-primary/20"></div>
 
         <div class="space-y-24 md:space-y-32">
           {
             historyEntries.map((entry: any, index: number) => (
-              <div class="relative reveal group">
+              <div class="relative reveal">
+                <!-- Year (Left of line) -->
+                <div class="absolute right-[calc(100%+40px)] md:right-[calc(100%+72px)] top-8 -translate-y-1/2 text-primary font-bold text-lg md:text-xl whitespace-nowrap">
+                   {entry.year}
+                </div>
+
                 <!-- Timeline Dot -->
-                <div class="absolute -left-[2.1rem] md:-left-[3.1rem] w-4 h-4 rounded-full bg-primary border-4 border-branding-bg z-10 top-8 group-hover:scale-125 transition-transform duration-500 shadow-lg shadow-primary/20"></div>
+                <div class="absolute -left-[39.5px] md:-left-[71.5px] w-4 h-4 rounded-full bg-primary border-4 border-branding-bg z-10 top-8 -translate-y-1/2 shadow-lg shadow-primary/20 transition-transform duration-500"></div>
                 
                 <div class="flex flex-col lg:flex-row items-center gap-12 md:gap-24">
-                  <div class="w-full lg:w-1/2">
-                    <div class="inline-block bg-primary/10 text-primary font-bold px-6 py-2 rounded-full text-sm uppercase tracking-widest mb-8">
-                      {entry.year}
-                    </div>
-                    <h3 class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter leading-tight group-hover:text-primary transition-colors duration-300">
+                  <div class={`w-full ${entry.image ? 'lg:w-1/2' : 'lg:max-w-3xl'}`}>
+                    <h3 class="text-3xl md:text-4xl font-heading font-extrabold text-branding-dark mb-6 md:mb-8 tracking-tighter leading-tight">
                       {t(entry.title, locale)}
                     </h3>
                     <p class="text-branding-text text-lg md:text-xl leading-relaxed font-light">
                       {t(entry.content, locale)}
                     </p>
                   </div>
-                  <div class="w-full lg:w-1/2">
-                    <div class="relative group">
-                      <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl bg-branding-accent">
-                        {entry.image ? (
+                  {entry.image && (
+                    <div class="w-full lg:w-1/2">
+                      <div class="relative group">
+                        <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl bg-branding-accent">
                           <img
                             src={urlFor(entry.image).width(800).url()}
                             alt={t(entry.title, locale)}
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                           />
-                        ) : (
-                          <div class="w-full h-full flex items-center justify-center text-primary/20">
-                            <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                          </div>
-                        )}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))
