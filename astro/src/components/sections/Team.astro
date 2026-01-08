@@ -5,9 +5,10 @@ import { urlFor } from '../../lib/sanity';
 interface Props {
   locale: Locale;
   members: any[];
+  data: any;
 }
 
-const { locale, members } = Astro.props;
+const { locale, members, data } = Astro.props;
 
 // Default team members if none from Sanity
 const defaultMembers = [
@@ -32,6 +33,13 @@ const defaultMembers = [
 ];
 
 const displayMembers = members?.length > 0 ? members : defaultMembers;
+
+const defaultTitle = { de: 'Unser Team vor Ort', en: 'Our Team on Site', kh: 'ក្រុមរបស់យើងនៅកន្លែង' };
+const defaultIntro = {
+  de: 'Unsere Arbeit wird getragen von einem engagierten Team aus rund zehn kambodschanischen Lehrer:innen und Mitarbeitenden.',
+  en: 'Our work is carried by a dedicated team of about ten Cambodian teachers and staff members.',
+  kh: 'ការងាររបស់យើងត្រូវបានអនុវត្តដោយក្រុមគ្រូបង្រៀន និងបុគ្គលិកកម្ពុជាប្រហែល 10 នាក់។'
+};
 ---
 
 <section id="team" class="section bg-branding-bg py-32 md:py-48">
@@ -40,14 +48,10 @@ const displayMembers = members?.length > 0 ? members : defaultMembers;
     <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
 
       <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
-        {locale === 'de' ? 'Unser Team vor Ort' : locale === 'en' ? 'Our Team on Site' : 'ក្រុមរបស់យើងនៅកន្លែង'}
+        {t(data?.title || defaultTitle, locale)}
       </h3>
       <p class="text-branding-muted text-lg md:text-xl max-w-2xl font-light leading-relaxed">
-        {locale === 'de' 
-          ? 'Unsere Arbeit wird getragen von einem engagierten Team aus rund zehn kambodschanischen Lehrer:innen und Mitarbeitenden.'
-          : locale === 'en'
-          ? 'Our work is carried by a dedicated team of about ten Cambodian teachers and staff members.'
-          : 'ការងាររបស់យើងត្រូវបានអនុវត្តដោយក្រុមគ្រូបង្រៀន និងបុគ្គលិកកម្ពុជាប្រហែល 10 នាក់។'}
+        {t(data?.intro || defaultIntro, locale)}
       </p>
     </div>
 

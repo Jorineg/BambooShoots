@@ -1,54 +1,75 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { getLocale, localizedUrl, defaultLocale } from '../../lib/i18n';
+import Layout from "../../layouts/Layout.astro";
+import { getLocale, localizedUrl, defaultLocale } from "../../lib/i18n";
 
 export async function getStaticPaths() {
   return [
     { params: { lang: undefined } },
-    { params: { lang: 'en' } },
-    { params: { lang: 'kh' } },
+    { params: { lang: "en" } },
+    { params: { lang: "kh" } },
   ];
 }
 
 const { lang } = Astro.params;
-const locale = lang as any || defaultLocale;
+const locale = (lang as any) || defaultLocale;
+
+import { getSiteSettings } from "../../lib/sanity";
+import { t as translate } from "../../lib/i18n";
+const settings = await getSiteSettings();
 
 const content = {
   de: {
-    title: 'Impressum',
-    backLink: 'Zurück zur Startseite'
+    title: "Impressum",
   },
   en: {
-    title: 'Legal Notice',
-    backLink: 'Back to home'
+    title: "Legal Notice",
   },
   kh: {
-    title: 'ព័ត៌មានច្បាប់',
-    backLink: 'ត្រឡប់ទៅទំព័រដើម'
-  }
+    title: "ព័ត៌មានច្បាប់",
+  },
 };
 
 const t = content[locale as keyof typeof content];
+const backLabel =
+  translate(settings?.labels?.backToHome, locale) ||
+  (locale === "de" ? "Zur Startseite" : "Back to home");
 ---
 
 <Layout title={t.title} locale={locale}>
   <section class="section bg-branding-bg min-h-[60vh]">
     <div class="container-custom">
       <div class="max-w-3xl mx-auto">
-        <a href={localizedUrl('/', locale)} class="inline-flex items-center gap-2 text-primary hover:text-primary-hover mb-6 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        <a
+          href={localizedUrl("/", locale)}
+          class="inline-flex items-center gap-2 text-primary hover:text-primary-hover mb-6 transition-colors"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"></path>
           </svg>
-          {t.backLink}
+          {backLabel}
         </a>
 
-        <h1 class="text-3xl md:text-4xl font-heading font-bold text-branding-dark mb-8">{t.title}</h1>
+        <h1
+          class="text-3xl md:text-4xl font-heading font-bold text-branding-dark mb-8"
+        >
+          {t.title}
+        </h1>
 
         <div class="prose prose-lg prose-bamboo max-w-none">
           <h2>Angaben gemäß § 5 TMG</h2>
-          
+
           <p>
-            <strong>Bamboo Shoots e.V. – Bildung & Entwicklungshilfe</strong><br />
+            <strong>Bamboo Shoots e.V. – Bildung & Entwicklungshilfe</strong><br
+            />
             Hohenzollernring 18a<br />
             13585 Berlin<br />
             Deutschland
@@ -59,13 +80,18 @@ const t = content[locale as keyof typeof content];
 
           <h3>Kontakt</h3>
           <p>
-            E-Mail: <a href="mailto:info@bamboo-shoots.de">info@bamboo-shoots.de</a><br />
-            Website: <a href="https://www.bamboo-shoots.de">www.bamboo-shoots.de</a>
+            E-Mail: <a href="mailto:info@bamboo-shoots.de"
+              >info@bamboo-shoots.de</a
+            ><br />
+            Website: <a href="https://www.bamboo-shoots.de"
+              >www.bamboo-shoots.de</a
+            >
           </p>
 
           <h3>Registereintrag</h3>
           <p>
-            Eingetragen im Vereinsregister des Amtsgerichts Berlin-Charlottenburg<br />
+            Eingetragen im Vereinsregister des Amtsgerichts
+            Berlin-Charlottenburg<br />
             Registernummer: VR 29693 B
           </p>
 
@@ -91,12 +117,14 @@ const t = content[locale as keyof typeof content];
             NGO in Kambodscha
           </p>
           <p>
-            Zugelassen vom Royal Government of Cambodia / Ministry of Interior<br />
+            Zugelassen vom Royal Government of Cambodia / Ministry of Interior<br
+            />
             Registernummer: 518 N
           </p>
           <p>
-            Die Organisation arbeitet unabhängig, gemeinnützig, ohne Gewinnerzielungsabsicht 
-            und ist nicht eingegliedert in staatliche Strukturen.
+            Die Organisation arbeitet unabhängig, gemeinnützig, ohne
+            Gewinnerzielungsabsicht und ist nicht eingegliedert in staatliche
+            Strukturen.
           </p>
 
           <h3>Kontakt vor Ort</h3>
@@ -111,24 +139,27 @@ const t = content[locale as keyof typeof content];
 
           <h3>Haftung für Inhalte</h3>
           <p>
-            Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, 
-            Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
+            Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für
+            die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können
+            wir jedoch keine Gewähr übernehmen.
           </p>
 
           <h3>Haftung für Links</h3>
           <p>
-            Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen 
-            Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. 
-            Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der 
-            Seiten verantwortlich.
+            Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren
+            Inhalte wir keinen Einfluss haben. Deshalb können wir für diese
+            fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
+            verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber
+            der Seiten verantwortlich.
           </p>
 
           <h3>Urheberrecht</h3>
           <p>
-            Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen 
-            dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art 
-            der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen 
-            Zustimmung des jeweiligen Autors bzw. Erstellers.
+            Die durch die Seitenbetreiber erstellten Inhalte und Werke auf
+            diesen Seiten unterliegen dem deutschen Urheberrecht. Die
+            Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
+            Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
+            schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
           </p>
         </div>
       </div>

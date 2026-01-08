@@ -74,11 +74,12 @@ const quote =
             class="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-branding-dark leading-[1.1] mb-6 tracking-tighter"
           >
             {
-              locale === "de"
-                ? "Bildung verändert Leben."
-                : locale === "en"
-                  ? "Education changes lives."
-                  : "ការអប់រំផ្លាស់ប្តូរជីវិត។"
+              t(missionData?.title, locale) ||
+                (locale === "de"
+                  ? "Bildung verändert Leben."
+                  : locale === "en"
+                    ? "Education changes lives."
+                    : "ការអប់រំផ្លាស់ប្តូរជីវិត។")
             }
           </h2>
 
@@ -94,11 +95,12 @@ const quote =
               class="text-sm font-bold uppercase tracking-widest text-secondary/60"
             >
               {
-                locale === "de"
-                  ? "Kambodschanisches Sprichwort"
-                  : locale === "en"
-                    ? "Cambodian Proverb"
-                    : "សុភាសិតខ្មែរ"
+                t(missionData?.proverbLabel, locale) ||
+                  (locale === "de"
+                    ? "Kambodschanisches Sprichwort"
+                    : locale === "en"
+                      ? "Cambodian Proverb"
+                      : "សុភាសិតខ្មែរ")
               }
             </span>
           </div>
@@ -154,7 +156,10 @@ const quote =
                   >
                   <span
                     class="text-[10px] md:text-xs uppercase tracking-wider text-branding-muted font-bold whitespace-nowrap"
-                    >{locale === "de" ? "Aktiv seit" : "Active since"}</span
+                    >{
+                      t(missionData?.activeSinceLabel, locale) ||
+                        (locale === "de" ? "Aktiv seit" : "Active since")
+                    }</span
                   >
                 </div>
 
@@ -168,7 +173,10 @@ const quote =
                   <span
                     class="text-[10px] md:text-xs uppercase tracking-wider text-branding-muted font-bold whitespace-nowrap"
                     >{
-                      locale === "de" ? "Kinder regulär" : "Regular students"
+                      t(missionData?.studentsLabel, locale) ||
+                        (locale === "de"
+                          ? "Kinder regulär"
+                          : "Regular students")
                     }</span
                   >
                 </div>
@@ -182,7 +190,10 @@ const quote =
                   >
                   <span
                     class="text-[10px] md:text-xs uppercase tracking-wider text-branding-muted font-bold whitespace-nowrap"
-                    >{locale === "de" ? "Lokales Team" : "Local Team"}</span
+                    >{
+                      t(missionData?.localTeamLabel, locale) ||
+                        (locale === "de" ? "Lokales Team" : "Local Team")
+                    }</span
                   >
                 </div>
               </div>

@@ -38,11 +38,12 @@ const defaultText = {
           <a href="mailto:info@bambooshoots.org" class="btn-primary group">
             <span
               >{
-                locale === "de"
-                  ? "Nachricht senden"
-                  : locale === "en"
-                    ? "Send Message"
-                    : "ផ្ញើសារ"
+                t(data?.labels?.sendMessage, locale) ||
+                  (locale === "de"
+                    ? "Nachricht senden"
+                    : locale === "en"
+                      ? "Send Message"
+                      : "ផ្ញើសារ")
               }</span
             >
           </a>
@@ -62,7 +63,7 @@ const defaultText = {
           <h4
             class="text-2xl font-heading font-extrabold text-branding-dark mb-10 tracking-tight"
           >
-            Siem Reap Office
+            {t(data?.officeTitle, locale) || "Siem Reap Office"}
           </h4>
 
           <div class="space-y-8">
@@ -75,11 +76,19 @@ const defaultText = {
                 <p
                   class="text-[10px] uppercase font-bold tracking-[0.2em] text-primary/40 mb-1"
                 >
-                  Standort
+                  {
+                    t(data?.locationLabel, locale) ||
+                      (locale === "de" ? "Standort" : "Location")
+                  }
                 </p>
-                <p class="text-branding-muted font-light leading-relaxed">
-                  Near West Baray,<br />Siem Reap, Cambodia
-                </p>
+                <div
+                  class="text-branding-muted font-light leading-relaxed whitespace-pre-line"
+                >
+                  {
+                    t(data?.locationValue, locale) ||
+                      "Near West Baray,\nSiem Reap, Cambodia"
+                  }
+                </div>
               </div>
             </div>
 
@@ -92,9 +101,14 @@ const defaultText = {
                 <p
                   class="text-[10px] uppercase font-bold tracking-[0.2em] text-primary/40 mb-1"
                 >
-                  Telefon
+                  {
+                    t(data?.phoneLabel, locale) ||
+                      (locale === "de" ? "Telefon" : "Phone")
+                  }
                 </p>
-                <p class="text-branding-muted font-light">+855 12 345 678</p>
+                <p class="text-branding-muted font-light">
+                  {data?.phoneValue || "+855 12 345 678"}
+                </p>
               </div>
             </div>
           </div>
@@ -104,9 +118,10 @@ const defaultText = {
               class="text-[10px] uppercase font-bold tracking-widest text-secondary mb-4 italic"
             >
               {
-                locale === "de"
-                  ? "Wir freuen uns auf Sie!"
-                  : "We look forward to seeing you!"
+                t(data?.footerText, locale) ||
+                  (locale === "de"
+                    ? "Wir freuen uns auf Sie!"
+                    : "We look forward to seeing you!")
               }
             </p>
           </div>

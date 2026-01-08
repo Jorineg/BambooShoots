@@ -45,7 +45,7 @@ export async function getDonationTiers() {
     return sanityClient.fetch(`*[_type == "donationTier"] | order(order asc)`);
 }
 
-// Fetch timeline events
-export async function getTimelineEvents() {
-    return sanityClient.fetch(`*[_type == "timelineEvent"] | order(year asc)`);
+// Fetch history entries
+export async function getHistoryEntries() {
+    return sanityClient.fetch(`*[_type == "historyEntry"] | order(order asc, year asc)`);
 }

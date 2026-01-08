@@ -78,7 +78,7 @@ const pageSubtitle = t(galleryPage?.description, locale) || (locale === 'de'
       {images.length === 0 && (
         <div class="text-center py-32 reveal">
             <p class="text-branding-muted italic">
-                {locale === 'de' ? 'Noch keine Fotos in der Galerie.' : 'No photos in the gallery yet.'}
+                {t(galleryPage?.noImagesMessage, locale) || (locale === 'de' ? 'Noch keine Fotos in der Galerie.' : 'No photos in the gallery yet.')}
             </p>
         </div>
       )}

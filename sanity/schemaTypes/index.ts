@@ -4,7 +4,7 @@ import historyPage from './historyPage'
 import galleryPage from './galleryPage'
 import teamMember from './teamMember'
 import donationTier from './donationTier'
-import timelineEvent from './timelineEvent'
+import historyEntry from './historyEntry'
 
 export const schemaTypes = [
     // Singleton documents
@@ -16,5 +16,5 @@ export const schemaTypes = [
     // Collection documents
     teamMember,
     donationTier,
-    timelineEvent
+    historyEntry
 ]

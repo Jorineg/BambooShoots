@@ -8,6 +8,7 @@ export default defineType({
     fields: [
         localizedString('title', 'Page Title'),
         localizedText('description', 'Page Description'),
+        localizedString('noImagesMessage', 'Empty Gallery Message'),
         defineField({
             name: 'images',
             title: 'Images',

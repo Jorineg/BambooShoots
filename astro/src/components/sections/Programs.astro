@@ -6,9 +6,10 @@ interface Props {
   locale: Locale;
   programs: any[];
   intro: any;
+  title: any;
 }
 
-const { locale, programs, intro } = Astro.props;
+const { locale, programs, intro, title } = Astro.props;
 
 // Icons mapping for fallback/placeholders
 const getIcon = (iconName: string) => {
@@ -91,7 +92,7 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
     <div class="max-w-4xl mb-24 md:mb-32 reveal border-l-[3px] border-primary/20 pl-8 md:pl-16">
 
       <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tighter">
-        {locale === 'de' ? 'Unsere Arbeit' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង'}
+        {t(title, locale) || (locale === 'de' ? 'Unsere Arbeit' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង')}
       </h3>
       <p class="text-branding-muted text-lg md:text-2xl font-light leading-relaxed max-w-2xl">
         {t(intro, locale) || (locale === 'de' 

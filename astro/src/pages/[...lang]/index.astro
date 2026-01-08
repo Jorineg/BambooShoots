@@ -34,11 +34,16 @@ const donationTiers = await getDonationTiers();
 const settings = await getSiteSettings();
 
 const pageTitle =
-  locale === "de" ? "Willkommen" : locale === "en" ? "Welcome" : "សូមស្វាគមន៍";
+  t(homePage?.pageTitle, locale) ||
+  (locale === "de"
+    ? "Willkommen"
+    : locale === "en"
+      ? "Welcome"
+      : "សូមស្វាគមន៍");
 ---
 
 <Layout title={pageTitle} locale={locale}>
-  <Hero locale={locale} data={homePage?.hero} />
+  <Hero locale={locale} data={homePage?.hero} settings={settings} />
   <Purpose
     locale={locale}
     welcomeData={homePage?.welcome}
@@ -49,8 +54,9 @@ const pageTitle =
     locale={locale}
     programs={homePage?.programs}
     intro={homePage?.programsIntro}
+    title={homePage?.programsTitle}
   />
-  <Team locale={locale} members={teamMembers} />
+  <Team locale={locale} members={teamMembers} data={homePage?.team} />
   <Donate locale={locale} tiers={donationTiers} settings={settings} />
   <Visit locale={locale} data={homePage?.visit} />
 </Layout>

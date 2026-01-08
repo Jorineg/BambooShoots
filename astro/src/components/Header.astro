@@ -24,6 +24,15 @@ const isStaticHeader = currentPath
   .some((segment) =>
     ["history", "galerie", "datenschutz", "impressum"].includes(segment),
   );
+
+const navLabels: Record<string, any> = {
+  "#start": settings?.labels?.navStart,
+  "#programme": settings?.labels?.navPrograms,
+  "#team": settings?.labels?.navTeam,
+  "#spenden": settings?.labels?.navDonate,
+  "/history": settings?.labels?.navHistory,
+  "/galerie": settings?.labels?.navGallery,
+};
 ---
 
 <header
@@ -65,7 +74,7 @@ const isStaticHeader = currentPath
         <span
           class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight"
         >
-          Bamboo Shoots
+          {t(settings?.siteTitle, locale) || "Bamboo Shoots"}
         </span>
       </a>
 
@@ -78,7 +87,7 @@ const isStaticHeader = currentPath
               class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
             >
               <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
-                {item.label}
+                {t(navLabels[item.href], locale) || item.label}
               </span>
               <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300" />
             </a>
@@ -138,11 +147,12 @@ const isStaticHeader = currentPath
           class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl shadow-secondary/20"
         >
           {
-            locale === "de"
-              ? "Spenden"
-              : locale === "en"
-                ? "Donate"
-                : "បរិច្ចាគ"
+            t(settings?.labels?.donateNow, locale) ||
+              (locale === "de"
+                ? "Spenden"
+                : locale === "en"
+                  ? "Donate"
+                  : "បរិច្ចាគ")
           }
         </a>
 
@@ -180,7 +190,7 @@ const isStaticHeader = currentPath
               href={localizedUrl(item.href, locale)}
               class="block py-3 px-4 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 font-medium"
             >
-              {item.label}
+              {t(navLabels[item.href], locale) || item.label}
             </a>
           ))
         }

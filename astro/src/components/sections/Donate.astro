@@ -103,22 +103,24 @@ console.log("[Donate] Using bgImage:", bgImage);
                 class="text-4xl md:text-6xl font-heading font-extrabold text-white mb-10 tracking-tighter"
             >
                 {
-                    locale === "de"
-                        ? "Spenden & Mitmachen"
-                        : locale === "en"
-                          ? "Donate & Get Involved"
-                          : "បរិច្ចាគ និងចូលរួម"
+                    t(settings?.donateSection?.title, locale) ||
+                        (locale === "de"
+                            ? "Spenden & Mitmachen"
+                            : locale === "en"
+                              ? "Donate & Get Involved"
+                              : "បរិច្ចាគ និងចូលរួម")
                 }
             </h3>
             <p
                 class="text-white/60 text-lg md:text-2xl max-w-2xl font-light leading-relaxed"
             >
                 {
-                    locale === "de"
-                        ? "Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll."
-                        : locale === "en"
-                          ? "Your support makes the difference. Donate purposefully – transparently and effectively."
-                          : "ការគាំទ្ររបស់អ្នកបង្កើតភាពខុសគ្នា។ បរិច្ចាគដោយមានគោលបំណង។"
+                    t(settings?.donateSection?.intro, locale) ||
+                        (locale === "de"
+                            ? "Ihre Unterstützung macht den Unterschied. Spenden Sie gezielt – transparent und wirkungsvoll."
+                            : locale === "en"
+                              ? "Your support makes the difference. Donate purposefully – transparently and effectively."
+                              : "ការគាំទ្ររបស់អ្នកបង្កើតភាពខុសគ្នា។ បរិច្ចាគដោយមានគោលបំណង។")
                 }
             </p>
         </div>
@@ -170,11 +172,12 @@ console.log("[Donate] Using bgImage:", bgImage);
 
                             <div class="flex items-center gap-3 text-secondary font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform duration-500">
                                 <span>
-                                    {locale === "de"
-                                        ? "Jetzt spenden"
-                                        : locale === "en"
-                                          ? "Donate now"
-                                          : "បរិច្ចាគឥឡូវ"}
+                                    {t(settings?.labels?.donateNow, locale) ||
+                                        (locale === "de"
+                                            ? "Jetzt spenden"
+                                            : locale === "en"
+                                              ? "Donate now"
+                                              : "បរិច្ចាគឥឡូវ")}
                                 </span>
                                 <svg
                                     class="w-5 h-5"
@@ -207,11 +210,12 @@ console.log("[Donate] Using bgImage:", bgImage);
                     class="text-white font-heading font-extrabold text-3xl mb-12"
                 >
                     {
-                        locale === "de"
-                            ? "Online spenden"
-                            : locale === "en"
-                              ? "Donate Online"
-                              : "បរិច្ចាគអនឡាញ"
+                        t(settings?.donateSection?.onlineDonate, locale) ||
+                            (locale === "de"
+                                ? "Online spenden"
+                                : locale === "en"
+                                  ? "Donate Online"
+                                  : "បរិច្ចាគអនឡាញ")
                     }
                 </h3>
 
@@ -284,11 +288,12 @@ console.log("[Donate] Using bgImage:", bgImage);
                     class="text-white font-heading font-extrabold text-3xl mb-12"
                 >
                     {
-                        locale === "de"
-                            ? "Überweisung"
-                            : locale === "en"
-                              ? "Bank Transfer"
-                              : "ផ្ទេរប្រាក់តាមធនាគារ"
+                        t(settings?.donateSection?.bankTransfer, locale) ||
+                            (locale === "de"
+                                ? "Überweisung"
+                                : locale === "en"
+                                  ? "Bank Transfer"
+                                  : "ផ្ទេរប្រាក់តាមធនាគារ")
                     }
                 </h3>
                 <div class="space-y-8">
@@ -297,7 +302,14 @@ console.log("[Donate] Using bgImage:", bgImage);
                             <div class="space-y-6">
                                 <div>
                                     <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
-                                        Empfänger
+                                        {t(
+                                            settings?.donateSection
+                                                ?.accountHolder,
+                                            locale,
+                                        ) ||
+                                            (locale === "de"
+                                                ? "Empfänger"
+                                                : "Beneficiary")}
                                     </p>
                                     <p class="font-bold text-white text-xl">
                                         {settings.bankAccount[locale].name}
@@ -306,7 +318,14 @@ console.log("[Donate] Using bgImage:", bgImage);
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <p class="text-white/40 text-[10px] uppercase font-bold tracking-[0.3em] mb-2">
-                                            Kreditinstitut
+                                            {t(
+                                                settings?.donateSection
+                                                    ?.bankName,
+                                                locale,
+                                            ) ||
+                                                (locale === "de"
+                                                    ? "Kreditinstitut"
+                                                    : "Bank")}
                                         </p>
                                         <p class="text-white font-mono">
                                             {settings.bankAccount[locale].bank}
@@ -350,7 +369,8 @@ console.log("[Donate] Using bgImage:", bgImage);
         >
             <p class="text-white/80 font-medium text-lg leading-relaxed italic">
                 "{
-                    t(settings?.donationFooterInfo, locale) ||
+                    t(settings?.donateSection?.footerInfo, locale) ||
+                        t(settings?.donationFooterInfo, locale) ||
                         (locale === "de"
                             ? "Bildung ist kein Privileg, sondern ein Menschenrecht. Wir danken Ihnen für Ihre treue Unterstützung."
                             : locale === "en"

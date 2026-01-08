@@ -6,6 +6,7 @@ export default defineType({
     title: 'Home Page',
     type: 'document',
     fields: [
+        localizedString('pageTitle', 'Page Title (SEO)'),
         // Hero Section
         defineField({
             name: 'hero',
@@ -45,7 +46,10 @@ export default defineType({
                 localizedString('title', 'Title'),
                 localizedText('text', 'Text'),
                 localizedString('quote', 'Quote'),
-                localizedString('quoteSource', 'Quote Source')
+                localizedString('proverbLabel', 'Proverb Label'),
+                localizedString('activeSinceLabel', 'Active Since Label'),
+                localizedString('studentsLabel', 'Students Label'),
+                localizedString('localTeamLabel', 'Local Team Label')
             ]
         }),
 
@@ -68,6 +72,7 @@ export default defineType({
         }),
 
         // Programs Section
+        localizedString('programsTitle', 'Programs Section Title'),
         localizedText('programsIntro', 'Programs Section Description'),
         defineField({
             name: 'programs',
@@ -118,6 +123,17 @@ export default defineType({
             ]
         }),
 
+        // Team Section
+        defineField({
+            name: 'team',
+            title: 'Team Section',
+            type: 'object',
+            fields: [
+                localizedString('title', 'Title'),
+                localizedText('intro', 'Intro Text')
+            ]
+        }),
+
         // Visit Section
         defineField({
             name: 'visit',
@@ -131,7 +147,13 @@ export default defineType({
                     title: 'Background Image',
                     type: 'image',
                     options: { hotspot: true }
-                })
+                }),
+                localizedString('officeTitle', 'Office Title'),
+                localizedString('locationLabel', 'Location Label'),
+                localizedText('locationValue', 'Location Address'),
+                localizedString('phoneLabel', 'Phone Label'),
+                defineField({ name: 'phoneValue', title: 'Phone Number', type: 'string' }),
+                localizedString('footerText', 'Footer Text')
             ]
         }),
 
