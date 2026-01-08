@@ -90,35 +90,8 @@ const settings = await getSiteSettings();
         }, 300);
       };
 
-      // Language redirect logic (Root only)
-      const handleRedirect = () => {
-        const path = window.location.pathname;
-        const base = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
-
-        // Only redirect on actual root variants
-        const isRoot = path === "/" || path === base || path === base + "/";
-        if (!isRoot) return;
-
-        const lang = localStorage.getItem("preferred-language");
-        if (lang) {
-          const target = base + "/" + lang + "/";
-          if (path !== target) window.location.href = target;
-          return;
-        }
-
-        const browserLang = navigator.language.split("-")[0];
-        const supportedLocales = ["de", "en", "kh"];
-        const targetLocale = supportedLocales.includes(browserLang)
-          ? browserLang
-          : "de"; // Default to 'de' if browser lang not supported
-
-        localStorage.setItem("preferred-language", targetLocale);
-        window.location.href = base + "/" + targetLocale + "/";
-      };
-
       document.addEventListener("astro:page-load", () => {
         initChoreography();
-        handleRedirect();
       });
     </script>
   </body>

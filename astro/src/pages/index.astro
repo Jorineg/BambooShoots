@@ -1,4 +1,65 @@
 ---
-// This page is a placeholder required by Astro when prefixDefaultLocale is true.
-// It will automatically redirect to the default locale (/de/).
+// This page handles the root redirect.
+// It use client-side logic to decide the language or falls back to German.
 ---
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Redirecting...</title>
+        <link rel="canonical" href={`${import.meta.env.BASE_URL}de/`} />
+        <meta
+            http-equiv="refresh"
+            content={`0;url=${import.meta.env.BASE_URL}de/`}
+        />
+        <style>
+            body {
+                background: #0d2a17;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+            .loader {
+                width: 40px;
+                height: 40px;
+                border: 3px solid rgba(255, 255, 255, 0.1);
+                border-top-color: #f7d488;
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="loader"></div>
+        <script is:inline>
+            (function () {
+                const base = (import.meta.env.BASE_URL || "/").replace(
+                    /\/$/,
+                    "",
+                );
+                const lang = localStorage.getItem("preferred-language");
+                const supported = ["de", "en", "kh"];
+
+                let target = "de";
+                if (lang && supported.includes(lang)) {
+                    target = lang;
+                } else {
+                    const browserLang = navigator.language.split("-")[0];
+                    if (supported.includes(browserLang)) {
+                        target = browserLang;
+                    }
+                }
+
+                window.location.replace(base + "/" + target + "/");
+            })();
+        </script>
+    </body>
+</html>

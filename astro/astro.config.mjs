@@ -5,7 +5,7 @@ export default defineConfig({
     integrations: [tailwind()],
     output: 'static',
     // Ersetze dies mit deiner GitHub Pages URL (z.B. https://username.github.io/repo)
-    site: 'https://jorineggers.github.io',
+    site: 'https://jorineg.github.io',
     base: '/BambooShoots',
     trailingSlash: 'always',
     build: {
