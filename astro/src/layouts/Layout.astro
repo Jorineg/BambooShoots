@@ -1,9 +1,10 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { getLocale, type Locale } from '../lib/i18n';
-import { getSiteSettings } from '../lib/sanity';
-import '../styles/global.css';
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { getLocale, type Locale } from "../lib/i18n";
+import { getSiteSettings } from "../lib/sanity";
+import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -11,74 +12,121 @@ interface Props {
   locale?: Locale;
 }
 
-const { title, description = 'Bamboo Shoots – Bildung. Gemeinschaft. Perspektiven für Kinder in Kambodscha.' } = Astro.props;
+const {
+  title,
+  description = "Bamboo Shoots – Bildung. Gemeinschaft. Perspektiven für Kinder in Kambodscha.",
+} = Astro.props;
 const locale = getLocale(Astro.url);
 const settings = await getSiteSettings();
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={locale === 'de' ? 'de_DE' : locale === 'en' ? 'en_US' : 'km_KH'} />
-    
+    <meta
+      property="og:locale"
+      content={locale === "de" ? "de_DE" : locale === "en" ? "en_US" : "km_KH"}
+    />
+
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
-    
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href={`${import.meta.env.BASE_URL}favicon.svg`}
+    />
+
     <title>{title} | Bamboo Shoots</title>
+    <ViewTransitions />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header locale={locale} settings={settings} />
-    
+
     <main class="flex-grow">
       <slot />
     </main>
-    
+
     <Footer locale={locale} settings={settings} />
 
     <script is:inline>
-      (function() {
-        // Global reveal observer
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-            }
-          });
-        }, { threshold: 0.1 });
+      // Helper to handle smooth transition choreography
+      const initChoreography = () => {
+        const html = document.documentElement;
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        // 1. Disable smooth scroll immediately to allow "beaming" to anchors
+        html.classList.remove("is-ready");
 
-        // Language redirect logic (Root only)
-        if (window.location.pathname !== '/' && window.location.pathname !== '/BambooShoots/') return;
-        
-        const lang = localStorage.getItem('preferred-language');
+        // 2. Global reveal observer logic
+        const initReveals = () => {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("visible");
+                }
+              });
+            },
+            { threshold: 0.1 },
+          );
+
+          document
+            .querySelectorAll(".reveal")
+            .forEach((el) => observer.observe(el));
+        };
+
+        // 3. Timing: Wait for the 0.5s View Transition to finish before revealing content
+        // This makes the transition feel cleaner and less hectic.
+        setTimeout(() => {
+          initReveals();
+          // After transition is done, re-enable smooth scroll for in-page navigation
+          html.classList.add("is-ready");
+        }, 300);
+      };
+
+      document.addEventListener("astro:page-load", initChoreography);
+
+      // Language redirect logic (Root only - stays outside transition logic for speed)
+      document.addEventListener("astro:page-load", () => {
+        if (
+          window.location.pathname !== "/" &&
+          window.location.pathname !== "/BambooShoots/"
+        )
+          return;
+
+        const lang = localStorage.getItem("preferred-language");
         if (lang) {
-          if (lang !== 'de') {
-            window.location.href = window.location.origin + window.location.pathname + lang + '/';
+          if (lang !== "de") {
+            window.location.href =
+              window.location.origin + window.location.pathname + lang + "/";
           }
           return;
         }
 
-        const browserLang = navigator.language.split('-')[0];
-        const supportedLocales = ['de', 'en', 'kh'];
-        const targetLocale = supportedLocales.includes(browserLang) ? browserLang : 'en';
-        
-        if (targetLocale !== 'de') {
-          localStorage.setItem('preferred-language', targetLocale);
-          window.location.href = window.location.origin + window.location.pathname + targetLocale + '/';
+        const browserLang = navigator.language.split("-")[0];
+        const supportedLocales = ["de", "en", "kh"];
+        const targetLocale = supportedLocales.includes(browserLang)
+          ? browserLang
+          : "en";
+
+        if (targetLocale !== "de") {
+          localStorage.setItem("preferred-language", targetLocale);
+          window.location.href =
+            window.location.origin +
+            window.location.pathname +
+            targetLocale +
+            "/";
         } else {
-          localStorage.setItem('preferred-language', 'de');
+          localStorage.setItem("preferred-language", "de");
         }
-      })();
+      });
     </script>
   </body>
 </html>

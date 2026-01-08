@@ -18,29 +18,21 @@ const { locale, settings } = Astro.props;
 const navItems = navigation[locale];
 const currentPath = Astro.url.pathname;
 
-// Check if we are on a page that should have a static "scrolled" header from the start
+// Check if we are on a page that should have an opaque header from the start
 const isStaticHeader = currentPath
   .split("/")
   .some((segment) =>
     ["history", "galerie", "datenschutz", "impressum"].includes(segment),
   );
-
-const navLabels: Record<string, any> = {
-  "#start": settings?.labels?.navStart,
-  "#programme": settings?.labels?.navPrograms,
-  "#team": settings?.labels?.navTeam,
-  "#spenden": settings?.labels?.navDonate,
-  "/history": settings?.labels?.navHistory,
-  "/galerie": settings?.labels?.navGallery,
-};
 ---
 
 <header
   id="main-header"
   class:list={[
     "fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent w-full",
-    { scrolled: isStaticHeader, "is-static": isStaticHeader },
+    { scrolled: isStaticHeader },
   ]}
+  transition:name="header"
 >
   <div class="w-full px-6 md:px-12 lg:px-16">
     <nav
@@ -87,7 +79,7 @@ const navLabels: Record<string, any> = {
               class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
             >
               <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
-                {t(navLabels[item.href], locale) || item.label}
+                {item.label}
               </span>
               <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300" />
             </a>
@@ -100,11 +92,11 @@ const navLabels: Record<string, any> = {
         <!-- Language Selector -->
         <div class="relative group">
           <button
-            class="lang-btn flex items-center gap-2 text-white hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
+            class="lang-btn flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
             aria-label="Select language"
           >
             <svg
-              class="w-4 h-4"
+              class="w-4 h-4 opacity-70"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -146,14 +138,7 @@ const navLabels: Record<string, any> = {
           href={localizedUrl("#spenden", locale)}
           class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl shadow-secondary/20"
         >
-          {
-            t(settings?.labels?.donateNow, locale) ||
-              (locale === "de"
-                ? "Spenden"
-                : locale === "en"
-                  ? "Donate"
-                  : "បរិច្ចាគ")
-          }
+          {t(settings?.labels?.navDonate, locale) || "Spenden"}
         </a>
 
         <!-- Mobile Menu Button -->
@@ -190,7 +175,7 @@ const navLabels: Record<string, any> = {
               href={localizedUrl(item.href, locale)}
               class="block py-3 px-4 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 font-medium"
             >
-              {t(navLabels[item.href], locale) || item.label}
+              {item.label}
             </a>
           ))
         }
@@ -204,84 +189,29 @@ const navLabels: Record<string, any> = {
     @apply w-full;
   }
 
-  /* Define custom property for mask animation - Supported in modern browsers */
-  @property --mask-stop {
-    syntax: "<percentage>";
-    inherits: false;
-    initial-value: 100%;
-  }
-
-  /* Base styles (at top) */
-  #main-header {
-    background-color: transparent;
-    /* Removed background/backdrop from parent to use pseudo-element for masking */
-  }
-
-  /* Background layer with mask capability */
-  #main-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    transition: all 0.5s ease;
-
-    /* Default state (hidden/transparent) */
-    background-color: transparent;
-    backdrop-filter: blur(0px) saturate(100%);
-    border-bottom: 1px solid transparent;
-
-    /* Mask setup for soft edge effect */
-    mask-image: linear-gradient(
-      to bottom,
-      black var(--mask-stop),
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      black var(--mask-stop),
-      transparent 100%
-    );
-  }
-
-  .header-text,
-  .nav-link-dynamic,
-  .lang-btn,
-  #mobile-menu-btn {
-    color: white;
+  /* Lösung C: Subtle shadow on hero for readability */
+  header:not(.scrolled) .nav-link-dynamic,
+  header:not(.scrolled) .header-text,
+  header:not(.scrolled) .lang-btn {
     text-shadow:
       0 1px 3px rgba(0, 0, 0, 0.3),
       0 0 20px rgba(0, 0, 0, 0.2);
   }
 
-  .nav-link-dynamic {
-    @apply text-white/90;
-  }
-
-  .lang-btn {
-    @apply text-white;
-  }
-
-  .lang-btn svg {
+  header:not(.scrolled) .lang-btn svg {
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
   }
 
-  /* Class-based fallback for older browsers */
-  /* Class-based fallback for older browsers */
-  /* Fixed specificity by including ID */
-  #main-header.scrolled::before {
-    background-color: rgba(229, 221, 210, 0.85); /* More "milky" white */
-    backdrop-filter: blur(20px) saturate(160%);
+  header.scrolled {
+    @apply shadow-lg;
+    background-color: rgba(
+      235,
+      230,
+      222,
+      0.85
+    ); /* earth-200ish with transparency */
+    backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    --mask-stop: 100%; /* Soft spread for premium look */
-  }
-
-  /* Specific styles for static pages to ensure they win over defaults */
-  header.is-static::before {
-    background-color: rgba(229, 221, 210, 0.85) !important;
-    backdrop-filter: blur(20px) saturate(160%) !important;
-    /* --mask-stop: 100% !important; */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
   }
 
   header.scrolled .header-text {
@@ -295,156 +225,54 @@ const navLabels: Record<string, any> = {
   }
 
   header.scrolled .lang-btn {
-    @apply text-branding-dark hover:text-primary hover:bg-black/5;
+    @apply text-branding-dark/60 hover:text-primary hover:bg-black/5;
     text-shadow: none;
-  }
-
-  header.scrolled .lang-btn svg {
-    filter: none;
   }
 
   header.scrolled #mobile-menu-btn {
     @apply text-branding-dark;
   }
-
-  /* Scroll-driven animations for modern browsers */
-  @supports (animation-timeline: scroll()) {
-    #main-header::before {
-      animation: header-fade-bg linear both;
-      animation-timeline: scroll(root);
-      animation-range: 100px 500px;
-    }
-
-    /* Fallback/Reset for parent if needed, though ::before handles bg now */
-    #main-header {
-      animation: none;
-    }
-
-    .header-text,
-    #main-header #mobile-menu-btn {
-      animation: header-fade-text linear both;
-      animation-timeline: scroll(root);
-      animation-range: 100px 300px;
-    }
-
-    .nav-link-dynamic {
-      animation: header-fade-link linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100px;
-    }
-
-    .lang-btn {
-      animation: header-fade-lang linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100px;
-    }
-
-    .lang-btn svg {
-      animation: header-fade-svg linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100px;
-    }
-  }
-
-  @keyframes header-fade-bg {
-    0% {
-      background-color: transparent;
-      backdrop-filter: blur(0px) saturate(100%);
-      border-bottom: 1px solid transparent;
-      --mask-stop: 70%; /* Very soft edge initially */
-    }
-    100% {
-      background-color: rgba(229, 221, 210, 0.85);
-      backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      --mask-stop: 100%;
-    }
-  }
-
-  @keyframes header-fade-text {
-    from {
-      color: white;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-    to {
-      color: rgb(20, 83, 45);
-      text-shadow: none;
-    }
-  }
-
-  @keyframes header-fade-link {
-    from {
-      color: rgba(255, 255, 255, 0.9);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-    to {
-      color: rgba(20, 83, 45, 0.8);
-      text-shadow: none;
-    }
-  }
-
-  @keyframes header-fade-lang {
-    from {
-      color: rgba(255, 255, 255, 1);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-    to {
-      color: rgba(20, 83, 45, 1);
-      text-shadow: none;
-    }
-  }
-
-  @keyframes header-fade-svg {
-    from {
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
-    }
-    to {
-      filter: none;
-    }
-  }
-
-  /* Disable animations on static pages */
-  header.is-static::before,
-  header.is-static .header-text,
-  header.is-static .nav-link-dynamic,
-  header.is-static .lang-btn,
-  header.is-static .lang-btn svg,
-  header.is-static #mobile-menu-btn {
-    animation: none !important;
-  }
 </style>
 
 <script>
-  const header = document.getElementById("main-header");
-  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
+  function initHeader() {
+    const header = document.getElementById("main-header");
+    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
 
-  const handleScroll = () => {
-    // Skip scroll class management if CSS animation-timeline is supported
-    if (window.CSS && CSS.supports("animation-timeline", "scroll()")) {
-      return;
-    }
+    if (!header) return;
 
-    // If this is a static header, we don't want to toggle the scrolled class
-    if (header?.classList.contains("is-static")) return;
+    const handleScroll = () => {
+      // If the header is forced to be scrolled (opaque), don't remove the class on scroll
+      const isStatic = window.location.pathname.match(
+        /\/(history|galerie|datenschutz|impressum)/,
+      );
 
-    if (window.scrollY > 50) {
-      header?.classList.add("scrolled");
-    } else {
-      header?.classList.remove("scrolled");
-    }
-  };
+      if (window.scrollY > 50 || isStatic) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    };
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  handleScroll(); // Initial check
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
 
-  mobileMenuBtn?.addEventListener("click", () => {
-    mobileMenu?.classList.toggle("hidden");
-    // If opening on hero, maybe force a background
-    if (!mobileMenu?.classList.contains("hidden") && window.scrollY <= 50) {
-      header?.classList.add("scrolled");
-    } else if (window.scrollY <= 50) {
-      header?.classList.remove("scrolled");
-    }
-  });
+    mobileMenuBtn?.addEventListener("click", () => {
+      mobileMenu?.classList.toggle("hidden");
+      if (!mobileMenu?.classList.contains("hidden") && window.scrollY <= 50) {
+        header.classList.add("scrolled");
+      } else if (
+        window.scrollY <= 50 &&
+        !window.location.pathname.match(
+          /\/(history|galerie|datenschutz|impressum)/,
+        )
+      ) {
+        header.classList.remove("scrolled");
+      }
+    });
+  }
+
+  // Initialize on first load and on every View Transition navigation
+  document.addEventListener("astro:page-load", initHeader);
 </script>

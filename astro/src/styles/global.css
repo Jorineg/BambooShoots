@@ -45,6 +45,11 @@
 
 @layer base {
   html {
+    /* removed global smooth scroll to prevent jumpy navigation */
+  }
+
+  /* Only enable smooth scroll after page is loaded and ready */
+  html.is-ready {
     scroll-behavior: smooth;
   }
 
@@ -267,5 +272,16 @@
     background: radial-gradient(circle, rgba(var(--color-primary), 0.05) 0%, transparent 70%);
     z-index: -1;
     pointer-events: none;
+  }
+}
+
+@layer base {
+
+  /* Synchronize all view transition layers (Header, Main, Root) */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
