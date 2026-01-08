@@ -78,16 +78,6 @@ export default defineType({
                 localizedText('intro', 'Introduction'),
                 localizedString('timelineTitle', 'Timeline Title')
             ]
-        }),
-
-        defineField({
-            name: 'currentStatus',
-            title: 'Current Status',
-            type: 'object',
-            fields: [
-                localizedString('title', 'Title'),
-                localizedText('text', 'Text')
-            ]
         })
     ],
     preview: {
