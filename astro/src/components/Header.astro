@@ -18,24 +18,31 @@ const { locale, settings } = Astro.props;
 const navItems = navigation[locale];
 const currentPath = Astro.url.pathname;
 
-// Check if we are on a page that should have an opaque header from the start
+// Check if we are on a page that should have a static "scrolled" header from the start
 const isStaticHeader = currentPath
   .split("/")
   .some((segment) =>
     ["history", "galerie", "datenschutz", "impressum"].includes(segment),
   );
+
+const navLabels: Record<string, any> = {
+  "#mission": settings?.labels?.navMission,
+  "#programme": settings?.labels?.navPrograms,
+  "#team": settings?.labels?.navTeam,
+  "#spenden": settings?.labels?.navDonate,
+  "/history": settings?.labels?.navHistory,
+  "/galerie": settings?.labels?.navGallery,
+};
 ---
 
 <header
   id="main-header"
   class:list={[
-    "fixed top-0 left-0 right-0 z-50 w-full transition-shadow duration-300",
-    { scrolled: isStaticHeader },
+    "fixed top-0 left-0 right-0 z-50 transition-all duration-500 w-full",
+    { scrolled: isStaticHeader, "is-static": isStaticHeader },
   ]}
   transition:name="header"
 >
-  <div class="header-bg-layer absolute inset-0 pointer-events-none"></div>
-
   <div class="relative w-full px-6 md:px-12 lg:px-16 z-20">
     <nav
       class="flex items-center justify-between h-[var(--header-height-mobile)] md:h-[var(--header-height-desktop)]"
@@ -47,16 +54,18 @@ const isStaticHeader = currentPath
             <img
               src={urlFor(settings.logo).width(48).url()}
               alt="Bamboo Shoots Logo"
-              class="header-logo w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
+              class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl">
+            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl transition-all duration-500">
               <svg
                 class="w-6 h-6 md:w-8 md:h-8"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
@@ -64,7 +73,7 @@ const isStaticHeader = currentPath
           )
         }
         <span
-          class="header-text text-lg md:text-xl font-heading font-extrabold sm:block hidden tracking-tight"
+          class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight"
         >
           {t(settings?.siteTitle, locale) || "Bamboo Shoots"}
         </span>
@@ -77,49 +86,55 @@ const isStaticHeader = currentPath
             <a
               href={localizedUrl(item.href, locale)}
               data-nav-link
-              class="nav-link-dynamic font-medium relative py-2"
+              class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
             >
               <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
-                {item.label}
+                {t(navLabels[item.href], locale) || item.label}
               </span>
-              <span class="nav-underline absolute bottom-0 left-0 w-0 h-0.5 bg-secondary transition-all duration-500" />
+              <span class="nav-underline absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-500" />
             </a>
           ))
         }
       </div>
 
-      <!-- Language & Donate -->
+      <!-- Language Toggle & Donate Button -->
       <div class="flex items-center gap-2 md:gap-8">
+        <!-- Language Selector -->
         <div class="relative group">
           <button
-            class="lang-btn flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors duration-300"
+            class="lang-btn flex items-center gap-2 text-white hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
+            aria-label="Select language"
           >
             <svg
-              class="w-4 h-4 opacity-70"
+              class="w-4 h-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
-              ><circle cx="12" cy="12" r="10"></circle><line
-                x1="2"
-                y1="12"
-                x2="22"
-                y2="12"></line><path
-                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-              ></path></svg
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path
+                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+              ></path>
+            </svg>
             <span class="text-[10px] font-bold uppercase tracking-widest"
               >{localeNames[locale]}</span
             >
           </button>
+
+          <!-- Dropdown -->
           <div
-            class="absolute right-0 top-full mt-2 py-2 bg-branding-dark rounded-xl shadow-2xl border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[140px] translate-y-2 group-hover:translate-y-0"
+            class="absolute right-0 top-full mt-2 py-2 bg-branding-dark rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[140px] translate-y-2 group-hover:translate-y-0"
           >
             {
               locales.map((loc) => (
                 <a
                   href={localizedUrl(currentPath, loc)}
-                  class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 ${loc === locale ? "text-secondary" : "text-white/60"}`}
+                  class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? "text-secondary bg-white/5" : "text-white/60 hover:text-white"}`}
+                  onclick={`localStorage.setItem('preferred-language', '${loc}')`}
                 >
                   {localeNames[loc]}
                 </a>
@@ -128,28 +143,39 @@ const isStaticHeader = currentPath
           </div>
         </div>
 
+        <!-- Donate Button -->
         <a
           href={localizedUrl("#spenden", locale)}
-          class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl"
+          class="btn-donate text-xs font-bold uppercase tracking-widest px-8 py-3 shadow-xl shadow-secondary/20"
         >
-          {t(settings?.labels?.navDonate, locale) || "Spenden"}
+          {
+            t(settings?.labels?.donateNow, locale) ||
+              (locale === "de"
+                ? "Spenden"
+                : locale === "en"
+                  ? "Donate"
+                  : "បរិច្ចាគ")
+          }
         </a>
 
+        <!-- Mobile Menu Button -->
         <button
           id="mobile-menu-btn"
-          class="lg:hidden p-2 hover:text-secondary transition-colors"
+          class="lg:hidden p-2 text-white hover:text-secondary transition-colors"
+          aria-label="Toggle menu"
         >
           <svg
             class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            ><path
+          >
+            <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path></svg
-          >
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
         </button>
       </div>
     </nav>
@@ -166,7 +192,7 @@ const isStaticHeader = currentPath
               href={localizedUrl(item.href, locale)}
               class="block py-3 px-4 text-white/80 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 font-medium"
             >
-              {item.label}
+              {t(navLabels[item.href], locale) || item.label}
             </a>
           ))
         }
@@ -174,99 +200,191 @@ const isStaticHeader = currentPath
     </div>
   </div>
 </header>
+
 <style>
-  /* 1. LAYER STYLING */
-  .header-bg-layer {
-    background-color: transparent;
-    backdrop-filter: blur(0px) saturate(100%);
-    border-bottom: 0px solid transparent;
-    transition:
-      background-color 0.5s,
-      backdrop-filter 0.5s;
+  .nav-link-dynamic:hover .nav-underline,
+  .nav-link-dynamic.active .nav-underline {
+    @apply w-full;
   }
 
-  /* 2. CSS SCROLL TIMELINES (Modern Browsers) */
+  /* Define custom property for mask animation - Supported in modern browsers */
+  @property --mask-stop {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 100%;
+  }
+
+  /* Base styles (at top) */
+  #main-header {
+    background-color: transparent;
+    isolation: isolate; /* Create new stacking context */
+  }
+
+  /* Background layer (The Milky/Frost effect) */
+  #main-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: all 0.5s ease;
+    transform: translateZ(0);
+
+    /* Default transparent state */
+    background-color: transparent;
+    backdrop-filter: blur(0px) saturate(100%);
+    border-bottom: 1px solid transparent;
+
+    /* Mask for soft edge */
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black var(--mask-stop),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black var(--mask-stop),
+      transparent 100%
+    );
+  }
+
+  .header-text,
+  .nav-link-dynamic,
+  .lang-btn,
+  #mobile-menu-btn {
+    color: white;
+    text-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Scrolled / Static state colors */
+  #main-header.scrolled::before,
+  header.is-static::before {
+    background-color: rgba(229, 221, 210, 0.85); /* Proper Milky Earth 200 */
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    --mask-stop: 100%;
+  }
+
+  header.scrolled .header-text,
+  header.is-static .header-text,
+  header.scrolled .lang-btn,
+  header.is-static .lang-btn,
+  header.scrolled #mobile-menu-btn,
+  header.is-static #mobile-menu-btn {
+    color: rgb(20, 83, 45); /* Brand Dark Green */
+    text-shadow: none;
+  }
+
+  header.scrolled .nav-link-dynamic,
+  header.is-static .nav-link-dynamic {
+    color: rgba(20, 83, 45, 0.8);
+    text-shadow: none;
+  }
+
+  header.scrolled .lang-btn svg,
+  header.is-static .lang-btn svg {
+    filter: none;
+  }
+
+  /* Scroll-driven animations */
   @supports (animation-timeline: scroll()) {
-    .header-bg-layer {
-      animation: header-bg-fade linear both;
+    #main-header::before {
+      animation: header-fade-bg linear both;
       animation-timeline: scroll();
       animation-range: 100px 500px;
     }
 
     .header-text,
-    .nav-link-dynamic,
-    .lang-btn,
-    #mobile-menu-btn {
-      animation: header-text-fade linear both;
+    #main-header #mobile-menu-btn {
+      animation: header-fade-text linear both;
       animation-timeline: scroll();
       animation-range: 100px 300px;
     }
 
-    .header-logo {
-      animation: header-logo-scale linear both;
+    .nav-link-dynamic {
+      animation: header-fade-link linear both;
+      animation-timeline: scroll();
+      animation-range: 100px 300px;
+    }
+
+    .lang-btn {
+      animation: header-fade-lang linear both;
+      animation-timeline: scroll();
+      animation-range: 100px 300px;
+    }
+
+    .lang-btn svg {
+      animation: header-fade-svg linear both;
       animation-timeline: scroll();
       animation-range: 100px 300px;
     }
   }
 
-  /* 3. KEYFRAMES */
-  @keyframes header-bg-fade {
-    from {
-      background-color: rgba(235, 230, 222, 0);
+  @keyframes header-fade-bg {
+    0% {
+      background-color: transparent;
       backdrop-filter: blur(0px) saturate(100%);
-      border-bottom-color: transparent;
+      --mask-stop: 70%;
     }
-    to {
-      background-color: rgba(235, 230, 222, 0.85);
+    100% {
+      background-color: rgba(229, 221, 210, 0.85);
       backdrop-filter: blur(20px) saturate(180%);
-      border-bottom-color: rgba(0, 0, 0, 0.05);
+      --mask-stop: 100%;
     }
   }
 
-  @keyframes header-text-fade {
+  @keyframes header-fade-text {
     from {
       color: white;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
     to {
-      color: #1a2b1f; /* branding-dark */
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+      color: rgb(20, 83, 45);
+      text-shadow: none;
     }
   }
 
-  @keyframes header-logo-scale {
+  @keyframes header-fade-link {
     from {
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
     to {
-      filter: drop-shadow(0 0px 0px rgba(0, 0, 0, 0));
+      color: rgba(20, 83, 45, 0.8);
+      text-shadow: none;
     }
   }
 
-  /* 4. FALLBACKS & STATIC PAGES */
-  header.scrolled .header-bg-layer,
-  header.scrolled-forced .header-bg-layer {
-    background-color: rgba(235, 230, 222, 0.85) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+  @keyframes header-fade-lang {
+    from {
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    to {
+      color: rgb(20, 83, 45);
+      text-shadow: none;
+    }
   }
 
-  header.scrolled .header-text,
-  header.scrolled-forced .header-text,
-  header.scrolled .nav-link-dynamic,
-  header.scrolled-forced .nav-link-dynamic,
-  header.scrolled .lang-btn,
-  header.scrolled-forced .lang-btn,
-  header.scrolled #mobile-menu-btn {
-    color: #1a2b1f !important;
-    text-shadow: none !important;
+  @keyframes header-fade-svg {
+    from {
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    }
+    to {
+      filter: none;
+    }
   }
 
-  /* Nav Highlighting */
-  .nav-link-dynamic:hover .nav-underline,
-  .nav-link-dynamic.active .nav-underline {
-    width: 100%;
+  header.is-static::before,
+  header.is-static .header-text,
+  header.is-static .nav-link-dynamic,
+  header.is-static .lang-btn,
+  header.is-static #mobile-menu-btn {
+    animation: none !important;
   }
+
   .nav-underline {
     transition: width 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
   }
@@ -275,34 +393,29 @@ const isStaticHeader = currentPath
 <script>
   function initHeader() {
     const header = document.getElementById("main-header");
-    const navLinks = document.querySelectorAll("[data-nav-link]");
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
-
-    if (!header) return;
+    const navLinks = document.querySelectorAll("[data-nav-link]");
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const isStatic = window.location.pathname.match(
-        /\/(history|galerie|datenschutz|impressum)/,
-      );
+      // In static mode or if animation-timeline is supported, we skip JS toggles for colors/bg
+      if (!header || header.classList.contains("is-static")) return;
 
-      if (scrollY > 50 || isStatic) {
+      if (window.CSS && CSS.supports("animation-timeline", "scroll()")) {
+        // Keep 'scrolled' class updated for states beyond the animated range (shadows etc)
+        if (window.scrollY > 500) header.classList.add("scrolled");
+        else if (window.scrollY < 50) header.classList.remove("scrolled");
+        return;
+      }
+
+      if (window.scrollY > 50) {
         header.classList.add("scrolled");
       } else {
         header.classList.remove("scrolled");
       }
-
-      if (isStatic) {
-        header.classList.add("scrolled-forced");
-      } else {
-        header.classList.remove("scrolled-forced");
-      }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
+    // Section Highlighting Observer
     const sectionIds = ["mission", "programme", "team", "spenden", "besuchen"];
     const sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -325,11 +438,14 @@ const isStaticHeader = currentPath
       if (el) sectionObserver.observe(el);
     });
 
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
     mobileMenuBtn?.addEventListener("click", () => {
       mobileMenu?.classList.toggle("hidden");
-      if (!mobileMenu?.classList.contains("hidden")) {
-        header.classList.add("scrolled-forced");
-      } else {
+      if (!mobileMenu?.classList.contains("hidden") && window.scrollY <= 50) {
+        header?.classList.add("scrolled");
+      } else if (window.scrollY <= 50) {
         handleScroll();
       }
     });
