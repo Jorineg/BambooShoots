@@ -7,6 +7,10 @@ export default defineConfig({
     // Ersetze dies mit deiner GitHub Pages URL (z.B. https://username.github.io/repo)
     site: 'https://jorineggers.github.io',
     base: '/BambooShoots',
+    trailingSlash: 'always',
+    build: {
+        format: 'directory'
+    },
     i18n: {
         defaultLocale: 'de',
         locales: ['de', 'en', 'kh'],

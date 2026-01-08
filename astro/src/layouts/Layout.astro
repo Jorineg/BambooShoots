@@ -56,7 +56,7 @@ const settings = await getSiteSettings();
 
     <Footer locale={locale} settings={settings} />
 
-    <script is:inline>
+    <script>
       // Helper to handle smooth transition choreography
       const initChoreography = () => {
         const html = document.documentElement;
@@ -83,7 +83,6 @@ const settings = await getSiteSettings();
         };
 
         // 3. Timing: Wait for the 0.5s View Transition to finish before revealing content
-        // This makes the transition feel cleaner and less hectic.
         setTimeout(() => {
           initReveals();
           // After transition is done, re-enable smooth scroll for in-page navigation
@@ -91,21 +90,20 @@ const settings = await getSiteSettings();
         }, 300);
       };
 
-      document.addEventListener("astro:page-load", initChoreography);
+      // Language redirect logic (Root only)
+      const handleRedirect = () => {
+        const path = window.location.pathname;
+        const base = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
 
-      // Language redirect logic (Root only - stays outside transition logic for speed)
-      document.addEventListener("astro:page-load", () => {
-        if (
-          window.location.pathname !== "/" &&
-          window.location.pathname !== "/BambooShoots/"
-        )
-          return;
+        // Only redirect on actual root variants
+        const isRoot = path === "/" || path === base || path === base + "/";
+        if (!isRoot) return;
 
         const lang = localStorage.getItem("preferred-language");
         if (lang) {
           if (lang !== "de") {
-            window.location.href =
-              window.location.origin + window.location.pathname + lang + "/";
+            const target = base + "/" + lang + "/";
+            if (path !== target) window.location.href = target;
           }
           return;
         }
@@ -118,14 +116,15 @@ const settings = await getSiteSettings();
 
         if (targetLocale !== "de") {
           localStorage.setItem("preferred-language", targetLocale);
-          window.location.href =
-            window.location.origin +
-            window.location.pathname +
-            targetLocale +
-            "/";
+          window.location.href = base + "/" + targetLocale + "/";
         } else {
           localStorage.setItem("preferred-language", "de");
         }
+      };
+
+      document.addEventListener("astro:page-load", () => {
+        initChoreography();
+        handleRedirect();
       });
     </script>
   </body>
