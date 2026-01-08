@@ -16,14 +16,40 @@ export default defineType({
             title: 'Cambodia Background',
             type: 'object',
             fields: [
-                localizedString('title', 'Geography Section Title'),
-                localizedText('geography', 'Geography Text'),
-                localizedString('historyTitle', 'History Section Title'),
-                localizedText('history', 'History Text'),
-                localizedString('economyTitle', 'Economy Section Title'),
-                localizedText('economy', 'Economy Text'),
+                localizedString('title', 'Main Section Title'),
+                defineField({
+                    name: 'sections',
+                    title: 'Background Sections',
+                    type: 'array',
+                    of: [{
+                        type: 'object',
+                        name: 'backgroundSection',
+                        fields: [
+                            localizedString('title', 'Title'),
+                            localizedText('content', 'Content'),
+                            defineField({
+                                name: 'image',
+                                title: 'Image',
+                                type: 'image',
+                                options: { hotspot: true }
+                            })
+                        ],
+                        preview: {
+                            select: {
+                                title: 'title.de',
+                                media: 'image'
+                            }
+                        }
+                    }]
+                }),
                 localizedString('educationTitle', 'Education Section Title'),
                 localizedText('education', 'Education Text'),
+                defineField({
+                    name: 'educationImage',
+                    title: 'Education Section Image',
+                    type: 'image',
+                    options: { hotspot: true }
+                }),
                 defineField({
                     name: 'educationList',
                     title: 'Education Challenges List',

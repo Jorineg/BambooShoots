@@ -99,156 +99,44 @@ const educationHighlight =
     </div>
   </section>
 
-  <!-- Geography -->
-  <section class="py-24 md:py-32 bg-branding-bg overflow-hidden">
-    <div class="container-custom px-4 md:px-8">
-      <div
-        class="flex flex-col lg:flex-row items-center gap-12 md:gap-24 reveal"
-      >
-        <div class="w-full lg:w-1/2">
-          <h2
-            class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter"
-          >
-            {
-              t(historyPage?.cambodiaBackground?.title, locale) ||
-                (locale === "de"
-                  ? "Land & Lage"
-                  : locale === "en"
-                    ? "Location"
-                    : "ទីតាំង")
-            }
-          </h2>
-          <p
-            class="text-branding-text text-lg md:text-xl leading-relaxed font-light"
-          >
-            {
-              t(historyPage?.cambodiaBackground?.geography, locale) ||
-                (locale === "de"
-                  ? "Kambodscha liegt im Herzen Südostasiens, eingebettet zwischen Thailand, Laos und Vietnam. Mehr als 17 Millionen Menschen leben heute im Land, davon etwa 2,4 Millionen in der Hauptstadt Phnom Penh."
-                  : locale === "en"
-                    ? "Cambodia lies in the heart of Southeast Asia, nestled between Thailand, Laos and Vietnam. More than 17 million people live in the country today, about 2.4 million of them in the capital Phnom Penh."
-                    : "កម្ពុជាស្ថិតនៅចំកណ្តាលអាស៊ីអាគ្នេយ៍ រវាងថៃ ឡាវ និងវៀតណាម។")
-            }
-          </p>
-        </div>
-        <div class="w-full lg:w-1/2">
-          <div class="relative group">
-            <div
-              class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl"
-            >
-              <img
-                src="/images/geography.png"
-                alt="Cambodia Landscape"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-              />
+  <!-- Cambodia Background Sections -->
+  {
+    historyPage?.cambodiaBackground?.sections?.map((section: any, index: number) => (
+      <section class={`py-24 md:py-32 bg-branding-bg overflow-hidden ${index > 0 ? 'border-t border-black/5' : ''}`}>
+        <div class="container-custom px-4 md:px-8">
+          <div class={`flex flex-col lg:flex-row items-center gap-12 md:gap-24 reveal ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+            <div class="w-full lg:w-1/2">
+              <h2 class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter">
+                {t(section.title, locale)}
+              </h2>
+              <p class="text-branding-text text-lg md:text-xl leading-relaxed font-light">
+                {t(section.content, locale)}
+              </p>
+            </div>
+            <div class="w-full lg:w-1/2">
+              <div class="relative group">
+                <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl">
+                  {section.image ? (
+                    <img
+                      src={urlFor(section.image).width(800).url()}
+                      alt={t(section.title, locale)}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                    />
+                  ) : (
+                    <div class="w-full h-full bg-branding-accent flex items-center justify-center text-primary/20">
+                      <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- History -->
-  <section class="py-24 md:py-32 bg-branding-bg overflow-hidden">
-    <div class="container-custom px-4 md:px-8">
-      <div
-        class="flex flex-col lg:flex-row-reverse items-center gap-12 md:gap-24 reveal"
-      >
-        <div class="w-full lg:w-1/2">
-          <h2
-            class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter"
-          >
-            {
-              t(historyPage?.cambodiaBackground?.historyTitle, locale) ||
-                (locale === "de"
-                  ? "Schwere Geschichte"
-                  : locale === "en"
-                    ? "Difficult History"
-                    : "ប្រវត្តិសាស្រ្តលំបាក")
-            }
-          </h2>
-          <div class="space-y-6">
-            <p
-              class="text-branding-text text-lg md:text-xl leading-relaxed font-light"
-            >
-              {
-                t(historyPage?.cambodiaBackground?.history, locale) ||
-                  (locale === "de"
-                    ? "Die Narben der Vergangenheit sind in Kambodscha bis heute spürbar. Zwischen 1975 und 1979 herrschte das Terrorregime der Roten Khmer unter Pol Pot."
-                    : locale === "en"
-                      ? "The scars of the past are still visible in Cambodia today. Between 1975 and 1979, the terror regime of the Khmer Rouge under Pol Pot ruled."
-                      : "ស្នាមរបួសអតីតកាលនៅតែមើលឃើញនៅកម្ពុជាថ្ងៃនេះ។")
-              }
-            </p>
-          </div>
-        </div>
-        <div class="w-full lg:w-1/2">
-          <div class="relative group">
-            <div
-              class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl"
-            >
-              <img
-                src="/images/history_war.png"
-                alt="Angkor Wat History"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Economy -->
-  <section
-    class="py-24 md:py-32 bg-branding-bg overflow-hidden border-b border-black/5"
-  >
-    <div class="container-custom px-4 md:px-8">
-      <div
-        class="flex flex-col lg:flex-row items-center gap-12 md:gap-24 reveal"
-      >
-        <div class="w-full lg:w-1/2">
-          <h2
-            class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter"
-          >
-            {
-              t(historyPage?.cambodiaBackground?.economyTitle, locale) ||
-                (locale === "de"
-                  ? "Aufbruch & Armut"
-                  : locale === "en"
-                    ? "Progress & Poverty"
-                    : "រវាងវឌ្ឍនភាព និងភាពក្រីក្រ")
-            }
-          </h2>
-          <p
-            class="text-branding-text text-lg md:text-xl leading-relaxed font-light"
-          >
-            {
-              t(historyPage?.cambodiaBackground?.economy, locale) ||
-                (locale === "de"
-                  ? "In den letzten zwei Jahrzehnten hat Kambodscha wirtschaftlich aufgeholt – vor allem durch Textilien, Bauwirtschaft und Tourismus zum weltberühmten Angkor Wat. Doch die Herausforderungen bleiben groß."
-                  : locale === "en"
-                    ? "In the last two decades, Cambodia has caught up economically – mainly through textiles, construction and tourism to the world-famous Angkor Wat. But the challenges remain great."
-                    : "ក្នុងរយៈពេលពីរទសវត្សរ៍កន្លងមក កម្ពុជាបានរីកចម្រើនផ្នែកសេដ្ឋកិច្ច។")
-            }
-          </p>
-        </div>
-        <div class="w-full lg:w-1/2">
-          <div class="relative group">
-            <div
-              class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl"
-            >
-              <img
-                src="/images/economy.png"
-                alt="Siem Reap Street"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    ))
+  }
 
   <!-- Education Highlight Section -->
   <section class="py-32 md:py-48 bg-branding-accent relative overflow-hidden">
@@ -324,11 +212,19 @@ const educationHighlight =
             <div
               class="aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl relative z-10 border-[12px] border-white"
             >
-              <img
-                src="/images/education.png"
-                alt="Cambodian school children"
-                class="w-full h-full object-cover"
-              />
+              {historyPage?.cambodiaBackground?.educationImage ? (
+                <img
+                  src={urlFor(historyPage.cambodiaBackground.educationImage).width(800).url()}
+                  alt={t(historyPage?.cambodiaBackground?.educationTitle, locale) || "Education"}
+                  class="w-full h-full object-cover"
+                />
+              ) : (
+                <img
+                  src="/images/education.png"
+                  alt="Cambodian school children"
+                  class="w-full h-full object-cover"
+                />
+              )}
             </div>
             <!-- Decorative Elements -->
             <div
@@ -375,56 +271,54 @@ const educationHighlight =
         </p>
       </div>
 
-      <!-- Alternating History Entries -->
-      <div class="space-y-24 md:space-y-48">
-        {
-          historyEntries.map((entry: any, index: number) => (
-            <div
-              class={`flex flex-col ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"} items-center gap-12 md:gap-24 reveal`}
-            >
-              <div class="w-full lg:w-1/2">
-                <div class="inline-block bg-primary/10 text-primary font-bold px-6 py-2 rounded-full text-sm uppercase tracking-widest mb-8">
-                  {entry.year}
-                </div>
-                <h3 class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter leading-tight">
-                  {t(entry.title, locale)}
-                </h3>
-                <p class="text-branding-text text-lg md:text-xl leading-relaxed font-light">
-                  {t(entry.content, locale)}
-                </p>
-              </div>
-              <div class="w-full lg:w-1/2">
-                <div class="relative group">
-                  <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl bg-branding-accent">
-                    {entry.image ? (
-                      <img
-                        src={urlFor(entry.image).width(800).url()}
-                        alt={t(entry.title, locale)}
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-                      />
-                    ) : (
-                      <div class="w-full h-full flex items-center justify-center text-primary/20">
-                        <svg
-                          class="w-24 h-24"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1"
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+      <!-- Timeline History Entries -->
+      <div class="relative max-w-6xl mx-auto pl-8 md:pl-24">
+        <!-- Vertical Timeline Line -->
+        <div class="absolute left-4 md:left-12 top-0 bottom-0 w-[2px] bg-primary/20"></div>
+
+        <div class="space-y-24 md:space-y-32">
+          {
+            historyEntries.map((entry: any, index: number) => (
+              <div class="relative reveal group">
+                <!-- Timeline Dot -->
+                <div class="absolute -left-[2.1rem] md:-left-[3.1rem] w-4 h-4 rounded-full bg-primary border-4 border-branding-bg z-10 top-8 group-hover:scale-125 transition-transform duration-500 shadow-lg shadow-primary/20"></div>
+                
+                <div class="flex flex-col lg:flex-row items-center gap-12 md:gap-24">
+                  <div class="w-full lg:w-1/2">
+                    <div class="inline-block bg-primary/10 text-primary font-bold px-6 py-2 rounded-full text-sm uppercase tracking-widest mb-8">
+                      {entry.year}
+                    </div>
+                    <h3 class="text-3xl md:text-5xl font-heading font-extrabold text-branding-dark mb-8 tracking-tighter leading-tight group-hover:text-primary transition-colors duration-300">
+                      {t(entry.title, locale)}
+                    </h3>
+                    <p class="text-branding-text text-lg md:text-xl leading-relaxed font-light">
+                      {t(entry.content, locale)}
+                    </p>
+                  </div>
+                  <div class="w-full lg:w-1/2">
+                    <div class="relative group">
+                      <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl bg-branding-accent">
+                        {entry.image ? (
+                          <img
+                            src={urlFor(entry.image).width(800).url()}
+                            alt={t(entry.title, locale)}
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                           />
-                        </svg>
+                        ) : (
+                          <div class="w-full h-full flex items-center justify-center text-primary/20">
+                            <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
 
       <!-- Back to home -->
