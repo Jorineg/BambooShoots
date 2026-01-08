@@ -101,10 +101,8 @@ const settings = await getSiteSettings();
 
         const lang = localStorage.getItem("preferred-language");
         if (lang) {
-          if (lang !== "de") {
-            const target = base + "/" + lang + "/";
-            if (path !== target) window.location.href = target;
-          }
+          const target = base + "/" + lang + "/";
+          if (path !== target) window.location.href = target;
           return;
         }
 
@@ -112,14 +110,10 @@ const settings = await getSiteSettings();
         const supportedLocales = ["de", "en", "kh"];
         const targetLocale = supportedLocales.includes(browserLang)
           ? browserLang
-          : "en";
+          : "de"; // Default to 'de' if browser lang not supported
 
-        if (targetLocale !== "de") {
-          localStorage.setItem("preferred-language", targetLocale);
-          window.location.href = base + "/" + targetLocale + "/";
-        } else {
-          localStorage.setItem("preferred-language", "de");
-        }
+        localStorage.setItem("preferred-language", targetLocale);
+        window.location.href = base + "/" + targetLocale + "/";
       };
 
       document.addEventListener("astro:page-load", () => {
