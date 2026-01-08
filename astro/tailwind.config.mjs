@@ -70,7 +70,8 @@ export default {
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
                 heading: ['Outfit', 'system-ui', 'sans-serif'],
-                khmer: ['Noto Sans Khmer', 'sans-serif']
+                khmer: ['Noto Sans Khmer', 'sans-serif'],
+                cursive: ['Caveat', 'cursive']
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
