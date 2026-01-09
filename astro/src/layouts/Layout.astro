@@ -58,14 +58,14 @@ const faviconDarkUrl =
 <html lang={locale}>
   <head>
     <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={metaDescription} />
     <meta name="robots" content="index, follow" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+Khmer:wght@300;400;500;600;700&family=Caveat:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+Khmer:wght@300;400;500;600;700&family=Caveat:wght@400;700&text=Kinder%20sind%20wie%20Bambussprossen%20%E2%80%93%20sie%20wachsen%20mit%20der%20richtigen%20Pflege%20stark%20heran.Children%20are%20like%20bamboo%20shoots%20%E2%80%93%20with%20the%20right%20care%2C%20they%20grow%20up%20strong.%22&display=swap"
       rel="stylesheet"
     />
 
@@ -159,39 +159,8 @@ const faviconDarkUrl =
         }, 300);
       };
 
-      const handleRedirect = () => {
-        const path = window.location.pathname;
-        const base = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
-
-        // Only redirect if we are EXACTLY at the root
-        const isRoot = path === base + "/" || path === base;
-        if (!isRoot) return;
-
-        const lang = localStorage.getItem("preferred-language");
-        if (lang) {
-          // If preference exists and is not German, redirect
-          if (lang !== "de") {
-            window.location.replace(base + "/" + lang + "/");
-          }
-          return;
-        }
-
-        // First visit: Detect browser language
-        const browserLang = navigator.language.split("-")[0];
-        const supportedNonDefault = ["en", "kh"];
-
-        if (supportedNonDefault.includes(browserLang)) {
-          localStorage.setItem("preferred-language", browserLang);
-          window.location.replace(base + "/" + browserLang + "/");
-        } else {
-          // It's German or an unsupported language -> stay here and mark as German
-          localStorage.setItem("preferred-language", "de");
-        }
-      };
-
       document.addEventListener("astro:page-load", () => {
         initChoreography();
-        handleRedirect();
       });
     </script>
   </body>

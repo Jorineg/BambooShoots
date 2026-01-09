@@ -1,15 +1,18 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
     integrations: [tailwind()],
-    output: 'static',
-    // Ersetze dies mit deiner GitHub Pages URL (z.B. https://username.github.io/repo)
+    output: 'hybrid',
+    adapter: vercel(),
+    // Ersetze dies mit deiner Domain (z.B. https://bambooshoots.ngo)
     site: 'https://jorineg.github.io',
-    base: '/BambooShoots',
+    base: '', // Moving to Vercel root
     trailingSlash: 'always',
     build: {
-        format: 'directory'
+        format: 'directory',
+        inlineStylesheets: 'always'
     },
     i18n: {
         defaultLocale: 'de',
