@@ -64,7 +64,7 @@ const hasSanityImage = !!(
 );
 const bgImage = hasSanityImage
     ? urlFor(settings.donationBgImage).width(1920).url()
-    : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`;
+    : `${import.meta.env.BASE_URL}images/donation_bg.png`;
 
 console.log("[Donate] Using bgImage:", bgImage);
 ---
@@ -83,7 +83,7 @@ console.log("[Donate] Using bgImage:", bgImage);
                 id="donate-parallax-img"
                 src={bgImage}
                 alt=""
-                class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover opacity-100"
+                class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover opacity-40"
             />
         </div>
         <!-- Cinematic Depth Overlays (Neutral) -->
@@ -204,7 +204,7 @@ console.log("[Donate] Using bgImage:", bgImage);
         >
             <!-- Digital Donation -->
             <div
-                class="bg-white/[0.03] backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 border border-white/5 flex flex-col hover:bg-white/[0.05] transition-all duration-700"
+                class="bg-[#0e2a18]/70 hover:bg-[#0e2a18]/85 backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 hover:border-primary/40 flex flex-col transition-all duration-700"
             >
                 <h3
                     class="text-white font-heading font-extrabold text-3xl mb-8 md:mb-12"
@@ -282,7 +282,7 @@ console.log("[Donate] Using bgImage:", bgImage);
 
             <!-- Bank Transfer Details -->
             <div
-                class="bg-[#0e2a18]/40 backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 border border-primary/20 hover:border-primary/40 transition-all duration-700"
+                class="bg-[#0e2a18]/70 hover:bg-[#0e2a18]/85 backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 hover:border-primary/40 transition-all duration-700"
             >
                 <h3
                     class="text-white font-heading font-extrabold text-3xl mb-12"

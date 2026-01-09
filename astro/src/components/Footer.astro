@@ -152,7 +152,7 @@ const text = footerText[locale];
           {t(settings?.labels?.contact, locale) || text.contact}
         </h3>
         <address class="not-italic text-white/60 text-sm space-y-3">
-          <p class="font-semibold text-white text-base">Bamboo Shoots e.V.</p>
+          <p class="font-semibold text-white/40 text-base">Bamboo Shoots e.V.</p>
           <p>Hohenzollernring 18a<br />13585 Berlin</p>
           <a
             href={`mailto:${settings?.contactEmail || "info@bamboo-shoots.de"}`}
@@ -174,7 +174,7 @@ const text = footerText[locale];
           {
             settings?.bankAccount?.[locale] ? (
               <>
-                <p class="font-semibold text-white text-base">
+                <p class="font-semibold text-white/40 text-base">
                   {settings.bankAccount[locale].name}
                 </p>
                 <p>{settings.bankAccount[locale].bank}</p>
