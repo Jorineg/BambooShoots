@@ -1,4 +1,30 @@
 {
     "trailingSlash": true,
-    "cleanUrls": true
+    "cleanUrls": true,
+    "redirects": [
+        {
+            "source": "/",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "accept-language",
+                    "value": "(?i).*kh.*"
+                }
+            ],
+            "destination": "/kh/",
+            "permanent": false
+        },
+        {
+            "source": "/",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "accept-language",
+                    "value": "(?i).*en.*"
+                }
+            ],
+            "destination": "/en/",
+            "permanent": false
+        }
+    ]
 }

@@ -5,9 +5,7 @@ import vercel from '@astrojs/vercel/serverless';
 export default defineConfig({
     integrations: [tailwind()],
     output: 'hybrid',
-    adapter: vercel({
-        edgeMiddleware: true
-    }),
+    adapter: vercel(),
     // Ersetze dies mit deiner Domain (z.B. https://bambooshoots.ngo)
     site: 'https://jorineg.github.io',
     base: '',
