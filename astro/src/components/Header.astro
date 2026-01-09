@@ -188,7 +188,7 @@ const navLabels: Record<string, any> = {
                 <a
                   href={localizedUrl(currentPath, loc)}
                   class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? "text-secondary bg-white/5" : "text-white/60 hover:text-white"}`}
-                  onclick={`localStorage.setItem('preferred-language', '${loc}')`}
+                  onclick={`document.cookie = 'preferred-language=${loc}; path=/; max-age=31536000; samesite=lax'`}
                 >
                   {localeNames[loc]}
                 </a>
@@ -266,6 +266,7 @@ const navLabels: Record<string, any> = {
               <a
                 href={localizedUrl(currentPath, loc)}
                 class={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-300 ${loc === locale ? "text-secondary" : "text-white/40 hover:text-white"}`}
+                onclick={`localStorage.setItem('preferred-language', '${loc}'); document.cookie = 'preferred-language=${loc}; path=/; max-age=31536000; samesite=lax'`}
               >
                 {localeNames[loc]}
               </a>

@@ -161,6 +161,12 @@ const faviconDarkUrl =
 
       document.addEventListener("astro:page-load", () => {
         initChoreography();
+
+        // Seed language preference cookie if missing
+        if (!document.cookie.includes("preferred-language=")) {
+          const locale = document.documentElement.lang || "de";
+          document.cookie = `preferred-language=${locale}; path=/; max-age=31536000; samesite=lax`;
+        }
       });
     </script>
   </body>

@@ -11,6 +11,12 @@
                     "value": "(?i).*kh.*"
                 }
             ],
+            "missing": [
+                {
+                    "type": "cookie",
+                    "key": "preferred-language"
+                }
+            ],
             "destination": "/kh/",
             "permanent": false
         },
@@ -23,7 +29,37 @@
                     "value": "(?i).*en.*"
                 }
             ],
+            "missing": [
+                {
+                    "type": "cookie",
+                    "key": "preferred-language"
+                }
+            ],
             "destination": "/en/",
+            "permanent": false
+        },
+        {
+            "source": "/",
+            "has": [
+                {
+                    "type": "cookie",
+                    "key": "preferred-language",
+                    "value": "en"
+                }
+            ],
+            "destination": "/en/",
+            "permanent": false
+        },
+        {
+            "source": "/",
+            "has": [
+                {
+                    "type": "cookie",
+                    "key": "preferred-language",
+                    "value": "kh"
+                }
+            ],
+            "destination": "/kh/",
             "permanent": false
         }
     ]
