@@ -64,6 +64,10 @@
     @apply font-khmer;
   }
 
+  html[lang="kh"] .font-cursive {
+    font-family: 'Noto Sans Khmer', sans-serif !important;
+  }
+
   h1,
   h2,
   h3,
