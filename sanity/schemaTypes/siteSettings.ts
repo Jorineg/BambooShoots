@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity'
-import { localizedString, localizedText, localizedObject } from './i18n'
+import { localizedString, localizedText, localizedObject, localizedImage } from './i18n'
 import { seo } from './seo'
 
 export default defineType({
@@ -9,11 +9,19 @@ export default defineType({
     fields: [
         seo('globalSeo', 'Global SEO & Social Media'),
         defineField({
-            name: 'logo',
-            title: 'Logo',
+            name: 'logoLight',
+            title: 'Main Logo (Light/White - Global)',
             type: 'image',
             options: { hotspot: true }
         }),
+        defineField({
+            name: 'logoDark',
+            title: 'Main Logo (Dark/Green - Global)',
+            type: 'image',
+            options: { hotspot: true }
+        }),
+        localizedImage('titleLogoLight', 'Title Logo (Light/White - for Transparent Header)'),
+        localizedImage('titleLogoDark', 'Title Logo (Dark/Green - for Scrolled Header)'),
         defineField({
             name: 'donationBgImage',
             title: 'Donation Section Background',

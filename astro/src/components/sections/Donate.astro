@@ -56,7 +56,6 @@ const defaultTiers = [
 const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
 
 // Use a representative image from Sanity or fallback
-console.log("[Donate] settings:", JSON.stringify(settings, null, 2));
 
 const hasSanityImage = !!(
     settings?.donationBgImage?.asset?._ref ||
@@ -65,8 +64,6 @@ const hasSanityImage = !!(
 const bgImage = hasSanityImage
     ? urlFor(settings.donationBgImage).width(1920).url()
     : `${import.meta.env.BASE_URL}images/donation_bg.png`;
-
-console.log("[Donate] Using bgImage:", bgImage);
 ---
 
 <section

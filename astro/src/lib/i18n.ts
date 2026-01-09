@@ -18,6 +18,21 @@ export function t(
     return localizedObject[locale] || localizedObject[defaultLocale] || '';
 }
 
+// Get localized image object from Sanity object
+export function ti(
+    object: any | undefined,
+    locale: Locale
+): any {
+    if (!object) return undefined;
+
+    // If it's already a Sanity image (has an asset property), return it directly
+    if (object.asset) return object;
+
+    // Otherwise, try to get the localized version
+    const img = object[locale] || object[defaultLocale];
+    return (img && img.asset) ? img : undefined;
+}
+
 // Helper to get base path without trailing slash
 const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 

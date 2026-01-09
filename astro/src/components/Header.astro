@@ -5,6 +5,7 @@ import {
   locales,
   localizedUrl,
   t,
+  ti,
   type Locale,
 } from "../lib/i18n";
 import { urlFor } from "../lib/sanity";
@@ -50,14 +51,25 @@ const navLabels: Record<string, any> = {
       <!-- Logo -->
       <a href={localizedUrl("/", locale)} class="flex items-center gap-3 group">
         {
-          settings?.logo ? (
-            <img
-              src={urlFor(settings.logo).width(48).url()}
-              alt="Bamboo Shoots Logo"
-              class="w-10 h-10 md:w-12 md:h-12 rounded-full group-hover:scale-105 transition-transform duration-300"
-            />
+          ti(settings?.logoLight, locale) || ti(settings?.logoDark, locale) ? (
+            <div class="main-logo-wrapper relative w-10 h-10 md:w-12 md:h-12 group-hover:scale-105 transition-transform duration-300">
+              {ti(settings?.logoLight, locale) && (
+                <img
+                  src={urlFor(ti(settings.logoLight, locale)).width(48).height(48).url()}
+                  alt="Bamboo Shoots Logo"
+                  class="main-logo light w-full h-full rounded-full transition-all duration-500"
+                />
+              )}
+              {ti(settings?.logoDark, locale) && (
+                <img
+                  src={urlFor(ti(settings.logoDark, locale)).width(48).height(48).url()}
+                  alt="Bamboo Shoots Logo"
+                  class="main-logo dark w-full h-full rounded-full transition-all duration-500 absolute inset-0 opacity-0"
+                />
+              )}
+            </div>
           ) : (
-            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl transition-all duration-500">
+            <div class="header-logo-box w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl transition-all duration-500 group-hover:scale-105">
               <svg
                 class="w-6 h-6 md:w-8 md:h-8"
                 viewBox="0 0 24 24"
@@ -72,11 +84,32 @@ const navLabels: Record<string, any> = {
             </div>
           )
         }
-        <span
-          class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight"
-        >
-          {(t(settings?.siteTitle, locale) || "Bamboo Shoots").split('|')[0].trim()}
-        </span>
+        {
+          ti(settings?.titleLogoLight, locale) || ti(settings?.titleLogoDark, locale) ? (
+            <div class="header-title-logo-wrapper relative h-8 md:h-10 flex items-center">
+              {ti(settings?.titleLogoLight, locale) && (
+                <img
+                  src={urlFor(ti(settings.titleLogoLight, locale)).height(40).url()}
+                  alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
+                  class="header-title-logo light h-full w-auto object-contain transition-all duration-500"
+                />
+              )}
+              {ti(settings?.titleLogoDark, locale) && (
+                <img
+                  src={urlFor(ti(settings.titleLogoDark, locale)).height(40).url()}
+                  alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
+                  class="header-title-logo dark h-full w-auto object-contain transition-all duration-500 absolute inset-0 opacity-0"
+                />
+              )}
+            </div>
+          ) : (
+            <span
+              class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight"
+            >
+              {t(settings?.siteTitle, locale) || "Bamboo Shoots"}
+            </span>
+          )
+        }
       </a>
 
       <!-- Desktop Navigation -->
@@ -322,6 +355,7 @@ const navLabels: Record<string, any> = {
   }
 
   .header-text,
+  .header-title-logo,
   .nav-link-dynamic,
   .lang-btn,
   #mobile-menu-btn {
@@ -329,6 +363,10 @@ const navLabels: Record<string, any> = {
     text-shadow:
       0 1px 3px rgba(0, 0, 0, 0.3),
       0 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .header-title-logo {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
   }
 
   .nav-link-dynamic {
@@ -363,6 +401,16 @@ const navLabels: Record<string, any> = {
   header.scrolled .header-text {
     @apply text-branding-dark;
     text-shadow: none;
+  }
+
+  header.scrolled .header-title-logo.light,
+  header.scrolled .main-logo.light {
+    opacity: 0;
+  }
+
+  header.scrolled .header-title-logo.dark,
+  header.scrolled .main-logo.dark {
+    opacity: 1;
   }
 
   header.scrolled .nav-link-dynamic {
@@ -408,6 +456,20 @@ const navLabels: Record<string, any> = {
     .header-text,
     #main-header #mobile-menu-btn {
       animation: header-fade-text linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 300px;
+    }
+
+    .header-title-logo.light,
+    .main-logo.light {
+      animation: logo-fade-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 300px;
+    }
+
+    .header-title-logo.dark,
+    .main-logo.dark {
+      animation: logo-fade-in linear both;
       animation-timeline: scroll(root);
       animation-range: 100px 300px;
     }
@@ -479,6 +541,16 @@ const navLabels: Record<string, any> = {
     }
   }
 
+  @keyframes logo-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes logo-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   @keyframes header-fade-link {
     from {
       color: rgba(255, 255, 255, 0.9);
@@ -536,6 +608,16 @@ const navLabels: Record<string, any> = {
     color: rgb(20, 83, 45) !important;
   }
 
+  header.is-static .header-title-logo.light,
+  header.is-static .main-logo.light {
+    opacity: 0 !important;
+  }
+
+  header.is-static .header-title-logo.dark,
+  header.is-static .main-logo.dark {
+    opacity: 1 !important;
+  }
+
   header.is-static .line {
     background-color: rgb(20, 83, 45) !important;
   }
@@ -589,6 +671,16 @@ const navLabels: Record<string, any> = {
   :global(body.menu-open) #mobile-menu-btn {
     color: white !important;
     text-shadow: none !important;
+  }
+
+  :global(body.menu-open) .header-title-logo.light,
+  :global(body.menu-open) .main-logo.light {
+    opacity: 1 !important;
+  }
+
+  :global(body.menu-open) .header-title-logo.dark,
+  :global(body.menu-open) .main-logo.dark {
+    opacity: 0 !important;
   }
 
   :global(body.menu-open) .lang-btn svg {

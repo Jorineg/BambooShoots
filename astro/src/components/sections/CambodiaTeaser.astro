@@ -10,14 +10,11 @@ interface Props {
 const { locale, data } = Astro.props;
 
 // Debug log for data
-console.log("[CambodiaTeaser] data:", JSON.stringify(data, null, 2));
 
 const hasSanityImage = !!(data?.image?.asset?._ref || data?.image?.asset?._id);
 const bgImage = hasSanityImage
     ? urlFor(data.image).width(1920).url()
     : `${import.meta.env.BASE_URL}images/cambodia_teaser_bg.png`;
-
-console.log("[CambodiaTeaser] Using bgImage:", bgImage);
 ---
 
 <section
