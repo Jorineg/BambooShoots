@@ -1,12 +1,13 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { localizedString, localizedText } from './i18n'
+import { seo } from './seo'
 
 export default defineType({
     name: 'homePage',
     title: 'Home Page',
     type: 'document',
     fields: [
-        localizedString('pageTitle', 'Page Title (SEO)'),
+        seo(),
         // Hero Section
         defineField({
             name: 'hero',

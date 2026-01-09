@@ -1,8 +1,8 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { getLocale, type Locale } from "../lib/i18n";
-import { getSiteSettings } from "../lib/sanity";
+import { getLocale, type Locale, t } from "../lib/i18n";
+import { getSiteSettings, urlFor } from "../lib/sanity";
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 
@@ -10,14 +10,25 @@ interface Props {
   title: string;
   description?: string;
   locale?: Locale;
+  seo?: any;
 }
 
-const {
-  title,
-  description = "Bamboo Shoots – Bildung. Gemeinschaft. Perspektiven für Kinder in Kambodscha.",
-} = Astro.props;
+const { title, description: propDescription, seo } = Astro.props;
+
 const locale = getLocale(Astro.url);
 const settings = await getSiteSettings();
+
+const metaTitle = t(seo?.metaTitle, locale) || title;
+const metaDescription =
+  t(seo?.metaDescription, locale) ||
+  propDescription ||
+  t(settings?.tagline, locale) ||
+  "Bamboo Shoots – Bildung. Gemeinschaft. Perspektiven für Kinder in Kambodscha.";
+
+const shareImage = seo?.shareImage || settings?.shareImage;
+const shareImageUrl = shareImage
+  ? urlFor(shareImage).width(1200).height(630).fit("crop").url()
+  : null;
 ---
 
 <!doctype html>
@@ -25,17 +36,25 @@ const settings = await getSiteSettings();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    {shareImageUrl && <meta property="og:image" content={shareImageUrl} />}
     <meta
       property="og:locale"
       content={locale === "de" ? "de_DE" : locale === "en" ? "en_US" : "km_KH"}
     />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={metaTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    {shareImageUrl && <meta name="twitter:image" content={shareImageUrl} />}
 
     <!-- Favicon -->
     <link
@@ -44,7 +63,7 @@ const settings = await getSiteSettings();
       href={`${import.meta.env.BASE_URL}favicon.svg`}
     />
 
-    <title>{title} | Bamboo Shoots</title>
+    <title>{metaTitle} | Bamboo Shoots</title>
     <ViewTransitions />
   </head>
   <body class="min-h-screen flex flex-col">

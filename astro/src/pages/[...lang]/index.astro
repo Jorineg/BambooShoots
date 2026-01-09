@@ -42,7 +42,7 @@ const pageTitle =
       : "សូមស្វាគមន៍");
 ---
 
-<Layout title={pageTitle} locale={locale}>
+<Layout title={pageTitle} locale={locale} seo={homePage?.seo}>
   <Hero locale={locale} data={homePage?.hero} settings={settings} />
   <Purpose
     locale={locale}

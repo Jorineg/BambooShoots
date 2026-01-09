@@ -21,6 +21,13 @@ export default defineType({
         localizedString('siteTitle', 'Site Title'),
         localizedString('tagline', 'Tagline'),
         defineField({
+            name: 'shareImage',
+            title: 'Global Share Image (Open Graph)',
+            type: 'image',
+            description: 'This image will be used when sharing the website on social media if a page-specific image is not set.',
+            options: { hotspot: true }
+        }),
+        defineField({
             name: 'socialMedia',
             title: 'Social Media Links',
             type: 'object',

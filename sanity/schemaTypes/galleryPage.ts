@@ -1,11 +1,13 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { localizedString, localizedText } from './i18n'
+import { seo } from './seo'
 
 export default defineType({
     name: 'galleryPage',
     title: 'Gallery Page',
     type: 'document',
     fields: [
+        seo(),
         localizedString('title', 'Page Title'),
         localizedText('description', 'Page Description'),
         localizedString('noImagesMessage', 'Empty Gallery Message'),

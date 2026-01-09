@@ -30,7 +30,7 @@ const pageSubtitle = t(galleryPage?.description, locale) || (locale === 'de'
   : 'ការយល់ដឹងអំពីការងាររបស់យើង និងជីវិតនៅនឹងកន្លែង។');
 ---
 
-<Layout title={pageTitle} locale={locale}>
+<Layout title={pageTitle} locale={locale} seo={galleryPage?.seo}>
   <main class="pt-32 pb-48 bg-branding-bg min-h-screen">
     <div class="container-custom">
       <!-- Header -->
