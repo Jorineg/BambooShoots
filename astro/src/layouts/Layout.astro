@@ -18,7 +18,8 @@ const { title, description: propDescription, seo } = Astro.props;
 const locale = getLocale(Astro.url);
 const settings = await getSiteSettings();
 
-const metaTitle = t(seo?.metaTitle, locale) || title;
+const metaTitle =
+  t(seo?.metaTitle, locale) || title || t(settings?.siteTitle, locale);
 const metaDescription =
   t(seo?.metaDescription, locale) ||
   propDescription ||

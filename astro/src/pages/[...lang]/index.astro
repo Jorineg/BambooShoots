@@ -34,12 +34,7 @@ const donationTiers = await getDonationTiers();
 const settings = await getSiteSettings();
 
 const pageTitle =
-  t(homePage?.pageTitle, locale) ||
-  (locale === "de"
-    ? "Willkommen"
-    : locale === "en"
-      ? "Welcome"
-      : "សូមស្វាគមន៍");
+  t(homePage?.seo?.metaTitle, locale) || t(homePage?.pageTitle, locale) || "";
 ---
 
 <Layout title={pageTitle} locale={locale} seo={homePage?.seo}>
