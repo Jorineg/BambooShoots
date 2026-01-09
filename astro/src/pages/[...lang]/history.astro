@@ -272,21 +272,21 @@ const educationHighlight =
       </div>
 
       <!-- Timeline History Entries -->
-      <div class="relative max-w-6xl mx-auto pl-16 md:pl-48">
+      <div class="relative max-w-6xl mx-auto pl-12 md:pl-48">
         <!-- Vertical Timeline Line -->
-        <div class="absolute left-8 md:left-32 top-0 bottom-0 w-[2px] bg-primary/20"></div>
+        <div class="absolute left-6 md:left-32 top-0 bottom-0 w-[2px] bg-primary/20"></div>
 
         <div class="space-y-16 md:space-y-32">
           {
             historyEntries.map((entry: any, index: number) => (
               <div class="relative reveal">
                 <!-- Year (Left of line) -->
-                <div class="absolute right-[calc(100%+12px)] md:right-[calc(100%+72px)] top-8 -translate-y-1/2 text-primary font-bold text-base md:text-xl whitespace-nowrap">
+                <div class="absolute right-[calc(100%+36px)] md:right-[calc(100%+72px)] top-8 -translate-y-1/2 text-primary font-bold text-sm md:text-xl whitespace-nowrap">
                    {entry.year}
                 </div>
 
                 <!-- Timeline Dot -->
-                <div class="absolute -left-[33px] md:-left-[71.5px] w-4 h-4 rounded-full bg-primary border-4 border-branding-bg z-10 top-8 -translate-y-1/2 shadow-lg shadow-primary/20 transition-transform duration-500"></div>
+                <div class="absolute -left-[32px] md:-left-[71.5px] w-4 h-4 rounded-full bg-primary border-4 border-branding-bg z-10 top-8 -translate-y-1/2 shadow-lg shadow-primary/20 transition-transform duration-500"></div>
                 
                 <div class="flex flex-col lg:flex-row items-center gap-12 md:gap-24">
                   <div class={`w-full ${entry.image ? 'lg:w-1/2' : 'lg:max-w-3xl'}`}>
