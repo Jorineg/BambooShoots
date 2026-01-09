@@ -16,6 +16,11 @@ export default defineConfig({
         format: 'directory',
         inlineStylesheets: 'always'
     },
+    image: {
+        service: {
+            entrypoint: 'astro/assets/services/noop'
+        }
+    },
     i18n: {
         defaultLocale: 'de',
         locales: ['de', 'en', 'kh'],
