@@ -75,7 +75,7 @@ const navLabels: Record<string, any> = {
         <span
           class="header-text text-lg md:text-xl font-heading font-extrabold text-white sm:block hidden transition-colors duration-500 tracking-tight"
         >
-          {t(settings?.siteTitle, locale) || "Bamboo Shoots"}
+          {(t(settings?.siteTitle, locale) || "Bamboo Shoots").split('|')[0].trim()}
         </span>
       </a>
 

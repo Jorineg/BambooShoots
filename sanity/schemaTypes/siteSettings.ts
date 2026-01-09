@@ -1,11 +1,13 @@
 import { defineType, defineField } from 'sanity'
 import { localizedString, localizedText, localizedObject } from './i18n'
+import { seo } from './seo'
 
 export default defineType({
     name: 'siteSettings',
     title: 'Site Settings',
     type: 'document',
     fields: [
+        seo('globalSeo', 'Global SEO & Social Media'),
         defineField({
             name: 'logo',
             title: 'Logo',
@@ -18,15 +20,8 @@ export default defineType({
             type: 'image',
             options: { hotspot: true }
         }),
-        localizedString('siteTitle', 'Site Title'),
+        localizedString('siteTitle', 'Display Title (Header)'),
         localizedString('tagline', 'Tagline'),
-        defineField({
-            name: 'shareImage',
-            title: 'Global Share Image (Open Graph)',
-            type: 'image',
-            description: 'This image will be used when sharing the website on social media if a page-specific image is not set.',
-            options: { hotspot: true }
-        }),
         defineField({
             name: 'socialMedia',
             title: 'Social Media Links',

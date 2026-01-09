@@ -19,17 +19,29 @@ const locale = getLocale(Astro.url);
 const settings = await getSiteSettings();
 
 const metaTitle =
-  t(seo?.metaTitle, locale) || title || t(settings?.siteTitle, locale);
+  t(seo?.metaTitle, locale) ||
+  title ||
+  t(settings?.globalSeo?.metaTitle, locale) ||
+  t(settings?.siteTitle, locale);
 const metaDescription =
   t(seo?.metaDescription, locale) ||
   propDescription ||
+  t(settings?.globalSeo?.metaDescription, locale) ||
   t(settings?.tagline, locale) ||
   "Bamboo Shoots – Bildung. Gemeinschaft. Perspektiven für Kinder in Kambodscha.";
 
-const shareImage = seo?.shareImage || settings?.shareImage;
-const shareImageUrl = shareImage
-  ? urlFor(shareImage).width(1200).height(630).fit("crop").url()
-  : null;
+const shareImageUrl =
+  (seo?.shareImage &&
+    urlFor(seo.shareImage).width(1200).height(630).fit("crop").url()) ||
+  (settings?.globalSeo?.shareImage &&
+    urlFor(settings.globalSeo.shareImage)
+      .width(1200)
+      .height(630)
+      .fit("crop")
+      .url()) ||
+  (settings?.shareImage &&
+    urlFor(settings.shareImage).width(1200).height(630).fit("crop").url()) ||
+  null;
 ---
 
 <!doctype html>
