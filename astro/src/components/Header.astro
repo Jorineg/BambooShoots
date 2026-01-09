@@ -232,9 +232,17 @@ const navLabels: Record<string, any> = {
           <div class="border-t border-white/10 pt-6 flex flex-col gap-3">
             <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-white/30">Connect</span>
             <div class="flex justify-between text-white/60 text-[11px] font-medium w-full">
-              <span class="hover:text-white cursor-pointer transition-colors">Instagram</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Facebook</span>
-              <span class="hover:text-white cursor-pointer transition-colors">Contact</span>
+              {settings?.socialMedia?.instagram ? (
+                <a href={settings.socialMedia.instagram} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Instagram</a>
+              ) : (
+                <span class="opacity-30">Instagram</span>
+              )}
+              {settings?.socialMedia?.facebook ? (
+                <a href={settings.socialMedia.facebook} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Facebook</a>
+              ) : (
+                <span class="opacity-30">Facebook</span>
+              )}
+              <a href={`mailto:${settings?.contactEmail || "info@bamboo-shoots.de"}`} class="hover:text-white transition-colors">Contact</a>
             </div>
           </div>
         </div>
