@@ -1,6 +1,7 @@
 ---
 import { t, type Locale } from '../../lib/i18n';
 import { urlFor } from '../../lib/sanity';
+import SanityImage from '../SanityImage.astro';
 
 interface Props {
   locale: Locale;
@@ -38,15 +39,19 @@ const useCarousel = images && images.length >= 5;
                 <div class="swiper-slide h-auto">
                   <div class="px-2 md:px-3"> <!-- Slid-level padding for spacing -->
                     <a 
-                      href={urlFor(image).width(1200).url()} 
+                      href={urlFor(image).width(2000).auto('format').url()} 
                       class="glightbox block aspect-square rounded-2xl overflow-hidden group cursor-pointer relative"
                       data-gallery="gallery"
                       data-glightbox={`title: ${t(image.caption, locale) || ''}`}
                     >
-                      <img 
-                        src={urlFor(image).width(600).height(600).url()}
+                      <SanityImage 
+                        src={image}
                         alt={t(image.caption, locale) || `Gallery image ${index + 1}`}
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        width={600}
+                        aspectRatio={1}
+                        widths={[300, 600, 900]}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         loading="lazy"
                       />
                       <div class="absolute inset-0 bg-gradient-to-t from-branding-dark/80 via-branding-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
@@ -78,15 +83,19 @@ const useCarousel = images && images.length >= 5;
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {images.map((image, index) => (
               <a 
-                href={urlFor(image).width(1200).url()} 
+                href={urlFor(image).width(2000).auto('format').url()} 
                 class="glightbox aspect-square rounded-2xl overflow-hidden group cursor-pointer relative"
                 data-gallery="gallery"
                 data-glightbox={`title: ${t(image.caption, locale) || ''}`}
               >
-                <img 
-                  src={urlFor(image).width(600).height(600).url()}
+                <SanityImage 
+                  src={image}
                   alt={t(image.caption, locale) || `Gallery image ${index + 1}`}
                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  width={600}
+                  aspectRatio={1}
+                  widths={[300, 600, 900]}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   loading="lazy"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-branding-dark/80 via-branding-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
@@ -209,6 +218,8 @@ const useCarousel = images && images.length >= 5;
     padding: 20px !important;
     max-width: 600px !important;
     margin: 0 auto !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
   }
 
   .glightbox-container .gslide-caption {
@@ -258,51 +269,28 @@ const useCarousel = images && images.length >= 5;
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
   }
 
-  /* 
-     MODERN SCROLLBAR FIX:
-     Using scrollbar-gutter: stable on the HTML element reserves space for the scrollbar.
-     By applying it only when GLightbox is open, we ensure the content stays perfectly
-     in place without shifting left or right.
-  */
   html.glightbox-open {
     scrollbar-gutter: stable;
     overflow: hidden !important;
-    /* Dark background for the gutter to blend with the overlay */
     background-color: #0e1c0b !important; 
   }
 
-  /* 
-     Move the page background color to body.
-     Note: html itself should be transparent so it doesn't create a "stripe" 
-     in the reserved gutter space.
-  */
   html {
     background-color: transparent;
   }
 
   body {
-    background-color: #f3efe9; /* previous html background */
+    background-color: #f3efe9; 
     min-height: 100vh;
   }
 
-  /* 
-     Stop GLightbox from adding its own padding-right to the body.
-     The scrollbar-gutter handles the space preservation.
-  */
   body.glightbox-open {
     padding-right: 0 !important;
     margin-right: 0 !important;
     overflow: hidden !important;
     width: 100% !important;
-    /* When open, the body keeps its color, but the html gutter 
-       (which is outside the body) will show the dark color set above. */
   }
 
-  /* 
-     Header Fix: 
-     Fixed elements with width: 100% will automatically respect the scrollbar-gutter 
-     on the HTML element, so they won't shift or overlap.
-  */
   header {
     width: 100%;
   }

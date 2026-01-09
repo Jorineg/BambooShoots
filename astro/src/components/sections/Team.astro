@@ -1,6 +1,6 @@
 ---
 import { t, type Locale } from '../../lib/i18n';
-import { urlFor } from '../../lib/sanity';
+import SanityImage from '../SanityImage.astro';
 
 interface Props {
   locale: Locale;
@@ -62,10 +62,14 @@ const defaultIntro = {
           <!-- Photo -->
           <div class="aspect-[4/3] relative overflow-hidden">
             {member.image ? (
-              <img 
-                src={urlFor(member.image).width(600).height(450).url()}
+              <SanityImage 
+                src={member.image}
                 alt={member.name}
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                width={400}
+                aspectRatio={4/3}
+                widths={[200, 400, 600, 800]}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             ) : (
               <div class="w-full h-full bg-branding-accent flex items-center justify-center">

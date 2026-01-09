@@ -1,0 +1,85 @@
+---
+import { urlFor } from "../lib/sanity";
+
+interface Props {
+    src: any;
+    alt: string;
+    class?: string;
+    loading?: "lazy" | "eager";
+    fetchpriority?: "high" | "low" | "auto";
+    widths?: number[];
+    sizes?: string;
+    aspectRatio?: number;
+    width?: number;
+    height?: number;
+    objectPosition?: string;
+    id?: string;
+    style?: string;
+}
+
+const {
+    src,
+    alt,
+    class: className,
+    loading = "lazy",
+    fetchpriority = "auto",
+    widths = [320, 640, 768, 1024, 1280, 1536, 1920],
+    sizes = "100vw",
+    aspectRatio,
+    width,
+    height,
+    objectPosition,
+    id,
+    style = "",
+} = Astro.props;
+
+if (!src) return null;
+
+// Determine base URL and options
+let builder = urlFor(src).auto("format");
+
+if (width && height) {
+    builder = builder.width(width).height(height).fit("crop");
+} else if (width) {
+    builder = builder.width(width);
+} else if (height) {
+    builder = builder.height(height);
+}
+
+// Generate source set
+const srcset = widths
+    .map((w) => {
+        let b = urlFor(src).width(w).auto("format");
+        if (aspectRatio) {
+            b = b.height(Math.round(w / aspectRatio)).fit("crop");
+        } else if (width && height) {
+            const ratio = height / width;
+            b = b.height(Math.round(w * ratio)).fit("crop");
+        }
+        return `${b.url()} ${w}w`;
+    })
+    .join(", ");
+
+const baseSrc = builder.url();
+
+const finalStyle = [
+    objectPosition ? `object-position: ${objectPosition}` : "",
+    style,
+]
+    .filter(Boolean)
+    .join("; ");
+---
+
+<img
+    id={id}
+    src={baseSrc}
+    srcset={srcset}
+    sizes={sizes}
+    alt={alt}
+    class={className}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    width={width}
+    height={height}
+    style={finalStyle || undefined}
+/>

@@ -1,6 +1,6 @@
 ---
 import { t, type Locale } from "../../lib/i18n";
-import { urlFor } from "../../lib/sanity";
+import SanityImage from "../SanityImage.astro";
 
 interface Props {
     locale: Locale;
@@ -55,15 +55,8 @@ const defaultTiers = [
 
 const displayTiers = tiers?.length > 0 ? tiers : defaultTiers;
 
-// Use a representative image from Sanity or fallback
-
-const hasSanityImage = !!(
-    settings?.donationBgImage?.asset?._ref ||
-    settings?.donationBgImage?.asset?._id
-);
-const bgImage = hasSanityImage
-    ? urlFor(settings.donationBgImage).width(1920).url()
-    : `${import.meta.env.BASE_URL}images/donation_bg.png`;
+const heroImageSource = settings?.donationBgImage;
+const fallbackHero = `${import.meta.env.BASE_URL}images/donation_bg.png`;
 ---
 
 <section
@@ -76,12 +69,31 @@ const bgImage = hasSanityImage
             class="parallax-container absolute inset-0 w-full h-full animate-fade-in opacity-0"
             style="animation-delay: 0.3s;"
         >
-            <img
-                id="donate-parallax-img"
-                src={bgImage}
-                alt=""
-                class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%] object-cover opacity-40"
-            />
+            {
+                heroImageSource ? (
+                    <div class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%]">
+                        <SanityImage
+                            id="donate-parallax-img"
+                            src={heroImageSource}
+                            alt=""
+                            class="w-full h-full object-cover opacity-40"
+                            loading="lazy"
+                            widths={[640, 768, 1024, 1280, 1536, 1920]}
+                            sizes="100vw"
+                        />
+                    </div>
+                ) : (
+                    <div class="parallax-target-slow absolute top-[-10%] left-0 w-full h-[120%]">
+                        <img
+                            id="donate-parallax-img"
+                            src={fallbackHero}
+                            alt=""
+                            class="w-full h-full object-cover opacity-40"
+                            loading="lazy"
+                        />
+                    </div>
+                )
+            }
         </div>
         <!-- Cinematic Depth Overlays (Neutral) -->
         <div class="absolute inset-0 bg-branding-dark/30"></div>

@@ -57,13 +57,18 @@ const navLabels: Record<string, any> = {
                 <img
                   src={urlFor(ti(settings.logoLight, locale)).width(48).height(48).url()}
                   alt="Bamboo Shoots Logo"
+                  width="48"
+                  height="48"
                   class="main-logo light w-full h-full rounded-full transition-all duration-500"
+                  fetchpriority="high"
                 />
               )}
               {ti(settings?.logoDark, locale) && (
                 <img
                   src={urlFor(ti(settings.logoDark, locale)).width(48).height(48).url()}
                   alt="Bamboo Shoots Logo"
+                  width="48"
+                  height="48"
                   class="main-logo dark w-full h-full rounded-full transition-all duration-500 absolute inset-0 opacity-0"
                 />
               )}
@@ -91,13 +96,18 @@ const navLabels: Record<string, any> = {
                 <img
                   src={urlFor(ti(settings.titleLogoLight, locale)).height(40).url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
+                  width="200"
+                  height="40"
                   class="header-title-logo light h-full w-auto object-contain transition-all duration-500"
+                  fetchpriority="high"
                 />
               )}
               {ti(settings?.titleLogoDark, locale) && (
                 <img
                   src={urlFor(ti(settings.titleLogoDark, locale)).height(40).url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
+                  width="200"
+                  height="40"
                   class="header-title-logo dark h-full w-auto object-contain transition-all duration-500 absolute inset-0 opacity-0"
                 />
               )}
@@ -297,7 +307,7 @@ const navLabels: Record<string, any> = {
     left: var(--indicator-left);
     width: var(--indicator-width);
     transform: scaleX(var(--indicator-elastic)) scaleY(var(--indicator-scale-y));
-    border-radius: 99px; /* Seamless pill/circle transition */
+    border-radius: 99px;
     transition: 
       left var(--nav-speed, 0.4s) cubic-bezier(0.2, 1, 0.3, 1),
       width var(--nav-speed, 0.4s) cubic-bezier(0.2, 1, 0.3, 1),
@@ -770,10 +780,11 @@ const navLabels: Record<string, any> = {
 
     let lastActiveIdx = -1;
 
+    const containerRect = container.getBoundingClientRect();
+    
     function updateIndicator(targetEl: Element | null, liquidEffect = true, elastic = 1) {
       if (!(targetEl instanceof HTMLElement) || !container || !bar) return;
       
-      const containerRect = container.getBoundingClientRect();
       const targetRect = targetEl.getBoundingClientRect();
       
       const left = targetRect.left - containerRect.left;
@@ -875,7 +886,7 @@ const navLabels: Record<string, any> = {
           }
         } else {
           container.style.setProperty('--nav-speed', '0.4s');
-          updateIndicator(currentLink, false, 1);
+          updateIndicator(currentLink, false);
         }
         bar.classList.remove('opacity-0');
       } else {
@@ -890,7 +901,7 @@ const navLabels: Record<string, any> = {
           const isMatch = href && (path === href || (href.length > base.length && path.startsWith(href)));
           
           if (isMatch) {
-             updateIndicator(link, false, 1);
+             updateIndicator(link, false);
              found = true;
           }
         });

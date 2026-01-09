@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { getLocale, t, defaultLocale } from '../../lib/i18n';
 import { getGalleryPage, urlFor } from '../../lib/sanity';
+import SanityImage from '../../components/SanityImage.astro';
 
 export async function getStaticPaths() {
   return [
@@ -52,13 +53,16 @@ const pageSubtitle = t(galleryPage?.description, locale) || (locale === 'de'
             style={`transition-delay: ${(index % 3) * 100}ms`}
           >
             <a 
-              href={urlFor(image).width(1600).url()} 
+              href={urlFor(image).width(2000).auto('format').url()} 
               class="gallery-item block group relative overflow-hidden rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-700 bg-white"
             >
-              <img 
-                src={urlFor(image).width(800).url()} 
+              <SanityImage 
+                src={image} 
                 alt={image.alt || t(image.caption, locale) || 'Bamboo Shoots Gallery'}
                 class="w-full h-auto object-cover transform transition-transform duration-1000 group-hover:scale-110"
+                width={800}
+                widths={[400, 800, 1200]}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 loading="lazy"
               />
               

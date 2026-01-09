@@ -7,6 +7,7 @@ import {
   getSiteSettings,
   urlFor,
 } from "../../lib/sanity";
+import SanityImage from "../../components/SanityImage.astro";
 
 export async function getStaticPaths() {
   return [
@@ -117,10 +118,14 @@ const educationHighlight =
               <div class="relative group">
                 <div class="aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl">
                   {section.image ? (
-                    <img
-                      src={urlFor(section.image).width(800).url()}
+                    <SanityImage 
+                      src={section.image}
                       alt={t(section.title, locale)}
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                      width={800}
+                      aspectRatio={4/3}
+                      widths={[400, 800, 1200]}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                   ) : (
                     <div class="w-full h-full bg-branding-accent flex items-center justify-center text-primary/20">
@@ -213,10 +218,14 @@ const educationHighlight =
               class="aspect-square md:aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl relative z-10 border-[12px] border-white"
             >
               {historyPage?.cambodiaBackground?.educationImage ? (
-                <img
-                  src={urlFor(historyPage.cambodiaBackground.educationImage).width(800).url()}
+                <SanityImage 
+                  src={historyPage.cambodiaBackground.educationImage}
                   alt={t(historyPage?.cambodiaBackground?.educationTitle, locale) || "Education"}
                   class="w-full h-full object-cover"
+                  width={800}
+                  aspectRatio={4/5}
+                  widths={[400, 800, 1200]}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               ) : (
                 <img
@@ -301,10 +310,14 @@ const educationHighlight =
                     <div class="w-full lg:w-1/2">
                       <div class="relative group">
                         <div class="aspect-[4/3] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl bg-branding-accent">
-                          <img
-                            src={urlFor(entry.image).width(800).url()}
+                          <SanityImage 
+                            src={entry.image}
                             alt={t(entry.title, locale)}
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                            width={800}
+                            aspectRatio={4/3}
+                            widths={[400, 800, 1200]}
+                            sizes="(max-width: 1024px) 100vw, 50vw"
                           />
                         </div>
                       </div>
