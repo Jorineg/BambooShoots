@@ -171,13 +171,13 @@ const navLabels: Record<string, any> = {
 
         <button
           id="mobile-menu-btn"
-          class="lg:hidden relative p-2 text-white transition-colors z-50 group"
+          class="lg:hidden relative p-2 text-white z-50 group"
           aria-label="Toggle menu"
         >
           <div class="hamburger-lines w-6 h-4.5 flex flex-col justify-between overflow-visible">
-            <span class="line line1 block h-[2px] w-6 bg-current rounded-full transition-all duration-300 origin-center"></span>
-            <span class="line line2 block h-[2px] w-6 bg-current rounded-full transition-all duration-300"></span>
-            <span class="line line3 block h-[2px] w-6 bg-current rounded-full transition-all duration-300 origin-center"></span>
+            <span class="line line1 block h-[2px] w-6 bg-current rounded-full transition-[transform,background-color] duration-300 origin-center"></span>
+            <span class="line line2 block h-[2px] w-6 bg-current rounded-full transition-[transform,opacity,background-color] duration-300"></span>
+            <span class="line line3 block h-[2px] w-6 bg-current rounded-full transition-[transform,background-color] duration-300 origin-center"></span>
           </div>
         </button>
       </div>
@@ -375,6 +375,11 @@ const navLabels: Record<string, any> = {
     @apply text-branding-dark;
   }
 
+  /* Specific color fix for hamburger lines if they don't inherit well */
+  header.scrolled .line {
+    @apply bg-branding-dark;
+  }
+
   header.scrolled .nav-separator {
     @apply bg-branding-dark/10;
   }
@@ -395,6 +400,13 @@ const navLabels: Record<string, any> = {
     .header-text,
     #main-header #mobile-menu-btn {
       animation: header-fade-text linear both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 300px;
+    }
+
+    /* Animate hamburger lines background specifically to match text color */
+    #main-header #mobile-menu-btn .line {
+      animation: header-fade-bg-color linear both;
       animation-timeline: scroll(root);
       animation-range: 100px 300px;
     }
@@ -450,6 +462,15 @@ const navLabels: Record<string, any> = {
     }
   }
 
+  @keyframes header-fade-bg-color {
+    from {
+      background-color: white;
+    }
+    to {
+      background-color: rgb(20, 83, 45);
+    }
+  }
+
   @keyframes header-fade-link {
     from {
       color: rgba(255, 255, 255, 0.9);
@@ -501,13 +522,27 @@ const navLabels: Record<string, any> = {
     animation: none !important;
   }
 
+  header.is-static .header-text,
+  header.is-static #mobile-menu-btn,
+  header.is-static .lang-btn {
+    color: rgb(20, 83, 45) !important;
+  }
+
+  header.is-static .line {
+    background-color: rgb(20, 83, 45) !important;
+  }
+
   /* Hamburger Animation */
   .hamburger-lines .line2 {
     margin: 4px 0;
   }
 
   #mobile-menu-btn.is-active {
-    color: white !important; /* Ensure visibility on dark overlay */
+    color: white !important;
+  }
+
+  #mobile-menu-btn.is-active .line {
+    background-color: white !important;
   }
 
   #mobile-menu-btn.is-active .line1 {
@@ -538,6 +573,27 @@ const navLabels: Record<string, any> = {
 
   .mobile-nav-link {
     @apply opacity-0 translate-y-8 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)];
+  }
+
+  /* Force white color when menu is open for all top-level header items */
+  :global(body.menu-open) .header-text,
+  :global(body.menu-open) .lang-btn,
+  :global(body.menu-open) #mobile-menu-btn {
+    color: white !important;
+    text-shadow: none !important;
+  }
+
+  :global(body.menu-open) .lang-btn svg {
+    filter: none !important;
+  }
+
+  :global(body.menu-open) .line {
+    background-color: white !important;
+  }
+
+  :global(body.menu-open) .btn-donate {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* Prevent scrolling when menu is open */
@@ -580,8 +636,12 @@ const navLabels: Record<string, any> = {
       // Force header to stay consistent while menu is open
       if (isOpen) {
         header?.classList.add("scrolled");
-      } else if (window.scrollY <= 50) {
-        header?.classList.remove("scrolled");
+      } else {
+        // When closing, only remove 'scrolled' if we are actually at the top AND NOT on a static page
+        const isStatic = header?.classList.contains("is-static");
+        if (window.scrollY <= 50 && !isStatic) {
+          header?.classList.remove("scrolled");
+        }
       }
     });
 
