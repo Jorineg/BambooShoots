@@ -94,7 +94,7 @@ const navLabels: Record<string, any> = {
             <div class="header-title-logo-wrapper relative h-8 md:h-10 hidden sm:flex items-center">
               {ti(settings?.titleLogoLight, locale) && (
                 <img
-                  src={urlFor(ti(settings.titleLogoLight, locale)).height(40).auto('format').url()}
+                  src={urlFor(ti(settings.titleLogoLight, locale)).width(200).height(40).fit('max').auto('format').url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
                   width="200"
                   height="40"
@@ -104,7 +104,7 @@ const navLabels: Record<string, any> = {
               )}
               {ti(settings?.titleLogoDark, locale) && (
                 <img
-                  src={urlFor(ti(settings.titleLogoDark, locale)).height(40).auto('format').url()}
+                  src={urlFor(ti(settings.titleLogoDark, locale)).width(200).height(40).fit('max').auto('format').url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
                   width="200"
                   height="40"
@@ -780,18 +780,39 @@ const navLabels: Record<string, any> = {
 
     let lastActiveIdx = -1;
 
-    const containerRect = container.getBoundingClientRect();
+    let dimensionsCache = new Map();
+    let containerRectCache = container.getBoundingClientRect();
+
+    function updateDimensionsCache() {
+      if (!container) return;
+      containerRectCache = container.getBoundingClientRect();
+      navLinks.forEach(link => {
+        if (link instanceof HTMLElement) {
+          const rect = link.getBoundingClientRect();
+          dimensionsCache.set(link, {
+            left: rect.left - containerRectCache.left,
+            width: rect.width
+          });
+        }
+      });
+    }
+
+    // Call initially and on resize/scroll-start to stay fresh but avoid bulk
+    updateDimensionsCache();
+    window.addEventListener('resize', updateDimensionsCache);
     
     function updateIndicator(targetEl: Element | null, liquidEffect = true, elastic = 1) {
       if (!(targetEl instanceof HTMLElement) || !container || !bar) return;
       
-      const targetRect = targetEl.getBoundingClientRect();
-      
-      const left = targetRect.left - containerRect.left;
-      const width = targetRect.width;
+      let dims = dimensionsCache.get(targetEl);
+      if (!dims) {
+        updateDimensionsCache();
+        dims = dimensionsCache.get(targetEl);
+      }
+      if (!dims) return;
 
-      container.style.setProperty('--indicator-left', `${left}px`);
-      container.style.setProperty('--indicator-width', `${width}px`);
+      container.style.setProperty('--indicator-left', `${dims.left}px`);
+      container.style.setProperty('--indicator-width', `${dims.width}px`);
       container.style.setProperty('--indicator-elastic', elastic.toString());
       
       if (liquidEffect) {
@@ -861,14 +882,21 @@ const navLabels: Record<string, any> = {
           const nextLink = anchors[activeIdx + 1].link;
           
           if (currentLink instanceof HTMLElement && nextLink instanceof HTMLElement) {
-            const containerRect = container.getBoundingClientRect();
-            const r1 = currentLink.getBoundingClientRect();
-            const r2 = nextLink.getBoundingClientRect();
+            let d1 = dimensionsCache.get(currentLink);
+            let d2 = dimensionsCache.get(nextLink);
             
-            const x1 = r1.left - containerRect.left;
-            const w1 = r1.width;
-            const x2 = r2.left - containerRect.left;
-            const w2 = r2.width;
+            if (!d1 || !d2) {
+              updateDimensionsCache();
+              d1 = dimensionsCache.get(currentLink);
+              d2 = dimensionsCache.get(nextLink);
+            }
+
+            if (!d1 || !d2) return;
+            
+            const x1 = d1.left;
+            const w1 = d1.width;
+            const x2 = d2.left;
+            const w2 = d2.width;
 
             const easeProgress = progress < 0.5 
               ? 2 * progress * progress 
