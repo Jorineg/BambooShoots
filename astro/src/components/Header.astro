@@ -86,7 +86,7 @@ const navLabels: Record<string, any> = {
         }
         {
           ti(settings?.titleLogoLight, locale) || ti(settings?.titleLogoDark, locale) ? (
-            <div class="header-title-logo-wrapper relative h-8 md:h-10 flex items-center">
+            <div class="header-title-logo-wrapper relative h-8 md:h-10 hidden sm:flex items-center">
               {ti(settings?.titleLogoLight, locale) && (
                 <img
                   src={urlFor(ti(settings.titleLogoLight, locale)).height(40).url()}
@@ -484,7 +484,7 @@ const navLabels: Record<string, any> = {
     .nav-link-dynamic {
       animation: header-fade-link linear both;
       animation-timeline: scroll(root);
-      animation-range: 0 100px;
+      animation-range: 100px 300px;
     }
 
     .nav-separator {
@@ -496,13 +496,13 @@ const navLabels: Record<string, any> = {
     .lang-btn {
       animation: header-fade-lang linear both;
       animation-timeline: scroll(root);
-      animation-range: 0 100px;
+      animation-range: 100px 300px;
     }
 
     .lang-btn svg {
       animation: header-fade-svg linear both;
       animation-timeline: scroll(root);
-      animation-range: 0 100px;
+      animation-range: 100px 300px;
     }
   }
 
