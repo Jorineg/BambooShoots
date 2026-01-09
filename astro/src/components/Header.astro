@@ -94,7 +94,7 @@ const navLabels: Record<string, any> = {
             <div class="header-title-logo-wrapper relative h-8 md:h-10 hidden sm:flex items-center">
               {ti(settings?.titleLogoLight, locale) && (
                 <img
-                  src={urlFor(ti(settings.titleLogoLight, locale)).height(40).url()}
+                  src={urlFor(ti(settings.titleLogoLight, locale)).height(40).auto('format').url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
                   width="200"
                   height="40"
@@ -104,7 +104,7 @@ const navLabels: Record<string, any> = {
               )}
               {ti(settings?.titleLogoDark, locale) && (
                 <img
-                  src={urlFor(ti(settings.titleLogoDark, locale)).height(40).url()}
+                  src={urlFor(ti(settings.titleLogoDark, locale)).height(40).auto('format').url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
                   width="200"
                   height="40"
