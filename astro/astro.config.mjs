@@ -8,7 +8,7 @@ export default defineConfig({
     adapter: vercel(),
     // Ersetze dies mit deiner Domain (z.B. https://bambooshoots.ngo)
     site: 'https://jorineg.github.io',
-    base: '', // Moving to Vercel root
+    base: '/',
     trailingSlash: 'always',
     build: {
         format: 'directory',
