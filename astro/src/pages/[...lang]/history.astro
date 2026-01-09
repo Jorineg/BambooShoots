@@ -272,16 +272,16 @@ const educationHighlight =
       </div>
 
       <!-- Timeline History Entries -->
-      <div class="relative max-w-6xl mx-auto pl-12 md:pl-48">
+      <div class="relative max-w-6xl mx-auto pl-[61px] md:pl-48">
         <!-- Vertical Timeline Line -->
-        <div class="absolute left-6 md:left-32 top-0 bottom-0 w-[2px] bg-primary/20"></div>
+        <div class="absolute left-9 md:left-32 top-0 bottom-0 w-[2px] bg-primary/20"></div>
 
         <div class="space-y-16 md:space-y-32">
           {
             historyEntries.map((entry: any, index: number) => (
               <div class="relative reveal">
                 <!-- Year (Left of line) -->
-                <div class="absolute right-[calc(100%+36px)] md:right-[calc(100%+72px)] top-8 -translate-y-1/2 text-primary font-bold text-sm md:text-xl whitespace-nowrap">
+                <div class="absolute right-[calc(100%+32px)] md:right-[calc(100%+72px)] top-8 -translate-y-1/2 text-primary font-bold text-sm md:text-xl whitespace-nowrap">
                    {entry.year}
                 </div>
 

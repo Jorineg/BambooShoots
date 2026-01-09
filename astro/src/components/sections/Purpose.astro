@@ -110,7 +110,7 @@ const quote =
       <!-- Right Side: Content Card (The Mission/Welcome) -->
       <div class="w-full lg:w-7/12 reveal reveal-delay-200">
         <div
-          class="glass p-0 md:p-16 rounded-[2rem] md:rounded-[3rem] border-0 md:border border-white/40 shadow-none md:shadow-2xl relative overflow-hidden group bg-transparent md:bg-white/70"
+          class="p-0 md:p-16 rounded-[2rem] md:rounded-[3rem] border-0 md:border border-white/40 shadow-none md:shadow-2xl relative overflow-hidden group bg-transparent md:bg-white/70 md:backdrop-blur-xl"
         >
           <!-- Card Decorative Gradient (Desktop only) -->
           <div
@@ -147,17 +147,15 @@ const quote =
 
               <!-- Impact Badges -->
               <div
-                class="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 border-t border-branding-dark/10"
+                class="pt-12 grid grid-cols-3 gap-2 md:gap-0 border-t border-branding-dark/10"
               >
-                <div
-                  class="flex flex-col items-center md:items-center text-center px-4"
-                >
+                <div class="flex flex-col items-center text-center px-1">
                   <span
-                    class="text-4xl font-heading font-extrabold text-primary mb-1"
+                    class="text-2xl md:text-4xl font-heading font-extrabold text-primary mb-1"
                     >2006</span
                   >
                   <span
-                    class="text-xs uppercase tracking-wider text-branding-muted font-bold whitespace-nowrap"
+                    class="text-[10px] md:text-xs uppercase tracking-wider text-branding-muted font-bold leading-tight"
                     >{
                       t(missionData?.activeSinceLabel, locale) ||
                         (locale === "de" ? "Aktiv seit" : "Active since")
@@ -166,32 +164,30 @@ const quote =
                 </div>
 
                 <div
-                  class="flex flex-col items-center md:items-center text-center px-4 border-l-0 md:border-l border-branding-dark/10"
+                  class="flex flex-col items-center text-center px-1 border-l border-branding-dark/10"
                 >
                   <span
-                    class="text-4xl font-heading font-extrabold text-primary mb-1"
+                    class="text-2xl md:text-4xl font-heading font-extrabold text-primary mb-1"
                     >250+</span
                   >
                   <span
-                    class="text-xs uppercase tracking-wider text-branding-muted font-bold whitespace-nowrap"
+                    class="text-[10px] md:text-xs uppercase tracking-wider text-branding-muted font-bold leading-tight"
                     >{
                       t(missionData?.studentsLabel, locale) ||
-                        (locale === "de"
-                          ? "Kinder regulär"
-                          : "Regular students")
+                        (locale === "de" ? "Kinder" : "Students")
                     }</span
                   >
                 </div>
 
                 <div
-                  class="flex flex-col items-center md:items-center text-center px-4 border-l-0 md:border-l border-branding-dark/10"
+                  class="flex flex-col items-center text-center px-1 border-l border-branding-dark/10"
                 >
                   <span
-                    class="text-4xl font-heading font-extrabold text-primary mb-1"
+                    class="text-2xl md:text-4xl font-heading font-extrabold text-primary mb-1"
                     >100%</span
                   >
                   <span
-                    class="text-xs uppercase tracking-wider text-branding-muted font-bold whitespace-nowrap"
+                    class="text-[10px] md:text-xs uppercase tracking-wider text-branding-muted font-bold leading-tight"
                     >{
                       t(missionData?.localTeamLabel, locale) ||
                         (locale === "de" ? "Lokales Team" : "Local Team")
