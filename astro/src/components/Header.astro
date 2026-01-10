@@ -55,7 +55,7 @@ const navLabels: Record<string, any> = {
             <div class="main-logo-wrapper relative w-10 h-10 md:w-12 md:h-12 group-hover:scale-105 transition-transform duration-300">
               {ti(settings?.logoLight, locale) && (
                 <img
-                  src={urlFor(ti(settings.logoLight, locale)).width(48).height(48).format('webp').quality(80).url()}
+                  src={urlFor(ti(settings.logoLight, locale)).width(96).height(96).format('webp').quality(90).url()}
                   alt="Bamboo Shoots Logo"
                   width="48"
                   height="48"
@@ -65,7 +65,7 @@ const navLabels: Record<string, any> = {
               )}
               {ti(settings?.logoDark, locale) && (
                 <img
-                  src={urlFor(ti(settings.logoDark, locale)).width(48).height(48).format('webp').quality(80).url()}
+                  src={urlFor(ti(settings.logoDark, locale)).width(96).height(96).format('webp').quality(90).url()}
                   alt="Bamboo Shoots Logo"
                   width="48"
                   height="48"
@@ -94,7 +94,7 @@ const navLabels: Record<string, any> = {
             <div class="header-title-logo-wrapper relative h-8 md:h-10 hidden sm:flex items-center">
               {ti(settings?.titleLogoLight, locale) && (
                 <img
-                  src={urlFor(ti(settings.titleLogoLight, locale)).width(200).height(40).fit('max').format('webp').quality(80).url()}
+                  src={urlFor(ti(settings.titleLogoLight, locale)).width(400).height(80).fit('max').format('webp').quality(90).url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
                   width="200"
                   height="40"
@@ -104,7 +104,7 @@ const navLabels: Record<string, any> = {
               )}
               {ti(settings?.titleLogoDark, locale) && (
                 <img
-                  src={urlFor(ti(settings.titleLogoDark, locale)).width(200).height(40).fit('max').format('webp').quality(80).url()}
+                  src={urlFor(ti(settings.titleLogoDark, locale)).width(400).height(80).fit('max').format('webp').quality(90).url()}
                   alt={t(settings?.siteTitle, locale) || "Bamboo Shoots"}
                   width="200"
                   height="40"
