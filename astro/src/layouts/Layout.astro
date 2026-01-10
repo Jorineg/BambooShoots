@@ -45,12 +45,22 @@ const shareImageUrl =
 
 const faviconLightUrl =
   (settings?.logoDark &&
-    urlFor(settings.logoDark).width(32).height(32).format("png").url()) ||
+    urlFor(settings.logoDark)
+      .width(32)
+      .height(32)
+      .format("webp")
+      .quality(80)
+      .url()) ||
   null;
 
 const faviconDarkUrl =
   (settings?.logoLight &&
-    urlFor(settings.logoLight).width(32).height(32).format("png").url()) ||
+    urlFor(settings.logoLight)
+      .width(32)
+      .height(32)
+      .format("webp")
+      .quality(80)
+      .url()) ||
   null;
 ---
 
