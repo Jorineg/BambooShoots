@@ -1,0 +1,830 @@
+---
+
+---
+
+<div id="bamboo-container" class="bamboo-container hidden lg:block">
+    <canvas id="bambooCanvas"></canvas>
+</div>
+
+<style>
+    .bamboo-container {
+        position: absolute;
+        left: 0;
+        top: -600px; /* Even higher to bridge the gap better */
+        bottom: 0;
+        width: 200px;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    #bambooCanvas {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        opacity: 0;
+        transition: opacity 0.8s ease-out;
+    }
+
+    #bambooCanvas.visible {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    function initBamboo() {
+        const canvas = document.getElementById(
+            "bambooCanvas",
+        ) as HTMLCanvasElement;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const section = document.getElementById("programme");
+        if (!section) return;
+
+        // High DPI support
+        let dpr = window.devicePixelRatio || 1;
+
+        function resizeCanvas() {
+            if (!ctx) return;
+            dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+        }
+
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        // Colors
+        const COLOR_LIGHT = { r: 84, g: 138, b: 24 }; // #548A18
+        const COLOR_DARK = { r: 1, g: 86, b: 36 }; // #015624
+
+        // Easing functions
+        function easeOutCubic(t: number) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function easeInOutQuad(t: number) {
+            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        }
+
+        function lerp(a: number, b: number, t: number) {
+            return a + (b - a) * t;
+        }
+
+        function lerpColor(
+            c1: { r: number; g: number; b: number },
+            c2: { r: number; g: number; b: number },
+            t: number,
+        ) {
+            return {
+                r: Math.round(lerp(c1.r, c2.r, t)),
+                g: Math.round(lerp(c1.g, c2.g, t)),
+                b: Math.round(lerp(c1.b, c2.b, t)),
+            };
+        }
+
+        function colorToString(
+            c: { r: number; g: number; b: number },
+            alpha = 1,
+        ) {
+            return `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;
+        }
+
+        type SegmentInfo = {
+            yBottom: number;
+            yTop: number;
+            widthBottom: number;
+            widthTop: number;
+            colorProgress: number;
+            sway: number;
+            nodeIndex: number;
+            segmentGrowth: number;
+        };
+
+        // Bamboo configuration
+        const config = {
+            maxSegments: 14,
+            baseWidth: 14, // Slightly slimmer for side view
+            maxWidth: 36,
+            baseSegmentHeight: 40,
+            maxSegmentHeight: 85,
+            leafLength: 45,
+            maxLeafLength: 100,
+            swayAmount: 3,
+            swaySpeed: 0.002,
+            branchStartSegment: 7,
+            maxBranchLength: 80,
+            branchWidth: 0.35,
+        };
+
+        class Leaf {
+            nodeIndex: number;
+            side: number;
+            baseAngle: number;
+            lengthVariation: number;
+            curveVariation: number;
+            widthVariation: number;
+            phaseOffset: number;
+            xOffset: number;
+            onBranch: boolean;
+            branchId: number | null;
+            branchPosition: number;
+            isCrown?: boolean;
+            crownAngle?: number;
+            crownIndex?: number;
+
+            constructor(
+                nodeIndex: number,
+                side: number,
+                baseAngle: number,
+                onBranch = false,
+                branchId: number | null = null,
+            ) {
+                this.nodeIndex = nodeIndex;
+                this.side = side;
+                this.baseAngle = baseAngle;
+                this.lengthVariation = 0.7 + Math.random() * 0.6;
+                this.curveVariation = 0.8 + Math.random() * 0.4;
+                this.widthVariation = 0.8 + Math.random() * 0.4;
+                this.phaseOffset = Math.random() * Math.PI * 2;
+                this.xOffset = (Math.random() - 0.5) * 0.8;
+                this.onBranch = onBranch;
+                this.branchId = branchId;
+                this.branchPosition = Math.random() * 0.7 + 0.3;
+            }
+        }
+
+        class Branch {
+            nodeIndex: number;
+            side: number;
+            id: number;
+            baseAngle: number;
+            verticalAngle: number;
+            length: number;
+            curve: number;
+            phaseOffset: number;
+            xOffset: number;
+
+            constructor(nodeIndex: number, side: number, id: number) {
+                this.nodeIndex = nodeIndex;
+                this.side = side;
+                this.id = id;
+                this.baseAngle = side * (0.3 + Math.random() * 0.7);
+                this.verticalAngle = -0.2 + Math.random() * 0.4;
+                this.length = 0.6 + Math.random() * 0.5;
+                this.curve = 0.15 + Math.random() * 0.35;
+                this.phaseOffset = Math.random() * Math.PI * 2;
+                this.xOffset = (Math.random() - 0.3) * 0.6 * side;
+            }
+        }
+
+        const branches: Branch[] = [];
+        let branchId = 0;
+        for (let i = config.branchStartSegment; i < config.maxSegments; i++) {
+            const branchProbability =
+                (i - config.branchStartSegment) /
+                (config.maxSegments - config.branchStartSegment);
+            const branchCount = i >= config.maxSegments - 3 ? 2 : 1;
+            for (let b = 0; b < branchCount; b++) {
+                if (Math.random() < 0.6 + branchProbability * 0.35)
+                    branches.push(new Branch(i, -1, branchId++));
+                if (Math.random() < 0.6 + branchProbability * 0.35)
+                    branches.push(new Branch(i, 1, branchId++));
+            }
+        }
+
+        const leaves: Leaf[] = [];
+        for (let i = 0; i < config.maxSegments; i++) {
+            const topProgress = i / config.maxSegments;
+            const densityMultiplier = 1 + topProgress * 2.5;
+            const baseCount = Math.floor(1 + Math.random() * 2);
+            const leftCount = Math.floor(baseCount * densityMultiplier);
+            const rightCount = Math.floor(baseCount * densityMultiplier);
+            for (let j = 0; j < leftCount; j++) {
+                const angleSpread = 0.7 + topProgress * 0.4;
+                const angle =
+                    -angleSpread -
+                    Math.random() * (0.8 + topProgress * 0.5) -
+                    j * 0.25;
+                leaves.push(new Leaf(i, -1, angle));
+            }
+            for (let j = 0; j < rightCount; j++) {
+                const angleSpread = 0.7 + topProgress * 0.4;
+                const angle =
+                    angleSpread +
+                    Math.random() * (0.8 + topProgress * 0.5) +
+                    j * 0.25;
+                leaves.push(new Leaf(i, 1, angle));
+            }
+        }
+
+        branches.forEach((branch) => {
+            const leafCount = 4 + Math.floor(Math.random() * 5);
+            for (let j = 0; j < leafCount; j++) {
+                const side = j % 2 === 0 ? -1 : 1;
+                const angle = side * (0.4 + Math.random() * 1.0);
+                const leaf = new Leaf(
+                    branch.nodeIndex,
+                    side,
+                    angle,
+                    true,
+                    branch.id,
+                );
+                leaf.branchPosition = 0.15 + (j / leafCount) * 0.85;
+                leaves.push(leaf);
+            }
+        });
+
+        const crownSpreadOrder = [0, 6, 3, 9, 1, 7, 4, 10, 2, 8, 5, 11];
+        for (let idx = 0; idx < 12; idx++) {
+            const j = crownSpreadOrder[idx];
+            const angle = (j / 12) * Math.PI * 2 - Math.PI;
+            const side = angle < 0 ? -1 : 1;
+            const leaf = new Leaf(config.maxSegments - 1, side, angle * 0.6);
+            leaf.isCrown = true;
+            leaf.crownAngle = angle;
+            leaf.crownIndex = idx;
+            leaves.push(leaf);
+        }
+
+        function drawBambooSegment(
+            x: number,
+            yBottom: number,
+            yTop: number,
+            widthBottom: number,
+            widthTop: number,
+            colorProgress: number,
+            sway: number,
+        ) {
+            if (!ctx) return;
+            const color = lerpColor(COLOR_LIGHT, COLOR_DARK, colorProgress);
+            const highlightColor = lerpColor(
+                { r: 140, g: 200, b: 80 },
+                { r: 60, g: 130, b: 50 },
+                colorProgress,
+            );
+
+            const gradient = ctx.createLinearGradient(
+                x - widthTop,
+                yTop,
+                x + widthTop,
+                yTop,
+            );
+            gradient.addColorStop(
+                0,
+                colorToString(lerpColor(color, { r: 0, g: 0, b: 0 }, 0.2)),
+            );
+            gradient.addColorStop(0.3, colorToString(highlightColor));
+            gradient.addColorStop(0.5, colorToString(color));
+            gradient.addColorStop(
+                0.7,
+                colorToString(lerpColor(color, { r: 0, g: 0, b: 0 }, 0.15)),
+            );
+            gradient.addColorStop(
+                1,
+                colorToString(lerpColor(color, { r: 0, g: 0, b: 0 }, 0.3)),
+            );
+
+            ctx.beginPath();
+            ctx.moveTo(x - widthBottom / 2 + sway, yBottom);
+            ctx.bezierCurveTo(
+                x - widthBottom / 2 + sway * 0.7,
+                yBottom - (yBottom - yTop) * 0.3,
+                x - widthTop / 2 + sway * 0.3,
+                yTop + (yBottom - yTop) * 0.3,
+                x - widthTop / 2,
+                yTop,
+            );
+            ctx.lineTo(x + widthTop / 2, yTop);
+            ctx.bezierCurveTo(
+                x + widthTop / 2 + sway * 0.3,
+                yTop + (yBottom - yTop) * 0.3,
+                x + widthBottom / 2 + sway * 0.7,
+                yBottom - (yBottom - yTop) * 0.3,
+                x + widthBottom / 2 + sway,
+                yBottom,
+            );
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(x - widthBottom * 0.15 + sway, yBottom);
+            ctx.bezierCurveTo(
+                x - widthBottom * 0.15 + sway * 0.7,
+                yBottom - (yBottom - yTop) * 0.3,
+                x - widthTop * 0.15 + sway * 0.3,
+                yTop + (yBottom - yTop) * 0.3,
+                x - widthTop * 0.15,
+                yTop,
+            );
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 - colorProgress * 0.05})`;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function drawNode(
+            x: number,
+            y: number,
+            width: number,
+            colorProgress: number,
+            sway: number,
+        ) {
+            if (!ctx) return;
+            const color = lerpColor(COLOR_LIGHT, COLOR_DARK, colorProgress);
+            const darkColor = lerpColor(color, { r: 0, g: 0, b: 0 }, 0.3);
+            const nodeHeight = width * 0.25;
+            const gradient = ctx.createLinearGradient(
+                x - width,
+                y,
+                x + width,
+                y,
+            );
+            gradient.addColorStop(0, colorToString(darkColor));
+            gradient.addColorStop(0.2, colorToString(color));
+            gradient.addColorStop(
+                0.4,
+                colorToString(
+                    lerpColor(color, { r: 200, g: 230, b: 150 }, 0.3),
+                ),
+            );
+            gradient.addColorStop(0.6, colorToString(color));
+            gradient.addColorStop(1, colorToString(darkColor));
+            ctx.beginPath();
+            ctx.ellipse(
+                x + sway * 0.5,
+                y,
+                width * 0.6,
+                nodeHeight,
+                0,
+                0,
+                Math.PI * 2,
+            );
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+
+        function drawLeaf(
+            x: number,
+            y: number,
+            length: number,
+            angle: number,
+            width: number,
+            colorProgress: number,
+            time: number,
+            leaf: Leaf,
+            growthProgress: number,
+        ) {
+            if (!ctx) return;
+            const sway =
+                Math.sin(time * config.swaySpeed + leaf.phaseOffset) * 0.1;
+            const verticalAngle = -Math.PI / 2 + leaf.side * 0.1;
+            const targetAngle = -Math.PI / 2 + angle;
+            const angleProgress = easeOutCubic(growthProgress);
+            const currentAngle = lerp(
+                verticalAngle,
+                targetAngle,
+                angleProgress,
+            );
+            const actualAngle = currentAngle + sway;
+            const color = lerpColor(
+                COLOR_LIGHT,
+                COLOR_DARK,
+                colorProgress * 0.7,
+            );
+            const tipColor = lerpColor(color, COLOR_DARK, 0.3);
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(actualAngle);
+            const leafWidth = width * leaf.widthVariation;
+            const leafLength = length * leaf.lengthVariation;
+            const curve = leafLength * 0.3 * leaf.curveVariation;
+            const gradient = ctx.createLinearGradient(0, 0, leafLength, 0);
+            gradient.addColorStop(0, colorToString(color));
+            gradient.addColorStop(
+                0.7,
+                colorToString(lerpColor(color, tipColor, 0.5)),
+            );
+            gradient.addColorStop(1, colorToString(tipColor, 0.8));
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(
+                leafLength * 0.2,
+                -leafWidth * 0.3,
+                leafLength * 0.5,
+                -leafWidth * 0.5 + curve * 0.3,
+                leafLength * 0.7,
+                -leafWidth * 0.3 + curve * 0.5,
+            );
+            ctx.bezierCurveTo(
+                leafLength * 0.85,
+                -leafWidth * 0.15 + curve * 0.7,
+                leafLength * 0.95,
+                curve * 0.9,
+                leafLength,
+                curve,
+            );
+            ctx.bezierCurveTo(
+                leafLength * 0.95,
+                curve * 0.9,
+                leafLength * 0.85,
+                leafWidth * 0.15 + curve * 0.7,
+                leafLength * 0.7,
+                leafWidth * 0.3 + curve * 0.5,
+            );
+            ctx.bezierCurveTo(
+                leafLength * 0.5,
+                leafWidth * 0.5 + curve * 0.3,
+                leafLength * 0.2,
+                leafWidth * 0.3,
+                0,
+                0,
+            );
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawBranch(
+            x: number,
+            y: number,
+            branch: Branch,
+            stemWidth: number,
+            colorProgress: number,
+            time: number,
+            easedProgress: number,
+        ) {
+            if (!ctx) return null;
+            const sway =
+                Math.sin(time * config.swaySpeed + branch.phaseOffset) * 2;
+            const branchLength =
+                config.maxBranchLength * branch.length * easedProgress;
+            const branchWidth = stemWidth * config.branchWidth;
+            const angle = branch.baseAngle + sway * 0.05;
+            const vertAngle = branch.verticalAngle;
+            const curve = branch.curve * branchLength;
+            const color = lerpColor(
+                COLOR_LIGHT,
+                COLOR_DARK,
+                Math.min(colorProgress * 0.5, 0.4),
+            );
+            const darkColor = lerpColor(color, { r: 0, g: 0, b: 0 }, 0.2);
+            const endX =
+                x + Math.sin(angle) * branchLength + curve * branch.side;
+            const endY =
+                y -
+                Math.cos(angle) * branchLength * 0.4 +
+                vertAngle * branchLength;
+            const cpX =
+                x +
+                Math.sin(angle) * branchLength * 0.5 +
+                curve * 0.5 * branch.side;
+            const cpY =
+                y -
+                Math.cos(angle) * branchLength * 0.25 +
+                vertAngle * branchLength * 0.5;
+            const gradient = ctx.createLinearGradient(
+                x - branchWidth,
+                y,
+                x + branchWidth,
+                y,
+            );
+            gradient.addColorStop(0, colorToString(darkColor));
+            gradient.addColorStop(
+                0.3,
+                colorToString(
+                    lerpColor(color, { r: 150, g: 200, b: 100 }, 0.2),
+                ),
+            );
+            gradient.addColorStop(0.5, colorToString(color));
+            gradient.addColorStop(
+                0.7,
+                colorToString(lerpColor(color, darkColor, 0.3)),
+            );
+            gradient.addColorStop(1, colorToString(darkColor));
+            ctx.beginPath();
+            const startWidthL = branchWidth * 0.6;
+            const startWidthR = branchWidth * 0.6;
+            const endWidth = branchWidth * 0.15;
+            ctx.moveTo(x - startWidthL, y);
+            ctx.quadraticCurveTo(
+                cpX - endWidth * 2,
+                cpY,
+                endX - endWidth,
+                endY,
+            );
+            ctx.lineTo(endX, endY + endWidth * 0.5);
+            ctx.lineTo(endX + endWidth, endY);
+            ctx.quadraticCurveTo(cpX + endWidth * 2, cpY, x + startWidthR, y);
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            return { endX, endY, startX: x, startY: y, opacity: easedProgress };
+        }
+
+        function drawBamboo(
+            progress: number,
+            time: number,
+            customBaseY?: number,
+        ) {
+            if (!ctx) return;
+            const width = canvas.width / dpr;
+            const height = canvas.height / dpr;
+            ctx.clearRect(0, 0, width, height);
+            if (progress <= 0) return;
+
+            // Moved centerX even more to the left
+            const centerX = width * 0.25;
+            const baseY = customBaseY ?? height + 20;
+            const easedProgress = easeOutCubic(progress);
+            const numSegments = Math.ceil(easedProgress * config.maxSegments);
+            const currentMaxWidth = lerp(
+                config.baseWidth,
+                config.maxWidth,
+                easedProgress,
+            );
+            const currentSegmentHeight = lerp(
+                config.baseSegmentHeight,
+                config.maxSegmentHeight,
+                easedProgress,
+            );
+
+            const segmentData: SegmentInfo[] = [];
+            let currentY = baseY;
+            for (let i = 0; i < numSegments; i++) {
+                const segmentProgress = i / config.maxSegments;
+                const isPartialSegment = i === numSegments - 1;
+                let segmentGrowth = 1;
+                if (isPartialSegment) {
+                    const segmentStart = i / config.maxSegments;
+                    const segmentEnd = (i + 1) / config.maxSegments;
+                    segmentGrowth =
+                        (easedProgress - segmentStart) /
+                        (segmentEnd - segmentStart);
+                    segmentGrowth = easeInOutQuad(
+                        Math.min(1, Math.max(0, segmentGrowth)),
+                    );
+                }
+                const taperCurve = Math.pow(1 - segmentProgress, 0.6);
+                const widthFactor = 0.2 + taperCurve * 0.8;
+                const segmentWidthBottom = currentMaxWidth * widthFactor;
+                const segmentWidthTop =
+                    currentMaxWidth *
+                    (widthFactor - 0.04 - segmentProgress * 0.03);
+                const heightVariation = 0.9 + Math.sin(i * 1.5) * 0.1;
+                const topHeightFactor = 1 - segmentProgress * 0.3;
+                const thisSegmentHeight =
+                    currentSegmentHeight *
+                    heightVariation *
+                    segmentGrowth *
+                    topHeightFactor;
+                const swayPhase = time * config.swaySpeed + i * 0.5;
+                const swayIntensity =
+                    segmentProgress * config.swayAmount * easedProgress;
+                const sway = Math.sin(swayPhase) * swayIntensity;
+                const nextY = currentY - thisSegmentHeight;
+                segmentData.push({
+                    yBottom: currentY,
+                    yTop: nextY,
+                    widthBottom:
+                        segmentWidthBottom *
+                        (i === 0
+                            ? 1
+                            : segmentGrowth + (1 - segmentGrowth) * 0.5),
+                    widthTop: segmentWidthTop * segmentGrowth,
+                    colorProgress: Math.max(
+                        0,
+                        Math.min(1, (easedProgress - segmentProgress) * 1.5),
+                    ),
+                    sway: sway,
+                    nodeIndex: i,
+                    segmentGrowth: segmentGrowth,
+                });
+                currentY = nextY;
+            }
+
+            segmentData.forEach((seg) => {
+                drawBambooSegment(
+                    centerX,
+                    seg.yBottom,
+                    seg.yTop,
+                    seg.widthBottom,
+                    seg.widthTop,
+                    seg.colorProgress,
+                    seg.sway,
+                );
+                if (seg.segmentGrowth > 0.8) {
+                    ctx.save();
+                    ctx.globalAlpha = (seg.segmentGrowth - 0.8) / 0.2;
+                    drawNode(
+                        centerX,
+                        seg.yTop,
+                        seg.widthTop * 1.1,
+                        seg.colorProgress,
+                        seg.sway,
+                    );
+                    ctx.restore();
+                }
+            });
+
+            const branchPositions = new Map();
+            branches.forEach((branch) => {
+                if (branch.nodeIndex >= segmentData.length) return;
+                const seg = segmentData[branch.nodeIndex];
+                if (seg.segmentGrowth < 0.7) return;
+                const branchX =
+                    centerX + seg.sway + branch.xOffset * seg.widthTop;
+                const branchData = drawBranch(
+                    branchX,
+                    seg.yTop,
+                    branch,
+                    seg.widthTop,
+                    seg.colorProgress,
+                    time,
+                    easedProgress * ((seg.segmentGrowth - 0.7) / 0.3),
+                );
+                if (branchData)
+                    branchPositions.set(branch.id, {
+                        ...branchData,
+                        opacity: (seg.segmentGrowth - 0.7) / 0.3,
+                    });
+            });
+
+            leaves.forEach((leaf) => {
+                if (leaf.onBranch) {
+                    const branchData = branchPositions.get(leaf.branchId);
+                    if (!branchData) return;
+                    const t = leaf.branchPosition;
+                    const leafX =
+                        branchData.startX +
+                        (branchData.endX - branchData.startX) * t;
+                    const leafY =
+                        branchData.startY +
+                        (branchData.endY - branchData.startY) * t;
+                    const leafLength =
+                        config.leafLength * 0.8 * leaf.lengthVariation;
+                    ctx.save();
+                    ctx.globalAlpha = branchData.opacity * 0.95;
+                    drawLeaf(
+                        leafX,
+                        leafY,
+                        leafLength,
+                        leaf.baseAngle,
+                        leafLength * 0.1,
+                        0.2,
+                        time,
+                        leaf,
+                        branchData.opacity,
+                    );
+                    ctx.restore();
+                    return;
+                }
+                if (leaf.isCrown && segmentData.length > 0) {
+                    const lastSegIndex = segmentData.length - 1;
+                    const lastSeg = segmentData[lastSegIndex];
+                    const visibleCrownLeaves = Math.floor(
+                        2 + 10 * easedProgress,
+                    );
+                    if (leaf.crownIndex! >= visibleCrownLeaves) return;
+                    const leafFadeIn = Math.min(
+                        1,
+                        ((visibleCrownLeaves - leaf.crownIndex!) / 11) * 3,
+                    );
+                    let targetSeg, crownOpacity;
+                    if (lastSeg.segmentGrowth >= 0.85) {
+                        targetSeg = lastSeg;
+                        crownOpacity = (lastSeg.segmentGrowth - 0.85) / 0.15;
+                    } else if (lastSegIndex > 0) {
+                        targetSeg = segmentData[lastSegIndex - 1];
+                        crownOpacity = 1 - lastSeg.segmentGrowth / 0.85;
+                    } else return;
+                    if (crownOpacity <= 0) return;
+                    const leafX =
+                        centerX +
+                        targetSeg.sway +
+                        Math.sin(leaf.crownAngle!) * targetSeg.widthTop * 0.4;
+                    const leafLength =
+                        config.leafLength * 0.7 * leaf.lengthVariation;
+                    ctx.save();
+                    ctx.globalAlpha =
+                        Math.max(0, Math.min(1, crownOpacity * leafFadeIn)) *
+                        0.95;
+                    drawLeaf(
+                        leafX,
+                        targetSeg.yTop - 8,
+                        leafLength,
+                        leaf.baseAngle,
+                        leafLength * 0.11,
+                        0.15,
+                        time,
+                        leaf,
+                        crownOpacity,
+                    );
+                    ctx.restore();
+                    return;
+                }
+                if (leaf.nodeIndex >= segmentData.length) return;
+                const seg = segmentData[leaf.nodeIndex];
+                if (seg.segmentGrowth < 0.3) return;
+                let leafDevelopment, leafOpacity;
+                if (seg.segmentGrowth < 0.55) {
+                    leafDevelopment = ((seg.segmentGrowth - 0.3) / 0.25) * 0.3;
+                    leafOpacity = (seg.segmentGrowth - 0.3) / 0.25;
+                } else {
+                    leafDevelopment =
+                        0.3 + ((seg.segmentGrowth - 0.55) / 0.45) * 0.7;
+                    leafOpacity = 1;
+                }
+                const leafX =
+                    centerX +
+                    seg.sway +
+                    leaf.xOffset * seg.widthTop * leafDevelopment;
+                const baseLeafLength =
+                    lerp(
+                        config.leafLength,
+                        config.maxLeafLength,
+                        easedProgress,
+                    ) *
+                    (1 - (leaf.nodeIndex / config.maxSegments) * 0.4);
+                const leafLength = lerp(
+                    8,
+                    baseLeafLength *
+                        (0.6 + (leaf.nodeIndex / config.maxSegments) * 0.3),
+                    easeOutCubic(leafDevelopment),
+                );
+                ctx.save();
+                ctx.globalAlpha = leafOpacity * 0.95;
+                drawLeaf(
+                    leafX,
+                    seg.yTop,
+                    leafLength,
+                    -Math.PI / 2 +
+                        lerp(
+                            leaf.side * 0.1 - Math.PI / 2,
+                            -Math.PI / 2 + leaf.baseAngle,
+                            easeOutCubic(leafDevelopment),
+                        ),
+                    leafLength * lerp(0.15, 0.11, leafDevelopment),
+                    0.5,
+                    time,
+                    leaf,
+                    leafDevelopment,
+                );
+                ctx.restore();
+            });
+        }
+
+        let lastScrollProgress = 0;
+        function animate() {
+            if (!section || !canvas || !ctx) return;
+
+            const rect = section.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+
+            // Stage positions
+            const targetBaseY = viewportHeight * 0.85; // Fixed base at ~15% from bottom (approx 10% requested)
+            const stage1PinThreshold = viewportHeight * 0.6; // Pin when section top reaches here
+
+            // Calculate growth progress
+            // Start growth when section is becoming visible
+            const startTrigger = viewportHeight * 0.9;
+            const totalGrowthDistance = rect.height * 0.7;
+            const growthProgress = Math.min(
+                1,
+                Math.max(0, (startTrigger - rect.top) / totalGrowthDistance),
+            );
+
+            lastScrollProgress += (growthProgress - lastScrollProgress) * 0.1;
+
+            // Stages logic for baseY
+            let currentBaseY = targetBaseY;
+
+            if (rect.top > stage1PinThreshold) {
+                // Stage 1: Scroll in with page
+                // Distance from pin point increases as rect.top moves below threshold
+                currentBaseY = targetBaseY + (rect.top - stage1PinThreshold);
+            } else if (rect.bottom < targetBaseY) {
+                // Stage 3: Scroll out with page
+                currentBaseY = targetBaseY - (targetBaseY - rect.bottom);
+            }
+            // Else Stage 2: currentBaseY stays targetBaseY (fixed position)
+
+            if (lastScrollProgress > 0.01) {
+                canvas.classList.add("visible");
+            }
+
+            drawBamboo(lastScrollProgress, Date.now(), currentBaseY);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    }
+
+    // Handle Astro page transitions
+    document.addEventListener("astro:page-load", initBamboo);
+</script>
