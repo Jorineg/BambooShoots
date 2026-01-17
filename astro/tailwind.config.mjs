@@ -3,6 +3,10 @@ export default {
     content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
     theme: {
         extend: {
+            screens: {
+                '2xl': '1415px',
+                '3xl': '1730px',
+            },
             colors: {
                 // NGO Branding - Natural bamboo/green tones
                 bamboo: {

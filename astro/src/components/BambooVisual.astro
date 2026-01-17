@@ -15,6 +15,7 @@
         width: 240px;
         pointer-events: none;
         z-index: 10;
+        opacity: 0.2;
     }
 
     #bambooCanvas {
@@ -114,11 +115,11 @@
 
         // Bamboo configuration
         const config = {
-            maxSegments: 14, // Reduced from 11
+            maxSegments: 17, // Reduced from 11
             baseWidth: 10, // Reduced from 12
             maxWidth: 26, // Reduced from 32
-            baseSegmentHeight: 30, // Reduced from 35
-            maxSegmentHeight: 60, // Reduced from 75
+            baseSegmentHeight: 32, // Relative to 1000px height
+            maxSegmentHeight: 65, // Relative to 1000px height
             leafLength: 35, // Reduced from 40
             maxLeafLength: 80, // Reduced from 90
             swayAmount: 2.0,
@@ -247,7 +248,7 @@
         });
 
         const crownSpreadOrder = [0, 6, 3, 9, 1, 7, 4, 10, 2, 8, 5, 11];
-        for (let idx = 0; idx < 12; idx++) {
+        for (let idx = 0; idx < 3; idx++) {
             const j = crownSpreadOrder[idx];
             const angle = (j / 12) * Math.PI * 2 - Math.PI;
             const side = angle < 0 ? -1 : 1;
@@ -342,7 +343,7 @@
             sway: number,
         ) {
             if (!ctx) return;
-            const color = lerpColor(COLOR_LIGHT, COLOR_DARK, colorProgress);
+            const color = lerpColor(lerpColor(COLOR_LIGHT, COLOR_DARK, colorProgress), { r: 180, g: 255, b: 180 }, 0.3);
             const darkColor = lerpColor(color, { r: 0, g: 0, b: 0 }, 0.3);
             const nodeHeight = width * 0.25;
             const gradient = ctx.createLinearGradient(
@@ -365,7 +366,7 @@
             ctx.ellipse(
                 x + sway * 0.5,
                 y,
-                width * 0.6,
+                width * 0.5,
                 nodeHeight,
                 0,
                 0,
@@ -555,8 +556,8 @@
                 easedProgress,
             );
             const currentSegmentHeight = lerp(
-                config.baseSegmentHeight,
-                config.maxSegmentHeight,
+                height * (config.baseSegmentHeight / 1000),
+                height * (config.maxSegmentHeight / 1000),
                 easedProgress,
             );
 
@@ -566,16 +567,16 @@
                 const segmentProgress = i / config.maxSegments;
                 const isPartialSegment = i === numSegments - 1;
                 let segmentGrowth = 1;
-                if (isPartialSegment) {
+                //if (isPartialSegment) {
                     const segmentStart = i / config.maxSegments;
                     const segmentEnd = (i + 1) / config.maxSegments;
                     segmentGrowth =
                         (easedProgress - segmentStart) /
-                        (segmentEnd - segmentStart);
+                        (segmentEnd - segmentStart)/6;
                     segmentGrowth = easeInOutQuad(
                         Math.min(1, Math.max(0, segmentGrowth)),
                     );
-                }
+                //}
                 const taperCurve = Math.pow(1 - segmentProgress, 0.6);
                 const widthFactor = 0.2 + taperCurve * 0.8;
                 const segmentWidthBottom = currentMaxWidth * widthFactor;
@@ -709,6 +710,7 @@
                         targetSeg = segmentData[lastSegIndex - 1];
                         crownOpacity = 1 - lastSeg.segmentGrowth / 0.85;
                     } else return;
+                    crownOpacity = easeOutCubic(Math.min(1,Math.max(0,(progress-0.8)*5)))*crownOpacity;
                     if (crownOpacity <= 0) return;
                     const leafX =
                         centerX +
@@ -722,7 +724,7 @@
                         0.95;
                     drawLeaf(
                         leafX,
-                        targetSeg.yTop - 8,
+                        targetSeg.yTop,
                         leafLength,
                         leaf.baseAngle,
                         leafLength * 0.11,
@@ -769,10 +771,10 @@
                     leafX,
                     seg.yTop,
                     leafLength,
-                    -Math.PI / 2 +
+                    -0.15+
                         lerp(
-                            leaf.side * 0.1 - Math.PI / 2,
-                            -Math.PI / 2 + leaf.baseAngle,
+                            leaf.side * 0.1,
+                            leaf.baseAngle,
                             easeOutCubic(leafDevelopment),
                         ),
                     leafLength * lerp(0.15, 0.11, leafDevelopment),
@@ -789,6 +791,11 @@
         function animate() {
             if (!section || !canvas || !ctx || !container) return;
 
+            if (section.offsetWidth < 1400) {
+                requestAnimationFrame(animate);
+                return;  
+            }
+
             const rect = section.getBoundingClientRect();
 
             // Sync horizontal position on scroll/animate to keep aligned with page layout
@@ -798,13 +805,13 @@
             const viewportHeight = window.innerHeight;
 
             // Stage positions
-            const targetBaseY = viewportHeight * 0.93; // Fixed base lower (approx 7% from bottom)
-            const stage1PinThreshold = viewportHeight * 0.6; // Pin when section top reaches here
+            const targetBaseY = viewportHeight * 0.92; // Slightly higher base
+            const stage1PinThreshold = viewportHeight * 0.7; // Pin base when section top moves lower
 
             // Calculate growth progress
-            // Start growth when section is becoming visible
-            const startTrigger = viewportHeight * 0.9;
-            const totalGrowthDistance = rect.height * 0.95; // Slower growth (stretch over full section)
+            // Start growth later - when section top is closer to middle
+            const startTrigger = viewportHeight * 0.7; // Match pin threshold for Stage 2 growth
+            const totalGrowthDistance = rect.height * 0.9;
             const growthProgress = Math.min(
                 1,
                 Math.max(0, (startTrigger - rect.top) / totalGrowthDistance),
