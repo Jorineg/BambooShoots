@@ -135,7 +135,7 @@ const navLabels: Record<string, any> = {
                 class="nav-link-dynamic text-white/90 hover:text-white font-medium transition-all duration-300 relative py-2"
                 data-nav-id={item.href}
               >
-                <span class="relative z-10 text-[10px] uppercase tracking-[0.2em] font-bold">
+                <span class="relative z-10 text-[11px] uppercase tracking-[0.2em] font-bold">
                   {t(navLabels[item.href], locale) || item.label}
                 </span>
                 <!-- Old underlines removed for the liquid one -->
@@ -174,7 +174,7 @@ const navLabels: Record<string, any> = {
                 d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
               ></path>
             </svg>
-            <span class="text-[10px] font-bold uppercase tracking-widest"
+            <span class="text-[11px] font-bold uppercase tracking-widest"
               >{localeNames[locale]}</span
             >
           </button>
@@ -187,7 +187,7 @@ const navLabels: Record<string, any> = {
               locales.map((loc) => (
                 <a
                   href={localizedUrl(currentPath, loc)}
-                  class={`block px-5 py-2.5 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? "text-secondary bg-white/5" : "text-white/60 hover:text-white"}`}
+                  class={`block px-5 py-2.5 text-[11px] font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10 ${loc === locale ? "text-secondary bg-white/5" : "text-white/60 hover:text-white"}`}
                   onclick={`document.cookie = 'preferred-language=${loc}; path=/; max-age=31536000; samesite=lax'`}
                 >
                   {localeNames[loc]}
