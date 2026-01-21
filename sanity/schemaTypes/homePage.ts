@@ -152,6 +152,7 @@ export default defineType({
                 localizedString('officeTitle', 'Office Title'),
                 localizedString('locationLabel', 'Location Label'),
                 localizedText('locationValue', 'Location Address'),
+                defineField({ name: 'googleMapsUrl', title: 'Google Maps URL', type: 'url' }),
                 localizedString('phoneLabel', 'Phone Label'),
                 defineField({ name: 'phoneValue', title: 'Phone Number', type: 'string' }),
                 localizedString('footerText', 'Footer Text')
