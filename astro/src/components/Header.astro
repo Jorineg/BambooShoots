@@ -756,12 +756,51 @@ const navLabels: Record<string, any> = {
       }
     });
 
+    // --- URL Hash Tracking (must be declared early for all handlers) ---
+    let lastUrlHash = window.location.hash;
+    let hashUpdateTimeout: ReturnType<typeof setTimeout> | null = null;
+    let isNavigating = false; // Flag to disable hash updates during navigation
+
+    // Debounced URL hash update using replaceState to avoid history pollution
+    function updateUrlHash(hash: string) {
+      // Don't update hash if we're navigating away from the page
+      if (isNavigating) return;
+      if (hash === lastUrlHash) return;
+      
+      if (hashUpdateTimeout) {
+        clearTimeout(hashUpdateTimeout);
+      }
+      
+      hashUpdateTimeout = setTimeout(() => {
+        // Double-check we're not navigating when the timeout fires
+        if (isNavigating) return;
+        if (hash !== lastUrlHash) {
+          const newUrl = hash ? `${window.location.pathname}${hash}` : window.location.pathname;
+          history.replaceState(null, '', newUrl);
+          lastUrlHash = hash;
+        }
+      }, 200); // 200ms debounce for smooth feel
+    }
+    
+    function clearHashTimeout() {
+      if (hashUpdateTimeout) {
+        clearTimeout(hashUpdateTimeout);
+        hashUpdateTimeout = null;
+      }
+    }
+    
+    function disableHashUpdates() {
+      isNavigating = true;
+      clearHashTimeout();
+    }
+
     // Close menu on link click
     mobileMenu?.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu.classList.remove("is-open");
         mobileMenuBtn?.classList.remove("is-active");
         document.body.classList.remove("menu-open");
+        disableHashUpdates(); // Disable hash updates during navigation
       });
     });
 
@@ -840,8 +879,16 @@ const navLabels: Record<string, any> = {
       
       link.addEventListener('click', () => {
         container.style.setProperty('--nav-speed', '0.6s');
+        // Only disable hash updates for non-anchor links (page navigation)
+        const href = link.getAttribute('href') || '';
+        if (!href.startsWith('#')) {
+          disableHashUpdates();
+        }
       });
     });
+    
+    // Also disable on page navigation (safety net for View Transitions)
+    document.addEventListener('astro:before-preparation', disableHashUpdates);
 
     function syncWithScroll() {
       if (isHovering || !container || !bar) return;
@@ -879,6 +926,13 @@ const navLabels: Record<string, any> = {
         }
 
         const currentLink = anchors[activeIdx].link;
+        const currentAnchorId = anchors[activeIdx].link.getAttribute('data-nav-id') || '';
+        
+        // Update URL hash when section changes (only if not in transition)
+        if (progress < 0.3) {
+          updateUrlHash(currentAnchorId);
+        }
+        
         if (progress > 0 && activeIdx < anchors.length - 1) {
           const nextLink = anchors[activeIdx + 1].link;
           
