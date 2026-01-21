@@ -49,10 +49,10 @@ const navLabels: Record<string, any> = {
       class="flex items-center justify-between h-[var(--header-height-mobile)] md:h-[var(--header-height-desktop)]"
     >
       <!-- Logo -->
-      <a href={localizedUrl("/", locale)} class="flex items-center gap-3 group">
+      <a href={localizedUrl("/", locale)} class="flex items-center gap-3 group flex-shrink-0">
         {
           ti(settings?.logoLight, locale) || ti(settings?.logoDark, locale) ? (
-            <div class="main-logo-wrapper relative w-10 h-10 md:w-12 md:h-12 group-hover:scale-105 transition-transform duration-300">
+            <div class="main-logo-wrapper relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
               {ti(settings?.logoLight, locale) && (
                 <img
                   src={urlFor(ti(settings.logoLight, locale)).width(96).height(96).format('webp').quality(90).url()}
@@ -91,7 +91,7 @@ const navLabels: Record<string, any> = {
         }
         {
           ti(settings?.titleLogoLight, locale) || ti(settings?.titleLogoDark, locale) ? (
-            <div class="header-title-logo-wrapper relative h-8 md:h-10 hidden sm:flex items-center">
+            <div class="header-title-logo-wrapper relative h-8 md:h-10 hidden sm:flex items-center flex-shrink-0">
               {ti(settings?.titleLogoLight, locale) && (
                 <img
                   src={urlFor(ti(settings.titleLogoLight, locale)).width(400).height(80).fit('max').format('webp').quality(90).url()}
@@ -123,7 +123,7 @@ const navLabels: Record<string, any> = {
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden lg:flex items-center gap-8 xl:gap-10 relative nav-container">
+      <div class="hidden xl:flex items-center gap-8 2xl:gap-10 relative nav-container ml-8 mr-8">
         {
           navItems.map((item) => (
             <>
@@ -154,7 +154,7 @@ const navLabels: Record<string, any> = {
       <!-- Language Toggle & Donate Button -->
       <div class="flex items-center gap-2 md:gap-8">
         <!-- Language Selector -->
-        <div class="relative group">
+        <div class="relative group hidden xl:block">
           <button
             class="lang-btn flex items-center gap-2 text-white hover:text-white transition-colors duration-300 px-3 py-1.5 rounded-full hover:bg-white/10"
             aria-label="Select language"
@@ -214,7 +214,7 @@ const navLabels: Record<string, any> = {
 
         <button
           id="mobile-menu-btn"
-          class="lg:hidden relative p-2 text-white z-50 group"
+          class="xl:hidden relative p-2 text-white z-50 group"
           aria-label="Toggle menu"
         >
           <div class="hamburger-lines w-6 h-4.5 flex flex-col justify-between overflow-visible">
@@ -229,7 +229,7 @@ const navLabels: Record<string, any> = {
     <!-- Mobile Navigation (Full Screen Overlay) -->
     <div
       id="mobile-menu"
-      class="lg:hidden fixed inset-0 z-40 translate-x-full transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] invisible"
+      class="xl:hidden fixed inset-0 z-40 translate-x-full transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] invisible"
     >
       <!-- Backdrop with blur -->
       <div class="absolute inset-0 bg-branding-dark/95 backdrop-blur-2xl"></div>
