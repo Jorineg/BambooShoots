@@ -15,27 +15,27 @@ const defaultTiers = [
     {
         amount: 35,
         title: {
-            de: "Vorschulplatz",
-            en: "Preschool Place",
-            kh: "កន្លែងមត្តេយ្យ",
+            de: "Vorschulplatz finanzieren",
+            en: "Fund a Preschool Place",
+            kh: "ផ្តល់មូលនិធិកន្លែងមត្តេយ្យ",
         },
         description: {
-            de: "5x pro Woche für einen Vorschulplatz – inklusive Mahlzeit & Material",
-            en: "5x per week for a preschool place – including meal & materials",
-            kh: "5 ដង/សប្តាហ៍ សម្រាប់កន្លែងមត្តេយ្យ – រួមទាំងអាហារ និងសម្ភារៈ",
+            de: "Ihre Spende ermöglicht es einem Kind 5 x pro Woche in die Vorschule gehen zu können – inklusive Mahlzeit & Material.",
+            en: "Your donation enables a child to attend preschool 5x per week – including meal & materials.",
+            kh: "ការបរិច្ចាគរបស់អ្នកអាចឱ្យកុមារចូលរៀនមត្តេយ្យ 5 ដង/សប្តាហ៍ – រួមទាំងអាហារ និងសម្ភារៈ។",
         },
     },
     {
         amount: 15,
         title: {
-            de: "Nachmittagsförderung",
+            de: "Nachmittags-förderung",
             en: "Afternoon Support",
             kh: "ការគាំទ្រពេលរសៀល",
         },
         description: {
-            de: "3x pro Woche an zwei Standorten + Englisch – inklusive Mahlzeit & Material",
-            en: "3x per week at two locations + English – including meal & materials",
-            kh: "3 ដង/សប្តាហ៍ នៅពីរទីតាំង + អង់គ្លេស – រួមទាំងអាហារ និងសម្ភារៈ",
+            de: "3 x pro Woche an zwei Standorten + Englisch – inklusive Mahlzeit & Material.",
+            en: "3x per week at two locations + English – including meal & materials.",
+            kh: "3 ដង/សប្តាហ៍ នៅពីរទីតាំង + អង់គ្លេស – រួមទាំងអាហារ និងសម្ភារៈ។",
         },
     },
     {
@@ -46,9 +46,9 @@ const defaultTiers = [
             kh: "ជំនួយវិបត្តិ និងការងារសហគមន៍",
         },
         description: {
-            de: "Freier Betrag für beispielsweise Fahrräder, Reis- oder Hygienepakete",
-            en: "Any amount for bicycles, rice or hygiene packages",
-            kh: "ចំនួនណាមួយសម្រាប់កង់ អង្ករ ឬកញ្ចប់អនាម័យ",
+            de: "Krisenhilfe & Gemeindearbeit für beispielsweise Fahrräder, Reis- oder Hygienepakete.",
+            en: "Crisis aid & community work for bicycles, rice or hygiene packages.",
+            kh: "ជំនួយវិបត្តិ និងការងារសហគមន៍សម្រាប់កង់ អង្ករ ឬកញ្ចប់អនាម័យ។",
         },
     },
 ];
@@ -135,7 +135,7 @@ const fallbackHero = `${import.meta.env.BASE_URL}images/donation_bg.png`;
         </div>
 
         <!-- Donation tiers -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 md:mb-32">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-32 items-stretch">
             {
                 displayTiers.map((tier, index) => {
                     const paypalUrl =
@@ -143,16 +143,20 @@ const fallbackHero = `${import.meta.env.BASE_URL}images/donation_bg.png`;
                             ? `${settings.donationLinks.paypal.replace(/\/$/, "")}/${tier.amount}`
                             : settings?.donationLinks?.paypal;
 
+                    // Different background styles for each tier
+                    const tierBgClasses = [
+                        "bg-white/[0.08] hover:bg-white/[0.12]", // Tier 1 - lightest, more white
+                        "bg-[#1a4d2e]/60 hover:bg-[#1a4d2e]/75", // Tier 2 - medium green
+                        "bg-[#0f3d22]/80 hover:bg-[#0f3d22]/90", // Tier 3 - darkest green
+                    ];
+
                     return (
-                        <a
-                            href={paypalUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class={`group relative bg-white/[0.03] backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-12 border border-white/5 hover:bg-white/[0.07] hover:border-white/10 transition-all duration-700 reveal`}
+                        <div
+                            class={`group relative ${tierBgClasses[index]} backdrop-blur-xl rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-10 border border-white/10 transition-all duration-700 reveal flex flex-col`}
                             style={`transition-delay: ${index * 150}ms`}
                         >
                             {index === 0 && (
-                                <div class="absolute top-8 right-8 bg-secondary text-white text-[10px] uppercase tracking-widest font-bold px-4 py-1.5 rounded-full shadow-lg">
+                                <div class="absolute -top-4 left-8 bg-secondary text-white text-[10px] uppercase tracking-[0.2em] font-bold px-5 py-2 rounded-full shadow-lg">
                                     {locale === "de"
                                         ? "Vorschlag"
                                         : locale === "en"
@@ -161,32 +165,43 @@ const fallbackHero = `${import.meta.env.BASE_URL}images/donation_bg.png`;
                                 </div>
                             )}
 
-                            <div class="text-4xl md:text-6xl font-heading font-extrabold mb-6 text-white group-hover:scale-105 transition-transform duration-700 origin-left tracking-tight">
-                                {tier.amount
-                                    ? `${tier.amount} €`
-                                    : locale === "de"
-                                      ? "Offen"
-                                      : locale === "en"
-                                        ? "Open"
-                                        : "បើកចំហ"}
-                            </div>
-
-                            <h4 class="text-xl font-bold mb-6 text-white group-hover:text-secondary transition-colors duration-500">
+                            {/* Title - large heading with fixed min-height for alignment */}
+                            <h4 class="text-3xl md:text-4xl font-heading font-extrabold mb-4 text-white leading-tight tracking-tight min-h-[4.5rem] md:min-h-[5.5rem]">
                                 {t(tier.title, locale)}
                             </h4>
 
-                            <p class="text-white/50 text-base leading-relaxed mb-10 font-light italic">
+                            {/* Amount with "mit einmalig" prefix - fixed height for alignment */}
+                            <p class="text-white/70 text-base md:text-lg mb-6 min-h-[1.75rem]">
+                                {tier.amount ? (
+                                    <>
+                                        {locale === "de"
+                                            ? "mit einmalig "
+                                            : locale === "en"
+                                              ? "with a one-time "
+                                              : "ជាមួយ "}
+                                        <span class="font-extrabold text-white">{tier.amount}€</span>
+                                    </>
+                                ) : null}
+                            </p>
+
+                            {/* Description */}
+                            <p class="text-white/50 text-base leading-relaxed font-light italic flex-grow">
                                 {t(tier.description, locale)}
                             </p>
 
-                            <div class="flex items-center gap-3 text-secondary font-bold text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform duration-500">
+                            {/* Donate button - pushed to bottom */}
+                            <a
+                                href={paypalUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex items-center gap-3 text-secondary font-bold text-xs uppercase tracking-[0.15em] group-hover:translate-x-2 transition-transform duration-500 mt-8 pt-6 border-t border-white/10"
+                            >
                                 <span>
-                                    {t(settings?.labels?.donateNow, locale) ||
-                                        (locale === "de"
-                                            ? "Jetzt spenden"
-                                            : locale === "en"
-                                              ? "Donate now"
-                                              : "បរិច្ចាគឥឡូវ")}
+                                    {locale === "de"
+                                        ? "Per PayPal spenden"
+                                        : locale === "en"
+                                          ? "Donate via PayPal"
+                                          : "បរិច្ចាគតាម PayPal"}
                                 </span>
                                 <svg
                                     class="w-5 h-5"
@@ -201,8 +216,8 @@ const fallbackHero = `${import.meta.env.BASE_URL}images/donation_bg.png`;
                                         d="M17 8l4 4m0 0l-4 4m4-4H3"
                                     />
                                 </svg>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     );
                 })
             }
