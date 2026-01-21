@@ -65,7 +65,7 @@ const text = footerText[locale];
               >{t(settings?.siteTitle, locale) || "Bamboo Shoots"}</span
             >
           </div>
-          <p class="text-white/60 text-sm leading-relaxed mb-6">
+          <p class="text-white/70 text-sm leading-relaxed mb-6">
             {
               t(settings?.tagline, locale) ||
                 (locale === "de"
@@ -83,7 +83,7 @@ const text = footerText[locale];
             settings?.socialMedia?.instagram ||
             settings?.socialMedia?.youtube) && (
             <div>
-              <h4 class="font-heading font-bold text-xs uppercase tracking-widest text-white/40 mb-4">
+              <h4 class="font-heading font-bold text-xs uppercase tracking-widest text-white/70 mb-4">
                 {t(settings?.labels?.followUs, locale) || text.followUs}
               </h4>
               <div class="flex gap-4">
@@ -92,7 +92,7 @@ const text = footerText[locale];
                     href={settings.socialMedia.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-white/60 hover:text-white transition-all duration-300 hover:scale-110 active:scale-100"
+                    class="text-white/70 hover:text-white transition-all duration-300 hover:scale-110 active:scale-100"
                     aria-label="Facebook"
                   >
                     <svg
@@ -109,7 +109,7 @@ const text = footerText[locale];
                     href={settings.socialMedia.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-white/60 hover:text-white transition-all duration-300 hover:scale-110 active:scale-100"
+                    class="text-white/70 hover:text-white transition-all duration-300 hover:scale-110 active:scale-100"
                     aria-label="Instagram"
                   >
                     <svg
@@ -126,7 +126,7 @@ const text = footerText[locale];
                     href={settings.socialMedia.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-white/60 hover:text-white transition-all duration-300 hover:scale-110 active:scale-100"
+                    class="text-white/70 hover:text-white transition-all duration-300 hover:scale-110 active:scale-100"
                     aria-label="YouTube"
                   >
                     <svg
@@ -147,16 +147,16 @@ const text = footerText[locale];
       <!-- Contact Germany -->
       <div>
         <h3
-          class="font-heading font-bold text-xs uppercase tracking-widest text-white/40 mb-6"
+          class="font-heading font-bold text-xs uppercase tracking-widest text-white/70 mb-6"
         >
           {t(settings?.labels?.contact, locale) || text.contact}
         </h3>
-        <address class="not-italic text-white/60 text-sm space-y-3">
-          <p class="font-semibold text-white/40 text-base">Bamboo Shoots e.V.</p>
+        <address class="not-italic text-white/70 text-sm space-y-3">
+          <p class="font-semibold text-white/70 text-base">Bamboo Shoots e.V.</p>
           <p>Hohenzollernring 18a<br />13585 Berlin</p>
           <a
             href={`mailto:${settings?.contactEmail || "info@bamboo-shoots.de"}`}
-            class="inline-block text-white/50 hover:text-white transition-all duration-300 pt-1 border-b border-white/10"
+            class="inline-block text-white/70 hover:text-white transition-all duration-300 pt-1 border-b border-white/10"
           >
             {settings?.contactEmail || "info@bamboo-shoots.de"}
           </a>
@@ -166,15 +166,15 @@ const text = footerText[locale];
       <!-- Donation Account (Simplified for balance) -->
       <div>
         <h3
-          class="font-heading font-bold text-xs uppercase tracking-widest text-white/40 mb-6"
+          class="font-heading font-bold text-xs uppercase tracking-widest text-white/70 mb-6"
         >
           {t(settings?.labels?.donateAccount, locale) || text.donate}
         </h3>
-        <div class="text-white/60 text-sm space-y-3">
+        <div class="text-white/70 text-sm space-y-3">
           {
             settings?.bankAccount?.[locale] ? (
               <>
-                <p class="font-semibold text-white/40 text-base">
+                <p class="font-semibold text-white/70 text-base">
                   {settings.bankAccount[locale].name}
                 </p>
                 <p>{settings.bankAccount[locale].bank}</p>
@@ -204,7 +204,7 @@ const text = footerText[locale];
       <!-- Legal Links -->
       <div>
         <h3
-          class="font-heading font-bold text-xs uppercase tracking-widest text-white/40 mb-6"
+          class="font-heading font-bold text-xs uppercase tracking-widest text-white/70 mb-6"
         >
           {t(settings?.labels?.legal, locale) || text.legal}
         </h3>
@@ -212,7 +212,7 @@ const text = footerText[locale];
           <li>
             <a
               href={localizedUrl("/impressum", locale)}
-              class="text-white/60 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block"
+              class="text-white/70 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block"
             >
               {t(settings?.labels?.imprint, locale) || text.imprint}
             </a>
@@ -220,7 +220,7 @@ const text = footerText[locale];
           <li>
             <a
               href={localizedUrl("/datenschutz", locale)}
-              class="text-white/60 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block"
+              class="text-white/70 hover:text-white transition-all duration-300 hover:translate-x-1 inline-block"
             >
               {t(settings?.labels?.privacy, locale) || text.privacy}
             </a>
@@ -235,7 +235,7 @@ const text = footerText[locale];
     >
       <div class="max-w-2xl">
         <p
-          class="text-xs text-white/40 leading-relaxed uppercase tracking-wide"
+          class="text-xs text-white/70 leading-relaxed uppercase tracking-wide"
         >
           {t(settings?.labels?.nonprofit, locale) || text.nonprofit}
           {
@@ -247,7 +247,7 @@ const text = footerText[locale];
           }
         </p>
       </div>
-      <div class="text-white/30 text-xs font-medium whitespace-nowrap">
+      <div class="text-white/50 text-xs font-medium whitespace-nowrap">
         {t(settings?.labels?.copyright, locale) || text.copyright}
       </div>
     </div>

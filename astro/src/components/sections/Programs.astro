@@ -102,7 +102,7 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
       <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tight">
         {t(title, locale) || (locale === 'de' ? 'Unsere Arbeit' : locale === 'en' ? 'Our Programs' : 'កម្មវិធីរបស់យើង')}
       </h3>
-      <p class="text-branding-muted text-lg md:text-2xl font-light leading-relaxed max-w-2xl">
+      <p class="text-branding-dark/70 text-lg md:text-2xl font-light leading-relaxed max-w-2xl">
         {t(intro, locale) || (locale === 'de' 
           ? 'Wir unterstützen Kinder und Familien durch gezielte Bildungsprojekte und soziale Arbeit.' 
           : locale === 'en'
@@ -151,7 +151,7 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
                   {t(program.title, locale)}
                 </h4>
                 
-                <p class="text-lg md:text-xl text-branding-muted leading-relaxed font-light mb-10">
+                <p class="text-lg md:text-xl text-branding-dark/70 leading-relaxed font-light mb-10">
                   {t(program.description, locale)}
                 </p>
 
@@ -160,7 +160,7 @@ const displayPrograms = programs?.length > 0 ? programs : defaultPrograms;
                     {program.features.map((feature: any) => (
                       <li class="flex items-start gap-4 group/item">
                         <div class="w-1.5 h-1.5 rounded-full bg-secondary mt-2.5 shrink-0 group-hover/item:scale-150 transition-transform duration-300"></div>
-                        <span class="text-branding-muted font-medium">
+                        <span class="text-branding-dark/70 font-medium">
                           {typeof feature === 'string' ? feature : t(feature, locale)}
                         </span>
                       </li>
