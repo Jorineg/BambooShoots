@@ -6,12 +6,7 @@ export default defineType({
     title: 'History Entry',
     type: 'document',
     fields: [
-        defineField({
-            name: 'year',
-            title: 'Year/Label',
-            type: 'string',
-            description: 'E.g. 2003 or "Today". Used for sorting and as a small label.'
-        }),
+        localizedString('year', 'Year/Label'),
         localizedString('title', 'Title'),
         localizedText('content', 'Content'),
         defineField({
@@ -36,13 +31,13 @@ export default defineType({
         {
             title: 'Year',
             name: 'yearAsc',
-            by: [{ field: 'year', direction: 'asc' }]
+            by: [{ field: 'year.de', direction: 'asc' }]
         }
     ],
     preview: {
         select: {
             title: 'title.de',
-            year: 'year',
+            year: 'year.de',
             media: 'image'
         },
         prepare({ title, year, media }) {

@@ -9,12 +9,14 @@ export const localeNames: Record<Locale, string> = {
     kh: 'ភាសាខ្មែរ'
 };
 
-// Get localized text from Sanity object
+// Get localized text from Sanity object (supports legacy string format for migration)
 export function t(
-    localizedObject: { de?: string; en?: string; kh?: string } | undefined,
+    localizedObject: { de?: string; en?: string; kh?: string } | string | undefined,
     locale: Locale
 ): string {
     if (!localizedObject) return '';
+    // Handle legacy string format (for migration compatibility)
+    if (typeof localizedObject === 'string') return localizedObject;
     return localizedObject[locale] || localizedObject[defaultLocale] || '';
 }
 
