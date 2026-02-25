@@ -12,6 +12,21 @@ export default defineType({
             type: 'string',
             validation: Rule => Rule.required()
         }),
+        defineField({
+            name: 'category',
+            title: 'Category',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Leitung', value: 'directors' },
+                    { title: 'Lehrer', value: 'teachers' },
+                    { title: 'Team', value: 'team' }
+                ],
+                layout: 'radio'
+            },
+            initialValue: 'team',
+            validation: Rule => Rule.required()
+        }),
         localizedString('role', 'Role'),
         defineField({
             name: 'image',
@@ -37,7 +52,16 @@ export default defineType({
         select: {
             title: 'name',
             subtitle: 'role.de',
-            media: 'image'
+            media: 'image',
+            category: 'category'
+        },
+        prepare({ title, subtitle, media, category }) {
+            const labels: Record<string, string> = { directors: 'Leitung', teachers: 'Lehrer', team: 'Team' }
+            return {
+                title,
+                subtitle: `${labels[category] || category} – ${subtitle || ''}`,
+                media
+            }
         }
     }
 })

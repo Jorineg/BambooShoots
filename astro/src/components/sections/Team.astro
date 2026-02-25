@@ -10,29 +10,44 @@ interface Props {
 
 const { locale, members, data } = Astro.props;
 
-// Default team members if none from Sanity
 const defaultMembers = [
   {
     name: 'Sothy Marek',
+    category: 'directors',
     role: { de: 'Direktor der kambodschanischen NGO', en: 'Director of the Cambodian NGO', kh: 'នាយកអង្គការកម្ពុជា' },
     description: { 
-      de: 'Leitet die operative Arbeit vor Ort in Kambodscha.', 
-      en: 'Leads the operational work on site in Cambodia.',
-      kh: 'ដឹកនាំការងារប្រតិបត្តិការនៅកម្ពុជា។'
+      de: 'Sothy Marek ist der Direktor der kambodschanischen NGO und hat diese gemeinsam mit seiner Frau Petra aufgebaut.', 
+      en: 'Sothy Marek is the director of the Cambodian NGO and built it together with his wife Petra.',
+      kh: 'សូធី ម៉ារ៉េក គឺជាប្រធានអង្គការមិនមែនរដ្ឋាភិបាលកម្ពុជា ហើយបានកសាងវាឡើងរួមជាមួយភរិយារបស់គាត់គឺ ភីត្រា។'
     }
   },
   {
     name: 'Petra Marek',
-    role: { de: 'Organisation & Sozialarbeit', en: 'Organization & Social Work', kh: 'អង្គការ និងសង្គមកិច្ច' },
+    category: 'directors',
+    role: { de: 'Organisation & Sozialarbeit', en: 'Organization & Social Work', kh: 'ការរៀបចំ និងការងារសង្គម' },
     description: { 
-      de: 'Lebt seit mehr als 30 Jahren in Kambodscha und hat die NGO gemeinsam mit ihrem Mann aufgebaut.', 
-      en: 'Has been living in Cambodia for over 30 years and built the NGO together with her husband.',
-      kh: 'រស់នៅកម្ពុជាជាង 30 ឆ្នាំ និងបានបង្កើតអង្គការជាមួយប្តី។'
+      de: 'Petra Marek lebt seit mehr als 30 Jahren in Kambodscha und leitet die Organisation und Sozialarbeit vor Ort.', 
+      en: 'Petra Marek has lived in Cambodia for more than 30 years and manages the organization and social work on site.',
+      kh: 'ភីត្រា ម៉ារ៉េក បានរស់នៅក្នុងប្រទេសកម្ពុជាអស់រយៈពេលជាង ៣០ ឆ្នាំមកហើយ ហើយគាត់ដឹកនាំអង្គការ និងការងារសង្គមនៅទីនោះ។'
+    }
+  },
+  {
+    name: 'Unsere Lehrer',
+    category: 'teachers',
+    role: { de: 'Lehrer an den Schulen', en: 'Teachers at the schools', kh: 'គ្រូបង្រៀននៅសាលា' },
+    description: { 
+      de: 'Engagierte Lehrkräfte, die täglich für die Bildung der Kinder sorgen.', 
+      en: 'Dedicated teachers who provide education for the children every day.',
+      kh: 'គ្រូបង្រៀនដែលខិតខំប្រឹងប្រែងផ្តល់ការអប់រំដល់កុមារជារៀងរាល់ថ្ងៃ។'
     }
   }
 ];
 
 const displayMembers = members?.length > 0 ? members : defaultMembers;
+
+const directors = displayMembers.filter((m: any) => m.category === 'directors');
+const teachers = displayMembers.filter((m: any) => m.category === 'teachers');
+const team = displayMembers.filter((m: any) => m.category === 'team');
 
 const defaultTitle = { de: 'Unser Team vor Ort', en: 'Our Team on Site', kh: 'ក្រុមរបស់យើងនៅកន្លែង' };
 const defaultIntro = {
@@ -40,13 +55,15 @@ const defaultIntro = {
   en: 'Our work is carried by a dedicated team of about ten Cambodian teachers and staff members.',
   kh: 'ការងាររបស់យើងត្រូវបានអនុវត្តដោយក្រុមគ្រូបង្រៀន និងបុគ្គលិកកម្ពុជាប្រហែល 10 នាក់។'
 };
+
+const teachersLabel = { de: 'Unsere Lehrer:innen', en: 'Our Teachers', kh: 'គ្រូបង្រៀនរបស់យើង' };
+const teamLabel = { de: 'Unser Team', en: 'Our Team', kh: 'ក្រុមរបស់យើង' };
 ---
 
 <section id="team" class="section bg-branding-bg py-16 md:py-48">
   <div class="container-custom">
     <!-- Section header -->
     <div class="max-w-4xl mb-16 md:mb-32 reveal border-l-[3px] border-primary/20 pl-6 md:pl-16">
-
       <h3 class="text-4xl md:text-6xl font-heading font-extrabold text-branding-dark mb-10 tracking-tight">
         {t(data?.title || defaultTitle, locale)}
       </h3>
@@ -55,44 +72,136 @@ const defaultIntro = {
       </p>
     </div>
 
-    <!-- Team members -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-      {displayMembers.map((member, index) => (
-        <div class={`reveal reveal-delay-${index * 150} flex flex-col bg-white rounded-[2rem] md:rounded-[2.5rem] border border-black/5 hover:shadow-2xl transition-all duration-700 overflow-hidden group`}>
-          <!-- Photo -->
-          <div class="aspect-[4/3] relative overflow-hidden">
-            {member.image ? (
-              <SanityImage 
-                src={member.image}
-                alt={member.name}
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                width={400}
-                aspectRatio={4/3}
-                widths={[200, 400, 600, 800]}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
-            ) : (
-              <div class="w-full h-full bg-branding-accent flex items-center justify-center">
-                <div class="w-20 h-1 bg-primary/20 rounded-full"></div>
-              </div>
-            )}
-            <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500"></div>
+    <!-- Directors: Sothy & Petra -->
+    {directors.length > 0 && (
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12 mb-16 md:mb-24">
+        {directors.map((member, index) => (
+          <div class={`reveal reveal-delay-${index * 150} flex flex-col bg-white rounded-[2rem] md:rounded-[2.5rem] border border-black/5 hover:shadow-2xl transition-all duration-700 overflow-hidden group`}>
+            <div class="aspect-[4/3] relative overflow-hidden">
+              {member.image ? (
+                <SanityImage 
+                  src={member.image}
+                  alt={member.name}
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                  width={600}
+                  aspectRatio={4/3}
+                  widths={[300, 600, 900]}
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                />
+              ) : (
+                <div class="w-full h-full bg-branding-accent flex items-center justify-center">
+                  <div class="w-20 h-1 bg-primary/20 rounded-full"></div>
+                </div>
+              )}
+              <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500"></div>
+            </div>
+            <div class="p-8 md:p-10 flex flex-col flex-grow">
+              <h3 class="text-2xl md:text-3xl font-heading font-extrabold text-branding-dark mb-2 tracking-tight group-hover:text-primary transition-colors duration-300">
+                {member.name}
+              </h3>
+              <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-6">
+                {t(member.role, locale)}
+              </p>
+              <p class="text-branding-muted text-base md:text-lg leading-relaxed font-light italic flex-grow">
+                {t(member.description, locale)}
+              </p>
+            </div>
           </div>
-          
-          <!-- Info -->
-          <div class="p-8 md:p-10 flex flex-col flex-grow">
-            <h3 class="text-2xl font-heading font-extrabold text-branding-dark mb-2 tracking-tight group-hover:text-primary transition-colors duration-300">
-              {member.name}
-            </h3>
-            <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-6">
-              {t(member.role, locale)}
-            </p>
-            <p class="text-branding-muted text-base leading-relaxed font-light italic flex-grow">
-              {t(member.description, locale)}
-            </p>
+        ))}
+      </div>
+    )}
+
+    <!-- Teachers & Team side by side -->
+    {(teachers.length > 0 || team.length > 0) && (
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        <!-- Teachers (left) -->
+        {teachers.length > 0 && (
+          <div>
+            <h4 class="text-2xl md:text-3xl font-heading font-extrabold text-branding-dark mb-8 tracking-tight reveal">
+              {t(teachersLabel, locale)}
+            </h4>
+            <div class="flex flex-col gap-8">
+              {teachers.map((member, index) => (
+                <div class={`reveal reveal-delay-${index * 150} flex flex-col bg-white rounded-[2rem] md:rounded-[2.5rem] border border-black/5 hover:shadow-2xl transition-all duration-700 overflow-hidden group`}>
+                  <div class="aspect-[16/9] relative overflow-hidden">
+                    {member.image ? (
+                      <SanityImage 
+                        src={member.image}
+                        alt={member.name}
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                        width={600}
+                        aspectRatio={16/9}
+                        widths={[300, 600, 900]}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div class="w-full h-full bg-branding-accent flex items-center justify-center">
+                        <div class="w-20 h-1 bg-primary/20 rounded-full"></div>
+                      </div>
+                    )}
+                    <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500"></div>
+                  </div>
+                  <div class="p-8 md:p-10 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-heading font-extrabold text-branding-dark mb-2 tracking-tight group-hover:text-primary transition-colors duration-300">
+                      {member.name}
+                    </h3>
+                    <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-6">
+                      {t(member.role, locale)}
+                    </p>
+                    <p class="text-branding-muted text-base leading-relaxed font-light italic flex-grow">
+                      {t(member.description, locale)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        )}
+
+        <!-- Team (right) -->
+        {team.length > 0 && (
+          <div>
+            <h4 class="text-2xl md:text-3xl font-heading font-extrabold text-branding-dark mb-8 tracking-tight reveal">
+              {t(teamLabel, locale)}
+            </h4>
+            <div class="flex flex-col gap-8">
+              {team.map((member, index) => (
+                <div class={`reveal reveal-delay-${index * 150} flex flex-col bg-white rounded-[2rem] md:rounded-[2.5rem] border border-black/5 hover:shadow-2xl transition-all duration-700 overflow-hidden group`}>
+                  <div class="aspect-[16/9] relative overflow-hidden">
+                    {member.image ? (
+                      <SanityImage 
+                        src={member.image}
+                        alt={member.name}
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                        width={600}
+                        aspectRatio={16/9}
+                        widths={[300, 600, 900]}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div class="w-full h-full bg-branding-accent flex items-center justify-center">
+                        <div class="w-20 h-1 bg-primary/20 rounded-full"></div>
+                      </div>
+                    )}
+                    <div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500"></div>
+                  </div>
+                  <div class="p-8 md:p-10 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-heading font-extrabold text-branding-dark mb-2 tracking-tight group-hover:text-primary transition-colors duration-300">
+                      {member.name}
+                    </h3>
+                    <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-6">
+                      {t(member.role, locale)}
+                    </p>
+                    <p class="text-branding-muted text-base leading-relaxed font-light italic flex-grow">
+                      {t(member.description, locale)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )}
   </div>
 </section>
