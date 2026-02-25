@@ -35,6 +35,22 @@ export const localizedObject = (name: string, title: string, fields: any[]) => d
     ]
 })
 
+export const localizedBlockContent = (name: string, title: string) => defineField({
+    name,
+    title,
+    type: 'object',
+    groups: [
+        { name: 'de', title: 'DE', default: true },
+        { name: 'en', title: 'EN' },
+        { name: 'kh', title: 'KH' }
+    ],
+    fields: [
+        { name: 'de', title: 'Deutsch', type: 'array', group: 'de', of: [{ type: 'block' }] },
+        { name: 'en', title: 'English', type: 'array', group: 'en', of: [{ type: 'block' }] },
+        { name: 'kh', title: 'ភាសាខ្មែរ', type: 'array', group: 'kh', of: [{ type: 'block' }] }
+    ]
+})
+
 export const localizedImage = (name: string, title: string) => defineField({
     name,
     title,

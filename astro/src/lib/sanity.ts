@@ -49,3 +49,13 @@ export async function getDonationTiers() {
 export async function getHistoryEntries() {
     return sanityClient.fetch(`*[_type == "historyEntry"] | order(order asc, year asc)`);
 }
+
+// Fetch news page content
+export async function getNewsPage() {
+    return sanityClient.fetch(`*[_type == "newsPage"][0]`);
+}
+
+// Fetch news entries
+export async function getNewsEntries() {
+    return sanityClient.fetch(`*[_type == "newsEntry"] | order(date desc)`);
+}

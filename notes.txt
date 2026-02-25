@@ -1,2 +1,3 @@
 - weiterleitung von info at bambooshoots nach petras bastigo at outloook.com
 - neue seite aktuelles/news. eine lange seite mit allen einträgen und dünne trennlinien zwischen den einträgen. keine unterseiten. sanity schema für einträge.
+- bambooshoots.org kaufen

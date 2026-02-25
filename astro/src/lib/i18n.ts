@@ -92,6 +92,7 @@ export const navigation = {
         { label: 'Programme', href: '#programme' },
         { label: 'Team', href: '#team' },
         { label: 'Spenden', href: '#spenden' },
+        { label: 'Aktuelles', href: '/news' },
         { label: 'Geschichte', href: '/history' },
         { label: 'Galerie', href: '/galerie' }
     ],
@@ -100,6 +101,7 @@ export const navigation = {
         { label: 'Programs', href: '#programme' },
         { label: 'Team', href: '#team' },
         { label: 'Donate', href: '#spenden' },
+        { label: 'News', href: '/news' },
         { label: 'History', href: '/history' },
         { label: 'Gallery', href: '/galerie' }
     ],
@@ -108,6 +110,7 @@ export const navigation = {
         { label: 'កម្មវិធី', href: '#programme' },
         { label: 'ក្រុម', href: '#team' },
         { label: 'បរិច្ចាគ', href: '#spenden' },
+        { label: 'ព័ត៌មានថ្មី', href: '/news' },
         { label: 'ប្រវត្តិ', href: '/history' },
         { label: 'វិចិត្រសាល', href: '/galerie' }
     ]
