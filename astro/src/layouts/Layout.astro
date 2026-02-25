@@ -126,6 +126,10 @@ const faviconDarkUrl =
     <title>{metaTitle} | Bamboo Shoots</title>
     <ViewTransitions />
   </head>
+  <script>
+    import { inject } from "@vercel/analytics";
+    inject();
+  </script>
   <body class="min-h-screen flex flex-col">
     <Header locale={locale} settings={settings} />
 
